@@ -1,6 +1,7 @@
 package com.example.nunettine.ui.main
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +46,8 @@ class LoginActivity: AppCompatActivity() {
                         profile = user.kakaoAccount?.profile?.profileImageUrl.toString()
                         email = user.kakaoAccount?.email
                         accessToken = token.accessToken
+                        Log.d("TAG", "$nickname, $profile, $email, $accessToken")
+                        saveKakaoData()
                     }
                 }
                 goMainActivity()
@@ -74,6 +77,16 @@ class LoginActivity: AppCompatActivity() {
         } else {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
         }
+    }
+
+    private fun saveKakaoData() {
+        val sharedPreferences: SharedPreferences = getSharedPreferences("kakao", MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString("nickname", nickname!!)
+        editor.putString("profile", profile!!)
+        editor.putString("email", email!!)
+        editor.putString("accessToken", accessToken!!)
+        editor.apply()
     }
 
     private fun goMainActivity() {
