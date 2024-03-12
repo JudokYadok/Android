@@ -1,4 +1,4 @@
-package com.example.nunettine.ui
+package com.example.nunettine.ui.main
 
 import android.content.Intent
 import android.os.Bundle
