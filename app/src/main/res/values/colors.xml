@@ -6,13 +6,6 @@
     <!-- 로그인 -->
     <color name="kakao">#F9E000</color>
 
-    <!-- 워크스페이스 color -->
-    <color name="white_blue">#D8EAFF</color>
-    <color name="white_pink">#FFD8F4</color>
-    <color name="white_orange">#FFDFD8</color>
-    <color name="white_purple">#E4D8FF</color>
-    <color name="neon_green">D4EA60</color>
-
     <color name="light_gray">#F0F0F0</color>
     <color name="error_red">#FF0000</color>
     <color name="white_gray">#F5F5F5</color>
