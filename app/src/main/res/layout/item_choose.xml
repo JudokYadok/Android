@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/home_item_lo"
+        android:id="@+id/choose_item_lo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="20dp"
@@ -17,10 +17,10 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:id="@+id/home_item_tv"
+            android:id="@+id/choose_item_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="22년 6월"
+            android:text="2022년 6월 평가원"
             android:textSize="16dp"
             android:textColor="@color/black"
             android:fontFamily="@font/nanumsquareneo_regular"
@@ -29,6 +29,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
+            android:id="@+id/choose_item_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=">"
