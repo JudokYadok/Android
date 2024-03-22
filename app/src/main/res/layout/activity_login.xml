@@ -7,16 +7,40 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/login_tv"
+        android:id="@+id/login_detail_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="주독야독(晝讀夜讀)"
-        android:textSize="32dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/nanumsquareneo_bold"
+        android:text="AI기반 국어 독해 학습 도우미"
+        android:textSize="30dp"
+        android:textColor="@color/gray"
+        android:fontFamily="@font/dongle"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintVertical_bias="0.2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/login_ico"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/main_logo"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/login_tv"
+        app:layout_constraintEnd_toStartOf="@id/login_tv"
+        app:layout_constraintTop_toTopOf="@id/login_tv"/>
+
+    <TextView
+        android:id="@+id/login_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주독야독"
+        android:textSize="70dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/dongle"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/login_detail_tv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
