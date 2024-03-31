@@ -1,17 +1,17 @@
-package com.example.nunettine.ui.home
+package com.example.nunettine.ui.home.banner
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.nunettine.databinding.FragmentHomeVp1Binding
+import com.example.nunettine.databinding.FragmentHomeVp2Binding
 
-class HomeVP1Fragment: Fragment() {
-    private lateinit var binding: FragmentHomeVp1Binding
+class HomeVP2Fragment: Fragment() {
+    private lateinit var binding: FragmentHomeVp2Binding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentHomeVp1Binding.inflate(layoutInflater)
+        binding = FragmentHomeVp2Binding.inflate(layoutInflater)
         return binding.root
     }
 }

@@ -1,6 +1,5 @@
 package com.example.nunettine.ui.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.nunettine.R
 import com.example.nunettine.databinding.FragmentHomeBinding
+import com.example.nunettine.ui.home.banner.HomeVP1Fragment
+import com.example.nunettine.ui.home.banner.HomeVP2Fragment
+import com.example.nunettine.ui.home.banner.HomeVP3Fragment
+import com.example.nunettine.ui.home.banner.HomeVPAdapter
 
 class HomeFragment: Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -29,7 +32,17 @@ class HomeFragment: Fragment() {
     }
 
     private fun clickListener() = with(binding) {
+        home1Btn.setOnClickListener {
+            moveFragment(TypeFragment())
+        }
 
+        home3Btn.setOnClickListener {
+            moveFragment(TypeFragment())
+        }
+
+        home2Btn.setOnClickListener {
+
+        }
     }
 
     private fun bannerInit() {
