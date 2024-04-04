@@ -87,7 +87,7 @@
                 android:textSize="16dp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/nanumsquareneo_regular"
-                android:background="null"/>
+                android:background="@null"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.nunettine.R
 import com.example.nunettine.databinding.ActivityMainBinding
 import com.example.nunettine.ui.home.HomeFragment
+import com.example.nunettine.ui.home.HomeIntroFragment
 import com.example.nunettine.ui.save.SaveFragment
 import com.example.nunettine.ui.setting.SettingFragment
 
@@ -22,7 +23,7 @@ class MainActivity: AppCompatActivity() {
     private fun initBottomNavigation(){
         binding.mainNavi.selectedItemId = R.id.navi_home
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frm, HomeFragment())
+            .replace(R.id.main_frm, HomeIntroFragment())
             .commitAllowingStateLoss()
 
         binding.mainNavi.setOnItemSelectedListener{ item ->

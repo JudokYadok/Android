@@ -5,6 +5,7 @@
 
     <!-- 로그인 -->
     <color name="kakao">#F9E000</color>
+    <color name="kakao_text">#624A3D</color>
 
     <color name="light_gray">#F0F0F0</color>
     <color name="error_red">#FF0000</color>
