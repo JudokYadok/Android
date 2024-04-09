@@ -18,6 +18,7 @@ class TypeFragment: Fragment() {
     }
 
     private fun clickListener() = with(binding) {
+        typeBackBtn.setOnClickListener { moveFragment(HomeFragment()) }
     }
 
     private fun moveFragment(fragment: Fragment) {

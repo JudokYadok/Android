@@ -1,7 +1,5 @@
 package com.example.nunettine.ui.home
 
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -42,7 +40,7 @@ class HomeFragment: Fragment() {
         }
 
         home2Btn.setOnClickListener {
-
+            moveFragment(TypeFragment())
         }
     }
     private fun moveFragment(fragment: Fragment) {
@@ -50,26 +48,5 @@ class HomeFragment: Fragment() {
             .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
             .replace(R.id.main_frm, fragment)
             .commitAllowingStateLoss()
-    }
-
-//    private fun getSharedPreferences() {
-//        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("getRes", MODE_PRIVATE)
-//        profile = sharedPreferences.getString("profile", profile)!!
-//    }
-//
-//    private fun updateUI() {
-//        if (profile != DEFAULT_IMG && profile != "null") {
-//            if (profile == "") {
-//                Picasso.get().load(profile).transform(CircleTransform())
-//                    .into(binding.homeProfileIv)
-//            } else {
-//                Picasso.get().load(profile).transform(CircleTransform())
-//                    .into(binding.homeProfileIv)
-//            }
-//        }
-//    }
-
-    companion object {
-        val DEFAULT_IMG = "https://k.kakaocdn.net/dn/1G9kp/btsAot8liOn/8CWudi3uy07rvFNUkk3ER0/img_640x640.jpg"
     }
 }
