@@ -2,8 +2,10 @@ package com.example.nunettine.ui.main
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nunettine.databinding.ActivityLoginBinding
 import com.kakao.sdk.auth.model.OAuthToken
@@ -31,6 +33,7 @@ class LoginActivity: AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     private fun login_kakao() {
         // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
         // 이메일 로그인 콜백
@@ -79,6 +82,7 @@ class LoginActivity: AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     private fun saveKakaoData() {
         val sharedPreferences: SharedPreferences = getSharedPreferences("kakao", MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
