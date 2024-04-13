@@ -1,4 +1,4 @@
-package com.example.nunettine.ui.save
+package com.example.nunettine.ui.save.memo
 
 import android.os.Bundle
 import android.view.LayoutInflater

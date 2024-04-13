@@ -33,7 +33,7 @@ class HomeIntroFragment: Fragment() {
 
         Handler().postDelayed({
             moveFragment(HomeFragment())
-        }, 2000)
+        }, 900)
 
         return binding.root
     }
