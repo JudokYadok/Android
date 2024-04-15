@@ -10,7 +10,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class SaveFragment: Fragment() {
     private lateinit var binding: FragmentSaveBinding
-    private val information = arrayListOf("문제", "메모", "지문")
+    private val information = arrayListOf("지문", "메모", "문제")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSaveBinding.inflate(layoutInflater)

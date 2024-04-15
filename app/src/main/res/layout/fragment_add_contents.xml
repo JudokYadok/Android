@@ -11,8 +11,8 @@
 
         <ImageView
             android:id="@+id/add_contents_back_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/ico_left_arrow"
             app:layout_constraintHorizontal_bias="0.3"
             app:layout_constraintTop_toTopOf="@id/add_contents_tv"
@@ -27,7 +27,7 @@
             android:text="지문 추가"
             android:textColor="@color/black"
             android:fontFamily="@font/nanumsquareneo_bold"
-            android:textSize="24dp"
+            android:textSize="40dp"
             app:layout_constraintVertical_bias="0.07"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
