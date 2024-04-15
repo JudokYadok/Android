@@ -10,7 +10,7 @@ class SaveVPAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int):Fragment {
-        return when(position) { // 임시 설정
+        return when(position) {
             0 -> SaveContentsFragment()
             1 -> SaveMemoFragment()
             else -> SaveProblemFragment()
