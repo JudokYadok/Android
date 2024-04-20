@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.nunettine.R
 import com.example.nunettine.databinding.DialogAlertBinding
+import com.example.nunettine.ui.save.SaveFragment
 import com.example.nunettine.ui.save.memo.SaveMemoFragment
 
 class AlertDialog(private var context: Context, private val fragmentManager: FragmentManager): Dialog(context) {
@@ -25,8 +26,9 @@ class AlertDialog(private var context: Context, private val fragmentManager: Fra
 
     private fun clickListener() = with(binding) {
         dialogAlertYesBtn.setOnClickListener {
+            moveFragment(SaveFragment())
             Toast.makeText(context, "작성이 취소되었습니다.", Toast.LENGTH_SHORT).show()
-            super.onBackPressed()
+            dismiss()
         }
         dialogAlertNoBtn.setOnClickListener { dismiss() }
     }

@@ -6,21 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.nunettine.R
-import com.example.nunettine.databinding.FragmentSettingBinding
+import com.example.nunettine.databinding.FragmentSettingFeedbackBinding
 
-class SettingFragment: Fragment() {
-    private lateinit var binding: FragmentSettingBinding
+class FeedbackFragment: Fragment() {
+    private lateinit var binding: FragmentSettingFeedbackBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentSettingBinding.inflate(layoutInflater)
+        binding = FragmentSettingFeedbackBinding.inflate(layoutInflater)
         clickListener()
         return binding.root
     }
 
     private fun clickListener() = with(binding) {
-        settingMypageLo.setOnClickListener { moveFragment(MypageFragment()) }
-        settingInfoLo.setOnClickListener { moveFragment(InfoFragment()) }
-        settingFeedbackLo.setOnClickListener { moveFragment(FeedbackFragment()) }
+        feedbackBackBtn.setOnClickListener { moveFragment(SettingFragment()) }
     }
 
     private fun moveFragment(fragment: Fragment) {

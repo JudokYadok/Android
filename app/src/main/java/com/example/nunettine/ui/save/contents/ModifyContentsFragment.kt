@@ -16,7 +16,6 @@ class ModifyContentsFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentModifyContentsBinding.inflate(layoutInflater)
-        Log.d("sdfjkl", "onCreateView 호출")
         clickListener()
         return binding.root
     }
