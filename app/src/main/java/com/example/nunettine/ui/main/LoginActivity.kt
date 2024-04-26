@@ -23,6 +23,7 @@ class LoginActivity: AppCompatActivity() {
     private var getAccessToken: String? = ""
     private var getRefreshToken: String? = ""
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -101,4 +102,6 @@ class LoginActivity: AppCompatActivity() {
     companion object {
         var TAG = "LoginActivity"
     }
+
+    override fun onBackPressed() { }
 }

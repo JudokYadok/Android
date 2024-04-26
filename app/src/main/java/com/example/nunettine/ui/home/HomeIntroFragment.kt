@@ -44,6 +44,7 @@ class HomeIntroFragment: Fragment() {
         parentFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
             .replace(R.id.main_frm, fragment)
-            .commitAllowingStateLoss()
+            .addToBackStack(null)
+            .commit()
     }
 }

@@ -14,4 +14,12 @@ class ChooseFragment: Fragment() {
         binding = FragmentChooseBinding.inflate(layoutInflater)
         return binding.root
     }
+
+    private fun clickListner() = with(binding) {
+        chooseBackBtn.setOnClickListener { goBackFragment() }
+    }
+
+    private fun goBackFragment() {
+        parentFragmentManager.popBackStack()
+    }
 }

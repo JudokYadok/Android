@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nunettine.R
 import com.example.nunettine.databinding.FragmentContentsListBinding
 
-class SaveContentsFragment: Fragment() {
+class SaveContentsFragment : Fragment() {
     private lateinit var binding: FragmentContentsListBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -28,7 +28,8 @@ class SaveContentsFragment: Fragment() {
     private fun initRV() = with(binding) {
         val adapter = fragmentManager?.let { SaveContentsRVAdapter(requireContext(), it) }
         contentsListRv.adapter = adapter
-        contentsListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        contentsListRv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
     private fun moveFragment(fragment: Fragment) {

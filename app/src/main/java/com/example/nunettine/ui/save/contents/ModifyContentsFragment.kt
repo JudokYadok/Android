@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.nunettine.R
 import com.example.nunettine.databinding.FragmentModifyContentsBinding
-import com.example.nunettine.ui.etc.AlertDialog
 
 class ModifyContentsFragment: Fragment() {
     private lateinit var binding: FragmentModifyContentsBinding
@@ -22,10 +21,7 @@ class ModifyContentsFragment: Fragment() {
 
     private fun clickListener() = with(binding) {
         modifyContentsBackBtn.setOnClickListener {
-            val dialog = context?.let { fragmentManager?.let { it1 -> AlertDialog(it, it1) } }
-            if (dialog != null) {
-                dialog.show()
-            }
+            goBackFragment()
         }
 
         modifyContentsBtn.setOnClickListener {
@@ -43,6 +39,9 @@ class ModifyContentsFragment: Fragment() {
         parentFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
             .replace(R.id.main_frm, fragment)
-            .commitAllowingStateLoss()
+            .addToBackStack(null)
+            .commit()
     }
+
+    private fun goBackFragment() { parentFragmentManager.popBackStack() }
 }

@@ -31,11 +31,14 @@ class ChooseRVAdapter(private val context: Context, private var fragmentManager:
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind()
 
     private fun moveFragment(fragment: Fragment) {
-        var activity = MainActivity()
-        val mainFrmLayout = activity?.findViewById<FrameLayout>(R.id.main_frm)
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        mainFrmLayout?.id?.let { transaction?.replace(it, fragment) }
-        transaction?.addToBackStack(null)
-        transaction?.commit()
+        val mainActivity = context as MainActivity
+        val mainFrmLayout = mainActivity.findViewById<FrameLayout>(R.id.main_frm) as FrameLayout?
+        if (mainFrmLayout != null) {
+            val transaction = mainActivity.supportFragmentManager.beginTransaction()
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+            transaction.replace(mainFrmLayout.id, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 }

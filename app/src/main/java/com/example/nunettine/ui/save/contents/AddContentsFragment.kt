@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.nunettine.R
 import com.example.nunettine.databinding.FragmentAddContentsBinding
-import com.example.nunettine.ui.etc.AlertDialog
 import com.example.nunettine.ui.save.SaveFragment
 
 class AddContentsFragment: Fragment() {
@@ -30,22 +29,14 @@ class AddContentsFragment: Fragment() {
 
     private fun clickListener() = with(binding) {
         addContentsBackBtn.setOnClickListener {
-            val dialog = context?.let { fragmentManager?.let { it1 -> AlertDialog(it, it1) } }
-            if (dialog != null) {
-                dialog.show()
-            }
+            goBackFragment()
         }
 
         addContentsBtn.setOnClickListener {
             Toast.makeText(context, "지문이 저장되었습니다.", Toast.LENGTH_SHORT).show()
-            moveFragment(SaveFragment())
+            goBackFragment()
         }
     }
 
-    private fun moveFragment(fragment: Fragment) {
-        parentFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-            .replace(R.id.main_frm, fragment)
-            .commitAllowingStateLoss()
-    }
+    private fun goBackFragment() { parentFragmentManager.popBackStack() }
 }
