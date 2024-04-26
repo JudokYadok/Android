@@ -16,7 +16,7 @@ class ChooseRVAdapter(private val context: Context, private var fragmentManager:
     inner class ViewHolder(val binding: ItemChooseBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind() = with(binding) {
             chooseItemLo.setOnClickListener {
-                //moveFragment()
+                moveFragment(PreviewContentsFragment())
             }
         }
     }

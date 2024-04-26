@@ -4,27 +4,44 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import com.example.nunettine.R
-import com.example.nunettine.databinding.FragmentTypeBinding
+import com.example.nunettine.databinding.FragmentMergeCountBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class TypeFragment: Fragment() {
-    private lateinit var binding: FragmentTypeBinding
+class MergeCountFragment: Fragment() {
+    private lateinit var binding: FragmentMergeCountBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentTypeBinding.inflate(layoutInflater)
+        binding = FragmentMergeCountBinding.inflate(layoutInflater)
         clickListener()
         return binding.root
     }
 
     private fun clickListener() = with(binding) {
-        typeBackBtn.setOnClickListener { goBackFragment() }
-        typeItem1Lo.setOnClickListener { moveFragment(ChooseFragment()) }
-        typeItem2Lo.setOnClickListener { moveFragment(ChooseFragment()) }
-        typeItem3Lo.setOnClickListener { moveFragment(ChooseFragment()) }
-        typeItem4Lo.setOnClickListener { moveFragment(ChooseFragment()) }
+        mergeCountBackBtn.setOnClickListener { goBackFragment() }
+
+        mergeCountType1Btn.setOnClickListener { clickButton(mergeCountType1Btn) }
+        mergeCountType2Btn.setOnClickListener { clickButton(mergeCountType2Btn) }
+        mergeCountType3Btn.setOnClickListener { clickButton(mergeCountType3Btn) }
+        mergeCountType4Btn.setOnClickListener { clickButton(mergeCountType4Btn) }
+        mergeCountType5Btn.setOnClickListener { clickButton(mergeCountType5Btn) }
+    }
+
+    private fun clickButton(clickedButton: Button) = with(binding) {
+        val buttons = listOf(
+            mergeCountType1Btn,
+            mergeCountType2Btn,
+            mergeCountType3Btn,
+            mergeCountType4Btn,
+            mergeCountType5Btn
+        )
+
+        buttons.forEach { button ->
+            button.isSelected = (button == clickedButton)
+        }
     }
 
     private fun moveFragment(fragment: Fragment) {
