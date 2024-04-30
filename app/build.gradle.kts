@@ -1,20 +1,17 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     id ("com.android.application")
     id ("org.jetbrains.kotlin.android")
     id ("kotlin-android")
     id ("kotlin-kapt")
-    id ("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.example.nunettine"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.nunettine"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -32,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true
@@ -75,13 +72,6 @@ dependencies {
     coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:1.2.2")
 
 
-    implementation ("com.kizitonwose.calendar:view:2.4.1")
-    implementation ("com.kizitonwose.calendar:compose:2.4.1")
-
-    // timber
-    implementation ("com.jakewharton.timber:timber:5.0.1")
-
-
     // Retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -100,17 +90,8 @@ dependencies {
 
 
     // kakao
-    implementation ("com.kakao.sdk:v2-user:2.12.1")
+    implementation ("com.kakao.sdk:v2-user:2.20.0")
 
-
-    // google play services
-    implementation ("com.google.firebase:firebase-core:21.1.1")
-    implementation ("com.google.gms:google-services:4.3.8")
-    implementation ("com.google.firebase:firebase-auth:22.3.0")
-    implementation (platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation ("com.google.android.gms:play-services-auth:20.7.0")
-    implementation ("com.google.firebase:firebase-auth-ktx:22.3.0")
-    implementation ("com.google.firebase:firebase-analytics")
 
     // RoomDB
     implementation ("androidx.room:room-ktx:2.4.1")

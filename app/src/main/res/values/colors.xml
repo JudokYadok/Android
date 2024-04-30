@@ -5,17 +5,20 @@
 
     <!-- 로그인 -->
     <color name="kakao">#F9E000</color>
-
-    <!-- 워크스페이스 color -->
-    <color name="white_blue">#D8EAFF</color>
-    <color name="white_pink">#FFD8F4</color>
-    <color name="white_orange">#FFDFD8</color>
-    <color name="white_purple">#E4D8FF</color>
-    <color name="neon_green">D4EA60</color>
+    <color name="kakao_text">#624A3D</color>
 
     <color name="light_gray">#F0F0F0</color>
     <color name="error_red">#FF0000</color>
     <color name="white_gray">#F5F5F5</color>
     <color name="gray">#898989</color>
+    <color name="transparent">#00ff0000</color>
 
+    <color name="main_pink">#FDBBBB</color>
+    <color name="dark_pink">#DE9999</color>
+    <color name="white_pink">#66FDBBBB</color>
+    <color name="yellow_pink">#F6ECE8</color>
+    <color name="pink">#FAF0F0</color>
+    <color name="blue">#0047FF</color>
+
+    <color name="green">#5EB948</color>
 </resources>
