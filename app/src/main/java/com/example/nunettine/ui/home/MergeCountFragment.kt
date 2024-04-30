@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.nunettine.R
 import com.example.nunettine.databinding.FragmentMergeCountBinding
@@ -16,7 +17,9 @@ class MergeCountFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMergeCountBinding.inflate(layoutInflater)
+
         clickListener()
+
         return binding.root
     }
 
@@ -44,6 +47,7 @@ class MergeCountFragment: Fragment() {
         buttons.forEach { button ->
             button.isSelected = (button == clickedButton)
         }
+        mergeCountBtn.isEnabled = true
     }
 
     private fun moveFragment(fragment: Fragment) {

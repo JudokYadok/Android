@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.nunettine.R
 import com.example.nunettine.databinding.FragmentProblemBinding
@@ -18,12 +19,9 @@ class ProblemFragment : Fragment() {
     private var isPlaying = false
     private var pauseTime = 0L // 멈춤 시간
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentProblemBinding.inflate(layoutInflater)
+
         clickListener()
         settingMedia()
         return binding.root
@@ -91,6 +89,11 @@ class ProblemFragment : Fragment() {
             pauseChronometer()
         }
 
+        problemCheckBtn.setOnClickListener {
+            moveFragment(CheckFragment())
+            // 채점 API (post)
+        }
+
         problemOmr11btn.setOnClickListener { clickButton1(problemOmr11btn) }
         problemOmr12btn.setOnClickListener { clickButton1(problemOmr12btn) }
         problemOmr13btn.setOnClickListener { clickButton1(problemOmr13btn) }
@@ -128,6 +131,7 @@ class ProblemFragment : Fragment() {
         button1.forEach { button ->
             button.isSelected = (button == clickedButton)
         }
+        problemCheckBtn.isEnabled = true
     }
 
     private fun clickButton2(clickedButton: Button) = with(binding) {
@@ -142,6 +146,7 @@ class ProblemFragment : Fragment() {
         button2.forEach { button ->
             button.isSelected = (button == clickedButton)
         }
+        problemCheckBtn.isEnabled = true
     }
 
     private fun clickButton3(clickedButton: Button) = with(binding) {
@@ -156,6 +161,7 @@ class ProblemFragment : Fragment() {
         button3.forEach { button ->
             button.isSelected = (button == clickedButton)
         }
+        problemCheckBtn.isEnabled = true
     }
 
     private fun clickButton4(clickedButton: Button) = with(binding) {
@@ -170,6 +176,7 @@ class ProblemFragment : Fragment() {
         button4.forEach { button ->
             button.isSelected = (button == clickedButton)
         }
+        problemCheckBtn.isEnabled = true
     }
 
     private fun moveFragment(fragment: Fragment) {

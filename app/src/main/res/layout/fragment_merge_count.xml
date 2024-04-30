@@ -251,6 +251,7 @@
         android:textColor="@color/black"
         android:fontFamily="@font/nanumsquareneo_bold"
         android:layout_marginHorizontal="300dp"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/merge_count_lo"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
