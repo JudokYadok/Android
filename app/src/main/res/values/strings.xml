@@ -3,4 +3,5 @@
 
     <!-- 로그인 -->
     <string name="kakao_appkey">7eb1dbf1d41470be56e2ffb3b5db5d84</string>
+    <string name="chronometer_format">HH:mm:ss</string>
 </resources>

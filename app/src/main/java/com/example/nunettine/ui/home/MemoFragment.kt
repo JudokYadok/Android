@@ -4,45 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.nunettine.R
-import com.example.nunettine.databinding.FragmentMergeCountBinding
+import com.example.nunettine.databinding.FragmentMemoBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class MergeCountFragment: Fragment() {
-    private lateinit var binding: FragmentMergeCountBinding
+class MemoFragment: Fragment() {
+    private lateinit var binding: FragmentMemoBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentMergeCountBinding.inflate(layoutInflater)
+        binding = FragmentMemoBinding.inflate(layoutInflater)
+
         clickListener()
         return binding.root
     }
 
     private fun clickListener() = with(binding) {
-        mergeCountBackBtn.setOnClickListener { goBackFragment() }
-
-        mergeCountType1Btn.setOnClickListener { clickButton(mergeCountType1Btn) }
-        mergeCountType2Btn.setOnClickListener { clickButton(mergeCountType2Btn) }
-        mergeCountType3Btn.setOnClickListener { clickButton(mergeCountType3Btn) }
-        mergeCountType4Btn.setOnClickListener { clickButton(mergeCountType4Btn) }
-        mergeCountType5Btn.setOnClickListener { clickButton(mergeCountType5Btn) }
-
-        mergeCountBtn.setOnClickListener { moveFragment(ProblemFragment()) }
-    }
-
-    private fun clickButton(clickedButton: Button) = with(binding) {
-        val buttons = listOf(
-            mergeCountType1Btn,
-            mergeCountType2Btn,
-            mergeCountType3Btn,
-            mergeCountType4Btn,
-            mergeCountType5Btn
-        )
-
-        buttons.forEach { button ->
-            button.isSelected = (button == clickedButton)
+        addMemoBackBtn.setOnClickListener { goBackFragment() }
+        addMemoBtn.setOnClickListener {
+            Toast.makeText(context, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            moveFragment(ProblemFragment())
         }
     }
 
