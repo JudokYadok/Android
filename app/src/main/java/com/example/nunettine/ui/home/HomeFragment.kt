@@ -5,14 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.nunettine.CircleTransform
 import com.example.nunettine.R
+import com.example.nunettine.data.remote.dto.study.StudyCategoryRes
+import com.example.nunettine.data.remote.service.library_study.QuizService
+import com.example.nunettine.data.remote.view.study.StudyCategoryView
 import com.example.nunettine.databinding.FragmentHomeBinding
 import com.example.nunettine.ui.home.viewmodel.HomeViewModel
+import com.example.nunettine.ui.main.MainActivity
 import com.squareup.picasso.Picasso
 
 class HomeFragment: Fragment() {
@@ -36,18 +41,28 @@ class HomeFragment: Fragment() {
 
     private fun clickListener() = with(binding) {
         home1Btn.setOnClickListener {
-            moveFragment(TypeFragment())
+//            moveToTypeFragment(0)
+            moveFragment(MemoFragment())
         }
 
         home2Btn.setOnClickListener {
-            moveFragment(TypeFragment())
+            moveToTypeFragment(1)
         }
     }
     private fun moveFragment(fragment: Fragment) {
-        parentFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-            .replace(R.id.main_frm, fragment)
-            .addToBackStack(null)
-            .commit()
+        val mainActivity = context as MainActivity
+        val mainFrmLayout = mainActivity.findViewById<FrameLayout>(R.id.main_frm) as FrameLayout?
+        if (mainFrmLayout != null) {
+            val transaction = mainActivity.supportFragmentManager.beginTransaction()
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+            transaction.replace(mainFrmLayout.id, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+    }
+
+    private fun moveToTypeFragment(data: Int) {
+        val typeFragment = TypeFragment.newInstance(data)
+        moveFragment(typeFragment)
     }
 }

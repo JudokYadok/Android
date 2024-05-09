@@ -8,15 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nunettine.R
+import com.example.nunettine.data.remote.dto.study.TextList
 import com.example.nunettine.databinding.ItemChooseBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class ChooseRVAdapter(private val context: Context, private var fragmentManager: FragmentManager): RecyclerView.Adapter<ChooseRVAdapter.ViewHolder>() {
+class ChooseRVAdapter(private val textList: List<TextList>, private val context: Context, private val type: Int, private val category: String): RecyclerView.Adapter<ChooseRVAdapter.ViewHolder>() {
     private lateinit var binding: ItemChooseBinding
     inner class ViewHolder(val binding: ItemChooseBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind() = with(binding) {
+        fun bind(text_list: TextList) = with(binding) {
+            chooseItemTv.text = text_list.title
             chooseItemLo.setOnClickListener {
-                moveFragment(PreviewContentsFragment())
+                moveToDetailFragment(type, text_list.text_id, category)
             }
         }
     }
@@ -26,9 +28,9 @@ class ChooseRVAdapter(private val context: Context, private var fragmentManager:
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = 1 // 임시 설정
+    override fun getItemCount(): Int = textList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind()
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(textList[position])
 
     private fun moveFragment(fragment: Fragment) {
         val mainActivity = context as MainActivity
@@ -40,5 +42,10 @@ class ChooseRVAdapter(private val context: Context, private var fragmentManager:
             transaction.addToBackStack(null)
             transaction.commit()
         }
+    }
+
+    private fun moveToDetailFragment(type: Int, text_id: Int, category: String) {
+        val previewContentsFragment = PreviewContentsFragment.newInstance(type, text_id, category)
+        moveFragment(previewContentsFragment)
     }
 }

@@ -3,7 +3,7 @@ package com.example.nunettine.utils
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val BASE_URL = "http://localhost:60023" // 임시 설정
+const val BASE_URL = "http://ceprj.gachon.ac.kr:60023" // 임시 설정
 
 fun getRetrofit(): Retrofit {
     val retrofit = Retrofit.Builder().baseUrl(BASE_URL)

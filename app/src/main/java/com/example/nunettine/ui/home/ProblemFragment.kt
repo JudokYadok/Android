@@ -1,5 +1,7 @@
 package com.example.nunettine.ui.home
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -18,13 +20,36 @@ class ProblemFragment : Fragment() {
     private lateinit var binding: FragmentProblemBinding
     private var isPlaying = false
     private var pauseTime = 0L // 멈춤 시간
+    private var type = arguments?.getInt("type")
+    private var category = arguments?.getString("category")
+    private var text_id = arguments?.getInt("text_id")
+    private var quiz_type = arguments?.getString("quiz_type")
+    private var quiz_list = arguments?.getStringArrayList("quiz_list")
+    private var quiz_answer = arguments?.getIntegerArrayList("quiz_answer")
+    private var text_title = ""
+    private var text_contents = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentProblemBinding.inflate(layoutInflater)
-
+        getData()
+        initUI()
         clickListener()
         settingMedia()
         return binding.root
+    }
+
+    private fun initUI() = with(binding) {
+        problemTv.text = text_title
+        problemContentsTv.text = text_contents
+
+        // 문제 text 설정 -> 후에 설정
+    }
+
+    private fun getData() {
+        // 데이터 읽어오기
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("text", Context.MODE_PRIVATE)
+        text_title = sharedPreferences.getString("text_title", text_title)!!
+        text_contents = sharedPreferences.getString("text_contents", text_contents)!!
     }
 
     private fun settingMedia() = with(binding) {
@@ -191,7 +216,18 @@ class ProblemFragment : Fragment() {
         }
     }
 
-    private fun goBackFragment() {
-        parentFragmentManager.popBackStack()
+    companion object {
+        fun newInstance(type: Int, text_id: Int, category: String, quiz_type: String, quiz_list: ArrayList<String>, quiz_answer: ArrayList<Int>): ProblemFragment {
+            val fragment = ProblemFragment()
+            val args = Bundle()
+            args.putInt("type", type)
+            args.putString("category", category)
+            args.putInt("text_id", text_id)
+            args.putString("quiz_type", quiz_type)
+            args.putStringArrayList("quiz_list", quiz_list)
+            args.putIntegerArrayList("quiz_answer", quiz_answer)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

@@ -4,5 +4,5 @@ import com.example.nunettine.data.remote.dto.library.MemoRes
 
 interface MemoView {
     fun onGetMemoSuccess(response: MemoRes)
-    fun onGetMemoFailure(result_code: Int, result_req: String)
+    fun onGetMemoFailure(result_code: Int)
 }

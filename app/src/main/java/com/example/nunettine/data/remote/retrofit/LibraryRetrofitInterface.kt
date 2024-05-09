@@ -1,8 +1,10 @@
 package com.example.nunettine.data.remote.retrofit
 
 import com.example.nunettine.data.local.MemoReq
+import com.example.nunettine.data.local.NewMemoReq
 import com.example.nunettine.data.local.NewTextReq
 import com.example.nunettine.data.remote.dto.BasicRes
+import com.example.nunettine.data.remote.dto.library.MemoList
 import com.example.nunettine.data.remote.dto.library.MemoListRes
 import com.example.nunettine.data.remote.dto.library.MemoRes
 import com.example.nunettine.data.remote.dto.library.QuizListRes
@@ -20,7 +22,7 @@ interface LibraryRetrofitInterface {
     fun getQuiz(@Path("quiz_id") quiz_id: Int): Call<QuizRes>
 
     @GET("/user/library/memo")
-    fun getMemoList(): Call<MemoListRes>
+    fun getMemoList(): Call<List<MemoList>>
 
     @GET("/user/library/memo/{memo_id}")
     fun getMemo(@Path("memo_id") memo_id: Int): Call<MemoRes>
@@ -39,4 +41,7 @@ interface LibraryRetrofitInterface {
 
     @POST("/user/library/mytext/new")
     fun postMyText(@Body newTextReq: NewTextReq): Call<BasicRes>
+
+    @POST("/user/library/memo")
+    fun postMemo(@Body newMemoReq: NewMemoReq): Call<BasicRes>
 }
