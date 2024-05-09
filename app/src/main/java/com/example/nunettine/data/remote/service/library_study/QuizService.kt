@@ -68,10 +68,7 @@ class QuizService {
                 if (response.isSuccessful) {
                     val resp: QuizSolveRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> quizSolveView.onGetQuizSolveSuccess(resp)
-                            else -> quizSolveView.onGetQuizSolveFailure(resp.result_code, resp.result_req)
-                        }
+                        quizSolveView.onGetQuizSolveSuccess(resp)
                     } else {
                         Log.e("PREV-QUIZ-SOLVE-SUCCESS", "Response body is null")
                     }
@@ -93,10 +90,7 @@ class QuizService {
                 if (response.isSuccessful) {
                     val resp: QuizSolveRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> quizSolveView.onGetQuizSolveSuccess(resp)
-                            else -> quizSolveView.onGetQuizSolveFailure(resp.result_code, resp.result_req)
-                        }
+                        quizSolveView.onGetQuizSolveSuccess(resp)
                     } else {
                         Log.e("MY-QUIZ-SOLVE-SUCCESS", "Response body is null")
                     }
@@ -118,10 +112,7 @@ class QuizService {
                 if (response.isSuccessful) {
                     val resp: StudyDetailRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> studyDetailView.onGetStudyDetailSuccess(resp)
-                            else -> studyDetailView.onGetStudyDetailFailure(resp.result_code, resp.result_req)
-                        }
+                        studyDetailView.onGetStudyDetailSuccess(resp)
                     } else {
                         Log.e("PREV-TEXT-GET-SUCCESS", "Response body is null")
                     }
@@ -143,10 +134,7 @@ class QuizService {
                 if (response.isSuccessful) {
                     val resp: StudyDetailRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> studyDetailView.onGetStudyDetailSuccess(resp)
-                            else -> studyDetailView.onGetStudyDetailFailure(resp.result_code, resp.result_req)
-                        }
+                        studyDetailView.onGetStudyDetailSuccess(resp)
                     } else {
                         Log.e("MY-TEXT-GET-SUCCESS", "Response body is null")
                     }
@@ -168,10 +156,7 @@ class QuizService {
                 if (response.isSuccessful) {
                     val resp: StudyCategoryRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> studyCategoryView.onGetStudyCategorySuccess(resp)
-                            else -> studyCategoryView.onGetStudyCategoryFailure(resp.result_code, resp.result_req)
-                        }
+                        studyCategoryView.onGetStudyCategorySuccess(resp)
                     } else {
                         Log.e("TEXT-TYPE-GET-SUCCESS", "Response body is null")
                     }
@@ -193,10 +178,7 @@ class QuizService {
                 if (response.isSuccessful) {
                     val resp: StudyListRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> studyListView.onGetStudyListSuccess(resp)
-                            else -> studyListView.onGetStudyListFailure(resp.result_code, resp.result_req)
-                        }
+                        studyListView.onGetStudyListSuccess(resp)
                     } else {
                         Log.e("TEXT-LIST-GET-SUCCESS", "Response body is null")
                     }
@@ -218,10 +200,7 @@ class QuizService {
                 if (response.isSuccessful) {
                     val resp: QuizListRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> quizListView.onGetQuizListSuccess(resp)
-                            else -> quizListView.onGetQuizListFailure(resp.result_code, resp.result_req)
-                        }
+                        quizListView.onGetQuizListSuccess(resp)
                     } else {
                         Log.e("QUIZ-LIST-GET-SUCCESS", "Response body is null")
                     }
@@ -243,10 +222,7 @@ class QuizService {
                 if (response.isSuccessful) {
                     val resp: QuizRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> quizView.onGetQuizSuccess(resp)
-                            else -> quizView.onGetQuizFailure(resp.result_code, resp.result_req)
-                        }
+                        quizView.onGetQuizSuccess(resp)
                     } else {
                         Log.e("QUIZ-GET-SUCCESS", "Response body is null")
                     }
@@ -268,10 +244,7 @@ class QuizService {
                 if (response.isSuccessful) {
                     val resp: QuizGradeRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> quizGradeView.onGetQuizGradeSuccess(resp)
-                            else -> quizGradeView.onGetQuizGradeFailure(resp.result_code, resp.result_req)
-                        }
+                        quizGradeView.onGetQuizGradeSuccess(resp)
                     } else {
                         Log.e("PREV-QUIZ-GRADE-SUCCESS", "Response body is null")
                     }
@@ -293,10 +266,7 @@ class QuizService {
                 if (response.isSuccessful) {
                     val resp: QuizGradeRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> quizGradeView.onGetQuizGradeSuccess(resp)
-                            else -> quizGradeView.onGetQuizGradeFailure(resp.result_code, resp.result_req)
-                        }
+                        quizGradeView.onGetQuizGradeSuccess(resp)
                     } else {
                         Log.e("MY-QUIZ-GRADE-SUCCESS", "Response body is null")
                     }

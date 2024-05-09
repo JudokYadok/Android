@@ -1,5 +1,7 @@
 package com.example.nunettine.ui.home
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,11 +19,12 @@ import com.example.nunettine.ui.main.MainActivity
 
 class TypeFragment: Fragment(), StudyCategoryView {
     private lateinit var binding: FragmentTypeBinding
-    private var type = arguments?.getInt("type")
+    private var type = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTypeBinding.inflate(layoutInflater)
-        if(type == 0) {
+        getData()
+        if(type == "PREVTEXT") {
             setPrevTypeService()
         } else {
             // setMyTypeService()
@@ -32,7 +35,7 @@ class TypeFragment: Fragment(), StudyCategoryView {
     }
 
     private fun initRV(categoryList: ArrayList<String>) = with(binding){
-        val typeRVAdapter = TypeRVAdapter(categoryList, requireContext(), type!!)
+        val typeRVAdapter = TypeRVAdapter(categoryList, requireContext(), type)
         // RecyclerView 어댑터 설정
         typeRv.layoutManager = LinearLayoutManager(requireContext())
         // RecyclerView 레이아웃 매니저 설정
@@ -55,6 +58,12 @@ class TypeFragment: Fragment(), StudyCategoryView {
         }
     }
 
+    private fun getData() {
+        // 데이터 읽어오기
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("type", Context.MODE_PRIVATE)
+        type = sharedPreferences.getString("type", type)!!
+    }
+
     private fun setPrevTypeService() {
         val setStudyCategoryService = QuizService()
         setStudyCategoryService.getStudyCategoryView(this@TypeFragment)
@@ -68,15 +77,5 @@ class TypeFragment: Fragment(), StudyCategoryView {
 
     override fun onGetStudyCategoryFailure(result_code: Int, result_req: String) {
         Log.d("TYPE-오류", result_req)
-    }
-
-    companion object {
-        fun newInstance(type: Int): TypeFragment {
-            val fragment = TypeFragment()
-            val args = Bundle()
-            args.putInt("type", type) // 데이터를 담습니다.
-            fragment.arguments = args
-            return fragment
-        }
     }
 }

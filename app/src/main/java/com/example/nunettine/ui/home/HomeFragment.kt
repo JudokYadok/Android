@@ -1,11 +1,15 @@
 package com.example.nunettine.ui.home
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -24,6 +28,7 @@ class HomeFragment: Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var homeViewModel: HomeViewModel
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
@@ -39,14 +44,25 @@ class HomeFragment: Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    fun saveData(text_type: String) {
+        // 데이터 저장
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("type", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString("type", text_type)
+        editor.apply()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     private fun clickListener() = with(binding) {
         home1Btn.setOnClickListener {
-//            moveToTypeFragment(0)
-            moveFragment(MemoFragment())
+            saveData("PREVTEXT")
+            moveFragment(TypeFragment())
         }
 
         home2Btn.setOnClickListener {
-            moveToTypeFragment(1)
+            saveData("MYTEXT")
+            moveFragment(TypeFragment())
         }
     }
     private fun moveFragment(fragment: Fragment) {
@@ -59,10 +75,5 @@ class HomeFragment: Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
-    }
-
-    private fun moveToTypeFragment(data: Int) {
-        val typeFragment = TypeFragment.newInstance(data)
-        moveFragment(typeFragment)
     }
 }

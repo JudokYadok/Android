@@ -44,10 +44,7 @@ class TextService {
                 if (response.isSuccessful) {
                     val resp: TextRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> textView.onGetTextSuccess(resp)
-                            else -> textView.onGetTextFailure(resp.result_code, resp.result_req)
-                        }
+                        textView.onGetTextSuccess(resp)
                     } else {
                         Log.e("TEXT-SUCCESS", "Response body is null")
                     }
@@ -69,10 +66,7 @@ class TextService {
                 if (response.isSuccessful) {
                     val resp: TextListRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> textListView.onGetTextListSuccess(resp)
-                            else -> textListView.onGetTextListFailure(resp.result_code, resp.result_req)
-                        }
+                        textListView.onGetTextListSuccess(resp)
                     } else {
                         Log.e("TEXT-LIST-SUCCESS", "Response body is null")
                     }

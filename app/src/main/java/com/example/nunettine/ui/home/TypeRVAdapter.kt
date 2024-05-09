@@ -1,9 +1,12 @@
 package com.example.nunettine.ui.home
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,15 +14,17 @@ import com.example.nunettine.R
 import com.example.nunettine.databinding.ItemTypeBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class TypeRVAdapter(private val categoryList: ArrayList<String>, private val context: Context, private val type: Int): RecyclerView.Adapter<TypeRVAdapter.ViewHolder>() {
+class TypeRVAdapter(private val categoryList: ArrayList<String>, private val context: Context, private val type: String): RecyclerView.Adapter<TypeRVAdapter.ViewHolder>() {
     private lateinit var binding: ItemTypeBinding
 
     inner class ViewHolder(val binding: ItemTypeBinding) : RecyclerView.ViewHolder(binding.root) {
+        @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
         fun bind(category: String) = with(binding) {
             typeItemTv.text = category
 
             typeItemLo.setOnClickListener {
-                moveToChooseFragment(type, category)
+                saveData(type, category)
+                moveFragment(ChooseFragment())
             }
         }
     }
@@ -31,6 +36,7 @@ class TypeRVAdapter(private val categoryList: ArrayList<String>, private val con
 
     override fun getItemCount(): Int = categoryList.size // 임시 설정
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(categoryList[position])
 
     private fun moveFragment(fragment: Fragment) {
@@ -45,8 +51,13 @@ class TypeRVAdapter(private val categoryList: ArrayList<String>, private val con
         }
     }
 
-    private fun moveToChooseFragment(type: Int, category: String) {
-        val chooseFragment = ChooseFragment.newInstance(type, category)
-        moveFragment(chooseFragment)
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    fun saveData(text_type: String, category: String) {
+        // 데이터 저장
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("type", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString("type", text_type)
+        editor.putString("category", category)
+        editor.apply()
     }
 }

@@ -1,5 +1,6 @@
 package com.example.nunettine.ui.home
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Build
@@ -22,9 +23,9 @@ import com.example.nunettine.ui.main.MainActivity
 
 class MergeCountFragment: Fragment(), QuizSolveView {
     private lateinit var binding: FragmentMergeCountBinding
-    private var type = arguments?.getInt("type")
-    private var category = arguments?.getString("category")
-    private var text_id = arguments?.getInt("text_id")
+    private var type = ""
+    private var category = ""
+    private var text_id = 0
     private var text_title = ""
     private var quiz_type = ""
 
@@ -37,7 +38,7 @@ class MergeCountFragment: Fragment(), QuizSolveView {
     }
 
     private fun clickListener() = with(binding) {
-        mergeCountBackBtn.setOnClickListener { moveToDetailFragment(type!!, text_id!!, category!!) }
+        mergeCountBackBtn.setOnClickListener { moveFragment(PreviewContentsFragment()) }
 
         mergeCountType1Btn.setOnClickListener { quiz_type = clickButton(mergeCountType1Btn) }
         mergeCountType2Btn.setOnClickListener { quiz_type = clickButton(mergeCountType2Btn) }
@@ -45,7 +46,7 @@ class MergeCountFragment: Fragment(), QuizSolveView {
         mergeCountType4Btn.setOnClickListener { quiz_type = clickButton(mergeCountType4Btn) }
         mergeCountType5Btn.setOnClickListener { quiz_type = clickButton(mergeCountType5Btn) }
 
-        mergeCountBtn.setOnClickListener {setPrevQuizTypeService(category!!, text_id!!, quiz_type) }
+        mergeCountBtn.setOnClickListener { setPrevQuizTypeService(category, text_id, quiz_type) }
     }
 
     private fun clickButton(clickedButton: Button): String = with(binding) {
@@ -76,20 +77,15 @@ class MergeCountFragment: Fragment(), QuizSolveView {
         }
     }
 
-    private fun moveToDetailFragment(type: Int, text_id: Int, category: String) {
-        val previewContentsFragment = PreviewContentsFragment.newInstance(type, text_id, category)
-        moveFragment(previewContentsFragment)
-    }
-
-    private fun moveToQuizFragment(type: Int, text_id: Int, category: String, quiz_type: String, quiz_list: ArrayList<String>, quiz_answer: ArrayList<Int>) {
-        val problemFragment = ProblemFragment.newInstance(type, text_id, category, quiz_type, quiz_list, quiz_answer)
-        moveFragment(problemFragment)
-    }
-
     private fun getData() {
         // 데이터 읽어오기
-        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("text", MODE_PRIVATE)
-        text_title = sharedPreferences.getString("text_title", text_title)!!
+        val sharedPreferences1: SharedPreferences = requireContext().getSharedPreferences("text", MODE_PRIVATE)
+        text_title = sharedPreferences1.getString("text_title", text_title)!!
+
+        val sharedPreferences2: SharedPreferences = requireContext().getSharedPreferences("type", MODE_PRIVATE)
+        type = sharedPreferences2.getString("type", type)!!
+        category = sharedPreferences2.getString("category", category)!!
+        text_id = sharedPreferences2.getInt("text_id", text_id)
     }
 
     private fun setPrevQuizTypeService(category: String, text_id: Int, quiz_type: String) {
@@ -99,23 +95,11 @@ class MergeCountFragment: Fragment(), QuizSolveView {
     }
 
     override fun onGetQuizSolveSuccess(response: QuizSolveRes) {
-        moveToQuizFragment(type!!, text_id!!, category!!, quiz_type, response.quiz_list, response.quiz_answer)
+        moveFragment(ProblemFragment())
         Log.d("QUIZ-MAKE-성공", response.toString())
     }
 
     override fun onGetQuizSolveFailure(result_code: Int, result_req: String) {
         Log.d("QUIZ-MAKE-오류", result_req)
-    }
-
-    companion object {
-        fun newInstance(type: Int, text_id: Int, category: String): MergeCountFragment {
-            val fragment = MergeCountFragment()
-            val args = Bundle()
-            args.putInt("type", type)
-            args.putString("category", category)
-            args.putInt("text_id", text_id)
-            fragment.arguments = args
-            return fragment
-        }
     }
 }

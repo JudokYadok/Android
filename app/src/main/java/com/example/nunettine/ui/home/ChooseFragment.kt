@@ -1,5 +1,7 @@
 package com.example.nunettine.ui.home
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,13 +20,14 @@ import com.example.nunettine.ui.main.MainActivity
 
 class ChooseFragment: Fragment(), StudyListView {
     private lateinit var binding: FragmentChooseBinding
-    private var type = arguments?.getInt("type")
-    private var category = arguments?.getString("category")
+    private var type = ""
+    private var category = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentChooseBinding.inflate(layoutInflater)
-        if(type == 0) {
-            setPrevChooseService(category!!)
+        getData()
+        if(type == "PREVTEXT") {
+            //setPrevChooseService(category!!)
         } else {
             // setMyTypeService()
         }
@@ -34,7 +37,7 @@ class ChooseFragment: Fragment(), StudyListView {
     }
 
     private fun initRV(text_list: List<TextList>) = with(binding){
-        val chooseRVAdapter = ChooseRVAdapter(text_list, requireContext(), type!!, category!!)
+        val chooseRVAdapter = ChooseRVAdapter(text_list, requireContext(), type, category)
         // RecyclerView 어댑터 설정
         chooseRv.layoutManager = LinearLayoutManager(requireContext())
         // RecyclerView 레이아웃 매니저 설정
@@ -42,7 +45,7 @@ class ChooseFragment: Fragment(), StudyListView {
     }
 
     private fun clickListner() = with(binding) {
-        chooseBackBtn.setOnClickListener { moveToTypeFragment(type!!) }
+        chooseBackBtn.setOnClickListener { moveFragment(PreviewContentsFragment()) }
     }
 
     private fun moveFragment(fragment: Fragment) {
@@ -57,15 +60,17 @@ class ChooseFragment: Fragment(), StudyListView {
         }
     }
 
-    private fun moveToTypeFragment(type: Int) {
-        val typeFragment = TypeFragment.newInstance(type)
-        moveFragment(typeFragment)
-    }
-
     private fun setPrevChooseService(category: String) {
         val setStudyListService = QuizService()
         setStudyListService.getStudyListView(this@ChooseFragment)
         setStudyListService.getPrevTextList(category)
+    }
+
+    private fun getData() {
+        // 데이터 읽어오기
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("type", Context.MODE_PRIVATE)
+        type = sharedPreferences.getString("type", type)!!
+        category = sharedPreferences.getString("category", category)!!
     }
 
     override fun onGetStudyListSuccess(response: StudyListRes) {
@@ -75,16 +80,5 @@ class ChooseFragment: Fragment(), StudyListView {
 
     override fun onGetStudyListFailure(result_code: Int, result_req: String) {
         Log.d("TEXT-LIST-오류", result_req)
-    }
-
-    companion object {
-        fun newInstance(type: Int, category: String): ChooseFragment {
-            val fragment = ChooseFragment()
-            val args = Bundle()
-            args.putInt("type", type)
-            args.putString("category", category)
-            fragment.arguments = args
-            return fragment
-        }
     }
 }

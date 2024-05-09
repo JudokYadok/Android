@@ -20,14 +20,15 @@ import com.example.nunettine.ui.main.MainActivity
 
 class PreviewContentsFragment: Fragment(), StudyDetailView {
     private lateinit var binding: FragmentPreviewContentsBinding
-    private var type = arguments?.getInt("type")
-    private var category = arguments?.getString("category")
-    private var text_id = arguments?.getInt("text_id")
+    private var type = ""
+    private var category = ""
+    private var text_id = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentPreviewContentsBinding.inflate(layoutInflater)
-        if(type == 0) {
-            setStudyPrevDetailService(category!!, text_id!!)
+        getData()
+        if(type == "PREVTEXT") {
+            setStudyPrevDetailService(category, text_id)
         } else {
 //            setStudyMyDetailService(category, text_id)
         }
@@ -37,8 +38,8 @@ class PreviewContentsFragment: Fragment(), StudyDetailView {
     }
 
     private fun clickListener() = with(binding) {
-        previewContentsBackBtn.setOnClickListener { moveToBackFragment(type!!, category!!) }
-        previewContentsBtn.setOnClickListener { moveToMergeFragment(type!!, text_id!!, category!!) }
+        previewContentsBackBtn.setOnClickListener { moveFragment(MergeCountFragment()) }
+        previewContentsBtn.setOnClickListener { moveFragment(MergeCountFragment()) }
     }
 
     private fun moveFragment(fragment: Fragment) {
@@ -53,20 +54,18 @@ class PreviewContentsFragment: Fragment(), StudyDetailView {
         }
     }
 
-    private fun moveToBackFragment(type: Int, category: String) {
-        val chooseFragment = ChooseFragment.newInstance(type, category)
-        moveFragment(chooseFragment)
-    }
-
-    private fun moveToMergeFragment(type: Int, text_id: Int, category: String) {
-        val mergeCountFragment = MergeCountFragment.newInstance(type, text_id, category)
-        moveFragment(mergeCountFragment)
-    }
-
     private fun setStudyPrevDetailService(category: String, text_id: Int) {
         val setStudyDetailService = QuizService()
         setStudyDetailService.getStudyDetailView(this@PreviewContentsFragment)
         setStudyDetailService.getPrevText(category, text_id)
+    }
+
+    private fun getData() {
+        // 데이터 읽어오기
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("type", Context.MODE_PRIVATE)
+        type = sharedPreferences.getString("type", type)!!
+        category = sharedPreferences.getString("category", category)!!
+        text_id = sharedPreferences.getInt("text_id", text_id)
     }
 
     @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
@@ -89,17 +88,5 @@ class PreviewContentsFragment: Fragment(), StudyDetailView {
 
     override fun onGetStudyDetailFailure(result_code: Int, result_req: String) {
         Log.d("TEXT-DETAIL-오류", result_req)
-    }
-
-    companion object {
-        fun newInstance(type: Int, text_id: Int, category: String): PreviewContentsFragment {
-            val fragment = PreviewContentsFragment()
-            val args = Bundle()
-            args.putInt("type", type)
-            args.putInt("text_id", text_id)
-            args.putString("category", category)
-            fragment.arguments = args
-            return fragment
-        }
     }
 }

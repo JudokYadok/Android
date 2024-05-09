@@ -24,10 +24,7 @@ class AuthService {
                 if (response.isSuccessful) {
                     val resp: LoginRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> loginView.onGetLoginSuccess(resp)
-                            else -> loginView.onGetLoginFailure(resp.result_code, resp.result_req)
-                        }
+                        loginView.onGetLoginSuccess(resp)
                     } else {
                         Log.e("LOGIN-SUCCESS", "Response body is null")
                     }

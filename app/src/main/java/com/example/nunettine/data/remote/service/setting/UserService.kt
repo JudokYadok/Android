@@ -38,10 +38,7 @@ class UserService {
                 if (response.isSuccessful) {
                     val resp: UserRes? = response.body()
                     if (resp != null) {
-                        when (resp.result_code) {
-                            123 -> userView.onGetUserSuccess(resp)
-                            else -> userView.onGetUserFailure(resp.result_code, resp.result_req)
-                        }
+                        userView.onGetUserSuccess(resp)
                     } else {
                         Log.e("USER-SUCCESS", "Response body is null")
                     }

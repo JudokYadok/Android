@@ -3,9 +3,6 @@ package com.example.nunettine.data.remote.dto.auth
 import com.google.gson.annotations.SerializedName
 
 data class LoginRes(
-    @SerializedName("content_type") val content_type: String,
-    @SerializedName("result_code") val result_code: Int,
-    @SerializedName("result_req") val result_req: String,
     @SerializedName("login_result") val login_result: LoginResult
 )
 
