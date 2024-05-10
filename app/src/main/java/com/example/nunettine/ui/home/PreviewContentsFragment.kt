@@ -4,31 +4,33 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.nunettine.R
-import com.example.nunettine.data.remote.dto.study.StudyDetailRes
-import com.example.nunettine.data.remote.service.library_study.QuizService
-import com.example.nunettine.data.remote.view.study.StudyDetailView
 import com.example.nunettine.databinding.FragmentPreviewContentsBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class PreviewContentsFragment: Fragment(), StudyDetailView {
+class PreviewContentsFragment: Fragment() {
     private lateinit var binding: FragmentPreviewContentsBinding
+    private lateinit var viewModel: HomeViewModel
     private var type = ""
     private var category = ""
     private var text_id = 0
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentPreviewContentsBinding.inflate(layoutInflater)
         getData()
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
         if(type == "PREVTEXT") {
-            setStudyPrevDetailService(category, text_id)
+            viewModel.setStudyPrevDetailService(category, text_id)
+            observeTextList()
         } else {
 //            setStudyMyDetailService(category, text_id)
         }
@@ -54,12 +56,6 @@ class PreviewContentsFragment: Fragment(), StudyDetailView {
         }
     }
 
-    private fun setStudyPrevDetailService(category: String, text_id: Int) {
-        val setStudyDetailService = QuizService()
-        setStudyDetailService.getStudyDetailView(this@PreviewContentsFragment)
-        setStudyDetailService.getPrevText(category, text_id)
-    }
-
     private fun getData() {
         // 데이터 읽어오기
         val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("type", Context.MODE_PRIVATE)
@@ -79,14 +75,19 @@ class PreviewContentsFragment: Fragment(), StudyDetailView {
     }
 
     @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
-    override fun onGetStudyDetailSuccess(response: StudyDetailRes) {
-        binding.previewContentsTv.text = response.text_title
-        binding.previewContentsDetailTv.text = response.text_contents
-        saveData(response.text_title, response.text_contents)
-        Log.d("TEXT-DETAIL-성공", response.toString())
+    private fun initUI(text_title: String, text_contents: String) = with(binding) {
+        previewContentsTv.text = text_title
+        previewContentsDetailTv.text = text_contents
+        saveData(text_title, text_contents)
     }
 
-    override fun onGetStudyDetailFailure(result_code: Int) {
-        Log.d("TEXT-DETAIL-오류", result_code.toString())
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    private fun observeTextList() {
+        viewModel.textTitleML.observe(viewLifecycleOwner) { textTitle ->
+            viewModel.textContentsML.observe(viewLifecycleOwner) { textContents ->
+                // 데이터가 변경되었을 때 UI 업데이트
+                initUI(textTitle, textContents)
+            }
+        }
     }
 }

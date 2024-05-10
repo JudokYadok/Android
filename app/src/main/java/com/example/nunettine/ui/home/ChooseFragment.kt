@@ -9,25 +9,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nunettine.R
-import com.example.nunettine.data.remote.dto.study.StudyListRes
 import com.example.nunettine.data.remote.dto.study.TextList
-import com.example.nunettine.data.remote.service.library_study.QuizService
-import com.example.nunettine.data.remote.view.study.StudyListView
 import com.example.nunettine.databinding.FragmentChooseBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class ChooseFragment: Fragment(), StudyListView {
+class ChooseFragment: Fragment() {
     private lateinit var binding: FragmentChooseBinding
+    private lateinit var viewModel: HomeViewModel
     private var type = ""
     private var category = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentChooseBinding.inflate(layoutInflater)
         getData()
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
         if(type == "PREVTEXT") {
-            //setPrevChooseService(category!!)
+            viewModel.setPrevChooseService(category)
+            observeTextList()
         } else {
             // setMyTypeService()
         }
@@ -45,7 +48,7 @@ class ChooseFragment: Fragment(), StudyListView {
     }
 
     private fun clickListner() = with(binding) {
-        chooseBackBtn.setOnClickListener { moveFragment(PreviewContentsFragment()) }
+        chooseBackBtn.setOnClickListener { moveFragment(TypeFragment()) }
     }
 
     private fun moveFragment(fragment: Fragment) {
@@ -60,12 +63,6 @@ class ChooseFragment: Fragment(), StudyListView {
         }
     }
 
-    private fun setPrevChooseService(category: String) {
-        val setStudyListService = QuizService()
-        setStudyListService.getStudyListView(this@ChooseFragment)
-        setStudyListService.getPrevTextList(category)
-    }
-
     private fun getData() {
         // 데이터 읽어오기
         val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("type", Context.MODE_PRIVATE)
@@ -73,12 +70,11 @@ class ChooseFragment: Fragment(), StudyListView {
         category = sharedPreferences.getString("category", category)!!
     }
 
-    override fun onGetStudyListSuccess(response: StudyListRes) {
-        initRV(response.text_list)
-        Log.d("TEXT-LIST-성공", response.toString())
-    }
-
-    override fun onGetStudyListFailure(result_code: Int) {
-        Log.d("TEXT-LIST-오류", result_code.toString())
+    private fun observeTextList() {
+        viewModel.textListML.observe(viewLifecycleOwner, Observer {
+            it?.let { textList ->
+                initRV(textList)
+            }
+        })
     }
 }

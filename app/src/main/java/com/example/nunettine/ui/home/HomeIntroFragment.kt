@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.nunettine.CircleTransform
 import com.example.nunettine.R
 import com.example.nunettine.databinding.FragmentHomeIntroBinding
-import com.example.nunettine.ui.home.viewmodel.HomeViewModel
 import com.squareup.picasso.Picasso
 
 class HomeIntroFragment: Fragment() {

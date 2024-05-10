@@ -9,6 +9,7 @@ import com.example.nunettine.data.remote.dto.study.QuizSolveRes
 import com.example.nunettine.data.remote.dto.study.StudyCategoryRes
 import com.example.nunettine.data.remote.dto.study.StudyDetailRes
 import com.example.nunettine.data.remote.dto.study.StudyListRes
+import com.example.nunettine.data.remote.dto.study.TextList
 import com.example.nunettine.data.remote.retrofit.LibraryRetrofitInterface
 import com.example.nunettine.data.remote.retrofit.StudyRetrofitInterface
 import com.example.nunettine.data.remote.view.library.QuizListView
@@ -159,10 +160,10 @@ class QuizService {
 
     fun getPrevTextCategory() {
         val prevTextCategoryService = getRetrofit().create(StudyRetrofitInterface::class.java)
-        prevTextCategoryService.getPrevTextType().enqueue(object : Callback<StudyCategoryRes> {
-            override fun onResponse(call: Call<StudyCategoryRes>, response: Response<StudyCategoryRes>) {
+        prevTextCategoryService.getPrevTextType().enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
                 if (response.isSuccessful) {
-                    val resp: StudyCategoryRes? = response.body()
+                    val resp: List<String>? = response.body()
                     if (resp != null) {
                         studyCategoryView.onGetStudyCategorySuccess(resp)
                     } else {
@@ -175,7 +176,7 @@ class QuizService {
                 }
             }
 
-            override fun onFailure(call: Call<StudyCategoryRes>, t: Throwable) {
+            override fun onFailure(call: Call<List<String>>, t: Throwable) {
                 Log.d("TEXT-TYPE-GET-FAILURE", t.toString())
             }
         })
@@ -183,10 +184,10 @@ class QuizService {
 
     fun getPrevTextList(category: String) {
         val textListService = getRetrofit().create(StudyRetrofitInterface::class.java)
-        textListService.getPrevTextList(category).enqueue(object : Callback<StudyListRes> {
-            override fun onResponse(call: Call<StudyListRes>, response: Response<StudyListRes>) {
+        textListService.getPrevTextList(category).enqueue(object : Callback<List<TextList>> {
+            override fun onResponse(call: Call<List<TextList>>, response: Response<List<TextList>>) {
                 if (response.isSuccessful) {
-                    val resp: StudyListRes? = response.body()
+                    val resp: List<TextList>? = response.body()
                     if (resp != null) {
                         studyListView.onGetStudyListSuccess(resp)
                     } else {
@@ -199,7 +200,7 @@ class QuizService {
                 }
             }
 
-            override fun onFailure(call: Call<StudyListRes>, t: Throwable) {
+            override fun onFailure(call: Call<List<TextList>>, t: Throwable) {
                 Log.d("TEXT-LIST-GET-FAILURE", t.toString())
             }
         })

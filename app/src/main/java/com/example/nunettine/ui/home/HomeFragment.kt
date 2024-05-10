@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.nunettine.CircleTransform
 import com.example.nunettine.R
-import com.example.nunettine.data.remote.dto.study.StudyCategoryRes
-import com.example.nunettine.data.remote.service.library_study.QuizService
-import com.example.nunettine.data.remote.view.study.StudyCategoryView
 import com.example.nunettine.databinding.FragmentHomeBinding
-import com.example.nunettine.ui.home.viewmodel.HomeViewModel
 import com.example.nunettine.ui.main.MainActivity
 import com.squareup.picasso.Picasso
 

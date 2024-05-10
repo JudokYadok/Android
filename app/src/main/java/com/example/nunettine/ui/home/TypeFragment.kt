@@ -3,29 +3,31 @@ package com.example.nunettine.ui.home
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nunettine.R
-import com.example.nunettine.data.remote.dto.study.StudyCategoryRes
-import com.example.nunettine.data.remote.service.library_study.QuizService
-import com.example.nunettine.data.remote.view.study.StudyCategoryView
 import com.example.nunettine.databinding.FragmentTypeBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class TypeFragment: Fragment(), StudyCategoryView {
+class TypeFragment: Fragment() {
     private lateinit var binding: FragmentTypeBinding
+    private lateinit var viewModel: HomeViewModel
     private var type = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTypeBinding.inflate(layoutInflater)
         getData()
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
         if(type == "PREVTEXT") {
-            setPrevTypeService()
+            viewModel.setPrevTypeService()
+            observeCategoryList()
         } else {
             // setMyTypeService()
         }
@@ -34,7 +36,7 @@ class TypeFragment: Fragment(), StudyCategoryView {
         return binding.root
     }
 
-    private fun initRV(categoryList: ArrayList<String>) = with(binding){
+    private fun initRV(categoryList: List<String>) = with(binding){
         val typeRVAdapter = TypeRVAdapter(categoryList, requireContext(), type)
         // RecyclerView 어댑터 설정
         typeRv.layoutManager = LinearLayoutManager(requireContext())
@@ -64,18 +66,11 @@ class TypeFragment: Fragment(), StudyCategoryView {
         type = sharedPreferences.getString("type", type)!!
     }
 
-    private fun setPrevTypeService() {
-        val setStudyCategoryService = QuizService()
-        setStudyCategoryService.getStudyCategoryView(this@TypeFragment)
-        setStudyCategoryService.getPrevTextCategory()
-    }
-
-    override fun onGetStudyCategorySuccess(response: StudyCategoryRes) {
-        initRV(response.category_list)
-        Log.d("TYPE-성공", response.toString())
-    }
-
-    override fun onGetStudyCategoryFailure(result_code: Int) {
-        Log.d("TYPE-오류", result_code.toString())
+    private fun observeCategoryList() {
+        viewModel.categoryListML.observe(viewLifecycleOwner, Observer {
+            it?.let { categoryList ->
+                initRV(categoryList)
+            }
+        })
     }
 }

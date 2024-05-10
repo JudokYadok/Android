@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nunettine.R
 import com.example.nunettine.data.remote.dto.study.TextList
@@ -21,6 +20,7 @@ class ChooseRVAdapter(private val textList: List<TextList>, private val context:
         @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
         fun bind(text_list: TextList) = with(binding) {
             chooseItemTv.text = text_list.title
+
             chooseItemLo.setOnClickListener {
                 saveData(type, category, text_list.text_id)
                 moveFragment(PreviewContentsFragment())

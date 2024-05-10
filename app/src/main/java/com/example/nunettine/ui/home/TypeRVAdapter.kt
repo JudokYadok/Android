@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nunettine.R
 import com.example.nunettine.databinding.ItemTypeBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class TypeRVAdapter(private val categoryList: ArrayList<String>, private val context: Context, private val type: String): RecyclerView.Adapter<TypeRVAdapter.ViewHolder>() {
+class TypeRVAdapter(private val categoryList: List<String>, private val context: Context, private val type: String): RecyclerView.Adapter<TypeRVAdapter.ViewHolder>() {
     private lateinit var binding: ItemTypeBinding
 
     inner class ViewHolder(val binding: ItemTypeBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -34,7 +33,7 @@ class TypeRVAdapter(private val categoryList: ArrayList<String>, private val con
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = categoryList.size // 임시 설정
+    override fun getItemCount(): Int = categoryList.size
 
     @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(categoryList[position])

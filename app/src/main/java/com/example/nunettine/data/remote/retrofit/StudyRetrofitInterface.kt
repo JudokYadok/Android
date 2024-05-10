@@ -6,21 +6,22 @@ import com.example.nunettine.data.remote.dto.study.QuizSolveRes
 import com.example.nunettine.data.remote.dto.study.StudyCategoryRes
 import com.example.nunettine.data.remote.dto.study.StudyDetailRes
 import com.example.nunettine.data.remote.dto.study.StudyListRes
+import com.example.nunettine.data.remote.dto.study.TextList
 import retrofit2.Call
 import retrofit2.http.*
 
 interface StudyRetrofitInterface {
     @GET("/user/study/prevtext")
-    fun getPrevTextType(): Call<StudyCategoryRes>
+    fun getPrevTextType(): Call<List<String>>
 
     @GET("/user/study/mytext")
-    fun getMyTextType(): Call<StudyCategoryRes>
+    fun getMyTextType(): Call<List<String>>
 
     @GET("/user/study/prevtext/{category}")
-    fun getPrevTextList(@Path("category") category: String): Call<StudyListRes>
+    fun getPrevTextList(@Path("category") category: String): Call<List<TextList>>
 
     @GET("/user/study/mytext/{category}")
-    fun getMyTextList(@Path("category") category: String): Call<StudyListRes>
+    fun getMyTextList(@Path("category") category: String): Call<List<TextList>>
 
     @GET("/user/study/prevtext/{category}/{text_id}")
     fun getPrevText(@Path("category") category: String, @Path("text_id") text_id: Int): Call<StudyDetailRes>
