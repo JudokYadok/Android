@@ -71,9 +71,11 @@ class QuizService {
                         quizSolveView.onGetQuizSolveSuccess(resp)
                     } else {
                         Log.e("PREV-QUIZ-SOLVE-SUCCESS", "Response body is null")
+                        quizSolveView.onGetQuizSolveFailure(response.code())
                     }
                 } else {
                     Log.e("PREV-QUIZ-SOLVE-SUCCESS", "Response not successful: ${response.code()}")
+                    quizSolveView.onGetQuizSolveFailure(response.code())
                 }
             }
 
@@ -93,9 +95,11 @@ class QuizService {
                         quizSolveView.onGetQuizSolveSuccess(resp)
                     } else {
                         Log.e("MY-QUIZ-SOLVE-SUCCESS", "Response body is null")
+                        quizSolveView.onGetQuizSolveFailure(response.code())
                     }
                 } else {
                     Log.e("MY-QUIZ-SOLVE-SUCCESS", "Response not successful: ${response.code()}")
+                    quizSolveView.onGetQuizSolveFailure(response.code())
                 }
             }
 
@@ -115,9 +119,11 @@ class QuizService {
                         studyDetailView.onGetStudyDetailSuccess(resp)
                     } else {
                         Log.e("PREV-TEXT-GET-SUCCESS", "Response body is null")
+                        studyDetailView.onGetStudyDetailFailure(response.code())
                     }
                 } else {
                     Log.e("PREV-TEXT-GET-SUCCESS", "Response not successful: ${response.code()}")
+                    studyDetailView.onGetStudyDetailFailure(response.code())
                 }
             }
 
@@ -137,9 +143,11 @@ class QuizService {
                         studyDetailView.onGetStudyDetailSuccess(resp)
                     } else {
                         Log.e("MY-TEXT-GET-SUCCESS", "Response body is null")
+                        studyDetailView.onGetStudyDetailFailure(response.code())
                     }
                 } else {
                     Log.e("MY-TEXT-GET-SUCCESS", "Response not successful: ${response.code()}")
+                    studyDetailView.onGetStudyDetailFailure(response.code())
                 }
             }
 
@@ -159,9 +167,11 @@ class QuizService {
                         studyCategoryView.onGetStudyCategorySuccess(resp)
                     } else {
                         Log.e("TEXT-TYPE-GET-SUCCESS", "Response body is null")
+                        studyCategoryView.onGetStudyCategoryFailure(response.code())
                     }
                 } else {
                     Log.e("TEXT-TYPE-GET-SUCCESS", "Response not successful: ${response.code()}")
+                    studyCategoryView.onGetStudyCategoryFailure(response.code())
                 }
             }
 
@@ -181,9 +191,11 @@ class QuizService {
                         studyListView.onGetStudyListSuccess(resp)
                     } else {
                         Log.e("TEXT-LIST-GET-SUCCESS", "Response body is null")
+                        studyListView.onGetStudyListFailure(response.code())
                     }
                 } else {
                     Log.e("TEXT-LIST-GET-SUCCESS", "Response not successful: ${response.code()}")
+                    studyListView.onGetStudyListFailure(response.code())
                 }
             }
 
@@ -203,9 +215,11 @@ class QuizService {
                         quizListView.onGetQuizListSuccess(resp)
                     } else {
                         Log.e("QUIZ-LIST-GET-SUCCESS", "Response body is null")
+                        quizListView.onGetQuizListFailure(response.code())
                     }
                 } else {
                     Log.e("QUIZ-LIST-GET-SUCCESS", "Response not successful: ${response.code()}")
+                    quizListView.onGetQuizListFailure(response.code())
                 }
             }
 
@@ -225,9 +239,11 @@ class QuizService {
                         quizView.onGetQuizSuccess(resp)
                     } else {
                         Log.e("QUIZ-GET-SUCCESS", "Response body is null")
+                        quizView.onGetQuizFailure(response.code())
                     }
                 } else {
                     Log.e("QUIZ-GET-SUCCESS", "Response not successful: ${response.code()}")
+                    quizView.onGetQuizFailure(response.code())
                 }
             }
 
@@ -247,9 +263,11 @@ class QuizService {
                         quizGradeView.onGetQuizGradeSuccess(resp)
                     } else {
                         Log.e("PREV-QUIZ-GRADE-SUCCESS", "Response body is null")
+                        quizGradeView.onGetQuizGradeFailure(response.code())
                     }
                 } else {
                     Log.e("PREV-QUIZ-GRADE-SUCCESS", "Response not successful: ${response.code()}")
+                    quizGradeView.onGetQuizGradeFailure(response.code())
                 }
             }
 
@@ -269,9 +287,11 @@ class QuizService {
                         quizGradeView.onGetQuizGradeSuccess(resp)
                     } else {
                         Log.e("MY-QUIZ-GRADE-SUCCESS", "Response body is null")
+                        quizGradeView.onGetQuizGradeFailure(response.code())
                     }
                 } else {
                     Log.e("MY-QUIZ-GRADE-SUCCESS", "Response not successful: ${response.code()}")
+                    quizGradeView.onGetQuizGradeFailure(response.code())
                 }
             }
 

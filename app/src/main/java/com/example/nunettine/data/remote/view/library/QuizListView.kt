@@ -4,5 +4,5 @@ import com.example.nunettine.data.remote.dto.library.QuizListRes
 
 interface QuizListView {
     fun onGetQuizListSuccess(response: QuizListRes)
-    fun onGetQuizListFailure(result_code: Int, result_req: String)
+    fun onGetQuizListFailure(result_code: Int)
 }

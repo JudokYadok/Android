@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.nunettine.R
 import com.example.nunettine.databinding.ItemContentsListBinding
 import com.example.nunettine.ui.etc.DeleteDialog
+import com.example.nunettine.ui.etc.DeleteDialogListener
 import com.example.nunettine.ui.main.MainActivity
 import com.example.nunettine.ui.save.memo.ModifyMemoFragment
 
@@ -19,10 +20,6 @@ class SaveContentsRVAdapter(private val context: Context, private var fragmentMa
     inner class ViewHolder(val binding: ItemContentsListBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind() = with(binding) {
             itemContentsListDelBtn.setOnClickListener {
-                val dialog = context?.let { fragmentManager?.let { it1 -> DeleteDialog(it, it1) } }
-                if (dialog != null) {
-                    dialog.show()
-                }
             }
 
             itemContentsListLo.setOnClickListener {

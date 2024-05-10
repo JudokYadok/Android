@@ -4,5 +4,5 @@ import com.example.nunettine.data.remote.dto.BasicRes
 
 interface TextModifyView {
     fun onGetTextModifySuccess(response: BasicRes)
-    fun onGetTextModifyFailure(result_code: Int, result_req: String)
+    fun onGetTextModifyFailure(result_code: Int)
 }

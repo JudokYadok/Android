@@ -86,7 +86,7 @@ class PreviewContentsFragment: Fragment(), StudyDetailView {
         Log.d("TEXT-DETAIL-성공", response.toString())
     }
 
-    override fun onGetStudyDetailFailure(result_code: Int, result_req: String) {
-        Log.d("TEXT-DETAIL-오류", result_req)
+    override fun onGetStudyDetailFailure(result_code: Int) {
+        Log.d("TEXT-DETAIL-오류", result_code.toString())
     }
 }

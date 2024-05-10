@@ -4,5 +4,5 @@ import com.example.nunettine.data.remote.dto.study.StudyDetailRes
 
 interface StudyDetailView {
     fun onGetStudyDetailSuccess(response: StudyDetailRes)
-    fun onGetStudyDetailFailure(result_code: Int, result_req: String)
+    fun onGetStudyDetailFailure(result_code: Int)
 }

@@ -75,7 +75,7 @@ class TypeFragment: Fragment(), StudyCategoryView {
         Log.d("TYPE-성공", response.toString())
     }
 
-    override fun onGetStudyCategoryFailure(result_code: Int, result_req: String) {
-        Log.d("TYPE-오류", result_req)
+    override fun onGetStudyCategoryFailure(result_code: Int) {
+        Log.d("TYPE-오류", result_code.toString())
     }
 }

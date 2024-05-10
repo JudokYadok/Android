@@ -4,5 +4,5 @@ import com.example.nunettine.data.remote.dto.library.TextRes
 
 interface TextView {
     fun onGetTextSuccess(response: TextRes)
-    fun onGetTextFailure(result_code: Int, result_req: String)
+    fun onGetTextFailure(result_code: Int)
 }

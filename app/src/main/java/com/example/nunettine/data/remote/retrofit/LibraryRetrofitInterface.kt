@@ -44,4 +44,7 @@ interface LibraryRetrofitInterface {
 
     @POST("/user/library/memo")
     fun postMemo(@Body newMemoReq: NewMemoReq): Call<BasicRes>
+
+    @DELETE("/user/library/memo/{memo_id}")
+    fun deleteMemo(@Path("memo_id") memo_id: Int): Call<BasicRes>
 }

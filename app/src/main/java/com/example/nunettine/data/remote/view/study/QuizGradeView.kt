@@ -4,5 +4,5 @@ import com.example.nunettine.data.remote.dto.study.QuizGradeRes
 
 interface QuizGradeView {
     fun onGetQuizGradeSuccess(response: QuizGradeRes)
-    fun onGetQuizGradeFailure(result_code: Int, result_req: String)
+    fun onGetQuizGradeFailure(result_code: Int)
 }

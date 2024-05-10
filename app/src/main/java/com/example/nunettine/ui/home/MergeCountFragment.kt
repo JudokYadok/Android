@@ -99,7 +99,7 @@ class MergeCountFragment: Fragment(), QuizSolveView {
         Log.d("QUIZ-MAKE-성공", response.toString())
     }
 
-    override fun onGetQuizSolveFailure(result_code: Int, result_req: String) {
-        Log.d("QUIZ-MAKE-오류", result_req)
+    override fun onGetQuizSolveFailure(result_code: Int) {
+        Log.d("QUIZ-MAKE-오류", result_code.toString())
     }
 }

@@ -24,14 +24,16 @@ class SaveMemoFragment: Fragment() {
     }
 
     private fun initRV(memoList: List<MemoList>) = with(binding) {
-        val adapter = fragmentManager?.let { SaveMemoRVAdapter(requireContext(), it, memoList) }
+        val adapter = fragmentManager?.let { SaveMemoRVAdapter(requireContext(), memoList.toMutableList()) }
         memoListRv.adapter = adapter
         memoListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
     private fun observeMemoList() {
         viewModel.memoListML.observe(viewLifecycleOwner, Observer {
-            initRV(it)
+            it?.let { memoList ->
+                initRV(memoList)
+            }
         })
     }
 }

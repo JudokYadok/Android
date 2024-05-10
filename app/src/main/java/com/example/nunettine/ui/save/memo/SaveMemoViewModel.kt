@@ -8,6 +8,7 @@ import com.example.nunettine.data.remote.dto.BasicRes
 import com.example.nunettine.data.remote.dto.library.MemoList
 import com.example.nunettine.data.remote.dto.library.MemoRes
 import com.example.nunettine.data.remote.service.library_study.MemoService
+import com.example.nunettine.data.remote.view.library.MemoDelView
 import com.example.nunettine.data.remote.view.library.MemoListView
 import com.example.nunettine.data.remote.view.library.MemoModifyView
 import com.example.nunettine.data.remote.view.library.MemoView

@@ -78,7 +78,7 @@ class ChooseFragment: Fragment(), StudyListView {
         Log.d("TEXT-LIST-성공", response.toString())
     }
 
-    override fun onGetStudyListFailure(result_code: Int, result_req: String) {
-        Log.d("TEXT-LIST-오류", result_req)
+    override fun onGetStudyListFailure(result_code: Int) {
+        Log.d("TEXT-LIST-오류", result_code.toString())
     }
 }

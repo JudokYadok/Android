@@ -4,5 +4,5 @@ import com.example.nunettine.data.remote.dto.BasicRes
 
 interface TextNewView {
     fun onGetTextNewSuccess(response: BasicRes)
-    fun onGetTextNewFailure(result_code: Int, result_req: String)
+    fun onGetTextNewFailure(result_code: Int)
 }

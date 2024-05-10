@@ -9,8 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import com.example.nunettine.databinding.DialogDeleteBinding
 
-class DeleteDialog(private var context: Context, private var fragmentManager: FragmentManager): Dialog(context) {
+interface DeleteDialogListener {
+    fun onDeleteConfirmed(delete: Boolean)
+}
+
+class DeleteDialog(private var context: Context, private val listener: DeleteDialogListener): Dialog(context) {
     private lateinit var binding: DialogDeleteBinding
+    var delete: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = DialogDeleteBinding.inflate(layoutInflater)
@@ -23,6 +28,8 @@ class DeleteDialog(private var context: Context, private var fragmentManager: Fr
     private fun clickListener() = with(binding) {
         dialogDeleteYesBtn.setOnClickListener {
             Toast.makeText(context, "삭제되었습니다.", Toast.LENGTH_SHORT).show()
+            delete = true
+            listener.onDeleteConfirmed(delete)
             dismiss()
         }
         dialogDeleteNoBtn.setOnClickListener { dismiss() }

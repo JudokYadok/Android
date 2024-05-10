@@ -47,9 +47,11 @@ class TextService {
                         textView.onGetTextSuccess(resp)
                     } else {
                         Log.e("TEXT-SUCCESS", "Response body is null")
+                        textView.onGetTextFailure(response.code())
                     }
                 } else {
                     Log.e("TEXT-SUCCESS", "Response not successful: ${response.code()}")
+                    textView.onGetTextFailure(response.code())
                 }
             }
 
@@ -69,9 +71,11 @@ class TextService {
                         textListView.onGetTextListSuccess(resp)
                     } else {
                         Log.e("TEXT-LIST-SUCCESS", "Response body is null")
+                        textListView.onGetTextListFailure(response.code())
                     }
                 } else {
                     Log.e("TEXT-LIST-SUCCESS", "Response not successful: ${response.code()}")
+                    textListView.onGetTextListFailure(response.code())
                 }
             }
 
@@ -91,9 +95,11 @@ class TextService {
                         textNewView.onGetTextNewSuccess(resp)
                     } else {
                         Log.e("TEXT-NEW-SUCCESS", "Response body is null")
+                        textNewView.onGetTextNewFailure(response.code())
                     }
                 } else {
                     Log.e("TEXT-NEW-SUCCESS", "Response not successful: ${response.code()}")
+                    textNewView.onGetTextNewFailure(response.code())
                 }
             }
 
@@ -113,9 +119,11 @@ class TextService {
                         textModifyView.onGetTextModifySuccess(resp)
                     } else {
                         Log.e("TEXT-MODIFY-SUCCESS", "Response body is null")
+                        textModifyView.onGetTextModifyFailure(response.code())
                     }
                 } else {
                     Log.e("TEXT-MODIFY-SUCCESS", "Response not successful: ${response.code()}")
+                    textModifyView.onGetTextModifyFailure(response.code())
                 }
             }
 
