@@ -1,16 +1,22 @@
 package com.example.nunettine.ui.home
 
 import android.util.Log
+import android.widget.FrameLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.nunettine.R
+import com.example.nunettine.data.remote.dto.study.QuizSolveRes
 import com.example.nunettine.data.remote.dto.study.StudyDetailRes
 import com.example.nunettine.data.remote.dto.study.TextList
 import com.example.nunettine.data.remote.service.library_study.QuizService
+import com.example.nunettine.data.remote.view.study.QuizSolveView
 import com.example.nunettine.data.remote.view.study.StudyCategoryView
 import com.example.nunettine.data.remote.view.study.StudyDetailView
 import com.example.nunettine.data.remote.view.study.StudyListView
 
-class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetailView {
+class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetailView,
+    QuizSolveView {
     // home
     val profileML = MutableLiveData<String>()
 
@@ -32,10 +38,22 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         textContentsML.value = String()
     }
 
+    fun setMyTypeService() {
+        val setStudyCategoryService = QuizService()
+        setStudyCategoryService.getStudyCategoryView(this@HomeViewModel)
+        setStudyCategoryService.getMyTextCategory()
+    }
+
     fun setPrevTypeService() {
         val setStudyCategoryService = QuizService()
         setStudyCategoryService.getStudyCategoryView(this@HomeViewModel)
         setStudyCategoryService.getPrevTextCategory()
+    }
+
+    fun setMyChooseService(category: String) {
+        val setStudyListService = QuizService()
+        setStudyListService.getStudyListView(this@HomeViewModel)
+        setStudyListService.getMyTextList(category)
     }
 
     fun setPrevChooseService(category: String) {
@@ -48,6 +66,12 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         val setStudyDetailService = QuizService()
         setStudyDetailService.getStudyDetailView(this@HomeViewModel)
         setStudyDetailService.getPrevText(category, text_id)
+    }
+
+    fun setPrevQuizTypeService(category: String, text_id: Int, quiz_type: String) {
+        val setPrevQuizTypeService = QuizService()
+        setPrevQuizTypeService.setQuizSolveView(this@HomeViewModel)
+        setPrevQuizTypeService.setPrevQuizSolve(category, text_id, quiz_type)
     }
 
     companion object {
@@ -80,5 +104,13 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
 
     override fun onGetStudyDetailFailure(result_code: Int) {
         Log.d("TEXT-DETAIL-오류", result_code.toString())
+    }
+
+    override fun onGetQuizSolveSuccess(response: QuizSolveRes) {
+        Log.d("QUIZ-MAKE-성공", response.toString())
+    }
+
+    override fun onGetQuizSolveFailure(result_code: Int) {
+        Log.d("QUIZ-MAKE-오류", result_code.toString())
     }
 }

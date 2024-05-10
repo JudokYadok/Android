@@ -2,6 +2,7 @@ package com.example.nunettine.ui.home
 
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.nunettine.R
 import com.example.nunettine.data.remote.dto.study.QuizSolveRes
 import com.example.nunettine.data.remote.service.library_study.QuizService
@@ -17,8 +20,9 @@ import com.example.nunettine.data.remote.view.study.QuizSolveView
 import com.example.nunettine.databinding.FragmentMergeCountBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class MergeCountFragment: Fragment(), QuizSolveView {
+class MergeCountFragment: Fragment() {
     private lateinit var binding: FragmentMergeCountBinding
+    private lateinit var viewModel: HomeViewModel
     private var type = ""
     private var category = ""
     private var text_id = 0
@@ -28,7 +32,10 @@ class MergeCountFragment: Fragment(), QuizSolveView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMergeCountBinding.inflate(layoutInflater)
         getData()
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
         binding.mergeCountTv.text = text_title
+
         clickListener()
         return binding.root
     }
@@ -42,7 +49,14 @@ class MergeCountFragment: Fragment(), QuizSolveView {
         mergeCountType4Btn.setOnClickListener { quiz_type = clickButton(mergeCountType4Btn) }
         mergeCountType5Btn.setOnClickListener { quiz_type = clickButton(mergeCountType5Btn) }
 
-        mergeCountBtn.setOnClickListener { setPrevQuizTypeService(category, text_id, quiz_type) }
+        mergeCountBtn.setOnClickListener {
+            if(type == "PREVTEXT") {
+                viewModel.setPrevQuizTypeService(category, text_id, quiz_type)
+                moveFragment(ProblemFragment())
+            } else {
+//            setStudyMyDetailService(category, text_id)
+            }
+        }
     }
 
     private fun clickButton(clickedButton: Button): String = with(binding) {
@@ -82,20 +96,5 @@ class MergeCountFragment: Fragment(), QuizSolveView {
         type = sharedPreferences2.getString("type", type)!!
         category = sharedPreferences2.getString("category", category)!!
         text_id = sharedPreferences2.getInt("text_id", text_id)
-    }
-
-    private fun setPrevQuizTypeService(category: String, text_id: Int, quiz_type: String) {
-        val setPrevQuizTypeService = QuizService()
-        setPrevQuizTypeService.setQuizSolveView(this@MergeCountFragment)
-        setPrevQuizTypeService.setPrevQuizSolve(category, text_id, quiz_type)
-    }
-
-    override fun onGetQuizSolveSuccess(response: QuizSolveRes) {
-        moveFragment(ProblemFragment())
-        Log.d("QUIZ-MAKE-성공", response.toString())
-    }
-
-    override fun onGetQuizSolveFailure(result_code: Int) {
-        Log.d("QUIZ-MAKE-오류", result_code.toString())
     }
 }

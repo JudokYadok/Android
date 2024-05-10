@@ -214,19 +214,4 @@ class ProblemFragment : Fragment() {
             transaction.commit()
         }
     }
-
-    companion object {
-        fun newInstance(type: Int, text_id: Int, category: String, quiz_type: String, quiz_list: ArrayList<String>, quiz_answer: ArrayList<Int>): ProblemFragment {
-            val fragment = ProblemFragment()
-            val args = Bundle()
-            args.putInt("type", type)
-            args.putString("category", category)
-            args.putInt("text_id", text_id)
-            args.putString("quiz_type", quiz_type)
-            args.putStringArrayList("quiz_list", quiz_list)
-            args.putIntegerArrayList("quiz_answer", quiz_answer)
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }

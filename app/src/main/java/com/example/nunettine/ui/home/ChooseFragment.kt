@@ -32,7 +32,8 @@ class ChooseFragment: Fragment() {
             viewModel.setPrevChooseService(category)
             observeTextList()
         } else {
-            // setMyTypeService()
+            viewModel.setMyChooseService(category)
+            observeTextList()
         }
 
         clickListner()

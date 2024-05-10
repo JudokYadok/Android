@@ -158,6 +158,30 @@ class QuizService {
         })
     }
 
+    fun getMyTextCategory() {
+        val myTextCategoryService = getRetrofit().create(StudyRetrofitInterface::class.java)
+        myTextCategoryService.getMyTextType().enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                if (response.isSuccessful) {
+                    val resp: List<String>? = response.body()
+                    if (resp != null) {
+                        studyCategoryView.onGetStudyCategorySuccess(resp)
+                    } else {
+                        Log.e("TEXT-TYPE-GET-SUCCESS", "Response body is null")
+                        studyCategoryView.onGetStudyCategoryFailure(response.code())
+                    }
+                } else {
+                    Log.e("TEXT-TYPE-GET-SUCCESS", "Response not successful: ${response.code()}")
+                    studyCategoryView.onGetStudyCategoryFailure(response.code())
+                }
+            }
+
+            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                Log.d("TEXT-TYPE-GET-FAILURE", t.toString())
+            }
+        })
+    }
+
     fun getPrevTextCategory() {
         val prevTextCategoryService = getRetrofit().create(StudyRetrofitInterface::class.java)
         prevTextCategoryService.getPrevTextType().enqueue(object : Callback<List<String>> {
@@ -178,6 +202,30 @@ class QuizService {
 
             override fun onFailure(call: Call<List<String>>, t: Throwable) {
                 Log.d("TEXT-TYPE-GET-FAILURE", t.toString())
+            }
+        })
+    }
+
+    fun getMyTextList(category: String) {
+        val textListService = getRetrofit().create(StudyRetrofitInterface::class.java)
+        textListService.getMyTextList(category).enqueue(object : Callback<List<TextList>> {
+            override fun onResponse(call: Call<List<TextList>>, response: Response<List<TextList>>) {
+                if (response.isSuccessful) {
+                    val resp: List<TextList>? = response.body()
+                    if (resp != null) {
+                        studyListView.onGetStudyListSuccess(resp)
+                    } else {
+                        Log.e("TEXT-LIST-GET-SUCCESS", "Response body is null")
+                        studyListView.onGetStudyListFailure(response.code())
+                    }
+                } else {
+                    Log.e("TEXT-LIST-GET-SUCCESS", "Response not successful: ${response.code()}")
+                    studyListView.onGetStudyListFailure(response.code())
+                }
+            }
+
+            override fun onFailure(call: Call<List<TextList>>, t: Throwable) {
+                Log.d("TEXT-LIST-GET-FAILURE", t.toString())
             }
         })
     }
