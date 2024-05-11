@@ -111,7 +111,7 @@
                     android:id="@+id/merge_count_type2_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="글의 전개 방식"
+                    android:text="내용 전개 방식"
                     android:textSize="16dp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/nanumsquareneo_bold"

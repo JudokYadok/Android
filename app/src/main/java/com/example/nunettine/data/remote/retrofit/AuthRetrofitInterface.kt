@@ -6,6 +6,6 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface AuthRetrofitInterface {
-    @POST("/login")
-    fun getLogin(@Body loginReq: LoginReq): Call<LoginRes>
+    @GET("/login")
+    fun getLogin(@Header("authorization") authorization: String): Call<LoginRes>
 }

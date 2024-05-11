@@ -17,9 +17,9 @@ class AuthService {
         this.loginView = loginView
     }
 
-    fun setLogin(loginReq: LoginReq) {
+    fun setLogin(authorization: String) {
         val authService = getRetrofit().create(AuthRetrofitInterface::class.java)
-        authService.getLogin(loginReq).enqueue(object : Callback<LoginRes> {
+        authService.getLogin(authorization).enqueue(object : Callback<LoginRes> {
             override fun onResponse(call: Call<LoginRes>, response: Response<LoginRes>) {
                 if (response.isSuccessful) {
                     val resp: LoginRes? = response.body()

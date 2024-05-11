@@ -17,9 +17,6 @@ import com.example.nunettine.data.remote.view.study.StudyListView
 
 class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetailView,
     QuizSolveView {
-    // home
-    val profileML = MutableLiveData<String>()
-
     // type
     val categoryListML = MutableLiveData<List<String>>()
 
@@ -31,7 +28,6 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
     val textContentsML = MutableLiveData<String>()
 
     init {
-        profileML.value = DEFAULT_IMG
         categoryListML.value = emptyList()
         textListML.value = emptyList()
         textTitleML.value = String()
@@ -78,10 +74,6 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         val setPrevQuizTypeService = QuizService()
         setPrevQuizTypeService.setQuizSolveView(this@HomeViewModel)
         setPrevQuizTypeService.setPrevQuizSolve(category, text_id, quiz_type)
-    }
-
-    companion object {
-        val DEFAULT_IMG = "https://k.kakaocdn.net/dn/1G9kp/btsAot8liOn/8CWudi3uy07rvFNUkk3ER0/img_640x640.jpg"
     }
 
     override fun onGetStudyCategorySuccess(response: List<String>) {
