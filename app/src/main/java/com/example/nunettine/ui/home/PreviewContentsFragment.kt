@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,8 @@ class PreviewContentsFragment: Fragment() {
             viewModel.setStudyPrevDetailService(category, text_id)
             observeTextList()
         } else {
-//            setStudyMyDetailService(category, text_id)
+            viewModel.setStudyMyDetailService(category, text_id)
+            observeTextList()
         }
 
         clickListener()

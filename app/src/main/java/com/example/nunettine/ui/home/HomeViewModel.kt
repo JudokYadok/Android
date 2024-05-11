@@ -62,6 +62,12 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         setStudyListService.getPrevTextList(category)
     }
 
+    fun setStudyMyDetailService(category:String, text_id: Int) {
+        val setStudyDetailService = QuizService()
+        setStudyDetailService.getStudyDetailView(this@HomeViewModel)
+        setStudyDetailService.getMyText(category, text_id)
+    }
+
     fun setStudyPrevDetailService(category: String, text_id: Int) {
         val setStudyDetailService = QuizService()
         setStudyDetailService.getStudyDetailView(this@HomeViewModel)
@@ -97,8 +103,8 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
     }
 
     override fun onGetStudyDetailSuccess(response: StudyDetailRes) {
-        textTitleML.postValue(response.text_title)
-        textContentsML.postValue(response.text_contents)
+        textTitleML.postValue(response.title)
+        textContentsML.postValue(response.contents)
         Log.d("TEXT-DETAIL-성공", response.toString())
     }
 
