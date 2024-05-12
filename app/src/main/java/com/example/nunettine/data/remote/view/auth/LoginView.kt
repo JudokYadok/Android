@@ -4,5 +4,5 @@ import com.example.nunettine.data.remote.dto.auth.LoginRes
 
 interface LoginView {
     fun onGetLoginSuccess(response: LoginRes)
-    fun onGetLoginFailure(result_code: Int)
+    fun onGetLoginFailure(result_req: String)
 }

@@ -132,7 +132,7 @@ class LoginActivity: AppCompatActivity(), LoginView {
         goMainActivity()
     }
 
-    override fun onGetLoginFailure(result_code: Int) {
-        Log.d("LOGIN-RESPONSE-오류", result_code.toString())
+    override fun onGetLoginFailure(result_req: String) {
+        Log.d("LOGIN-RESPONSE-오류", result_req)
     }
 }

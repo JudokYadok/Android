@@ -16,19 +16,10 @@ import com.squareup.picasso.Picasso
 
 class HomeIntroFragment: Fragment() {
     private lateinit var binding: FragmentHomeIntroBinding
-    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeIntroBinding.inflate(layoutInflater)
         clickListener()
-
-        var spf = requireContext().getSharedPreferences("kakao", AppCompatActivity.MODE_PRIVATE)
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-
-        homeViewModel.profileML.observe(viewLifecycleOwner, Observer {
-            homeViewModel.profileML.postValue(spf.getString("profile", ""))
-            Picasso.get().load(homeViewModel.profileML.value).transform(CircleTransform()).into(binding.homeProfileIv)
-        })
 
         Handler().postDelayed({
             moveFragment(HomeFragment())

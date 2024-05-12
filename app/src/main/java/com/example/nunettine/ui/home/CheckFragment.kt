@@ -25,12 +25,6 @@ class CheckFragment: Fragment() {
     // 지문 요약 API (get)
 
     private fun clickListener() = with(binding) {
-        problemSaveBtn.setOnClickListener {
-            Toast.makeText(context, "응시 결과가 저장되었습니다.", Toast.LENGTH_SHORT).show()
-            moveFragment(HomeFragment())
-            // 저장 API (post)
-        }
-
         problemFeedbackBtn.setOnClickListener { moveFragment(ProblemFeedbackFragment()) }
 
         problemMemoBtn.setOnClickListener { moveFragment(MemoFragment()) }
