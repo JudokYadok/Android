@@ -122,9 +122,9 @@ class LoginActivity: AppCompatActivity(), LoginView {
     override fun onBackPressed() { }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onGetLoginSuccess(response: LoginRes) {
-        Log.d("LOGIN-RESPONSE-성공", response.login_result.toString())
+        Log.d("LOGIN-RESPONSE-성공", response.toString())
 
-        if(response.login_result.created_at != localTime.toString()) {
+        if(response.createdAt != localTime.toString()) {
             Log.d("LOGIN", "기존 사용자")
         } else {
             Log.d("SIGNUP", "새로운 사용자")
