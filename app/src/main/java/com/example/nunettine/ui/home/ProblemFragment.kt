@@ -11,29 +11,36 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.nunettine.R
 import com.example.nunettine.databinding.FragmentProblemBinding
 import com.example.nunettine.ui.main.MainActivity
+import com.example.nunettine.utils.LoadingDialog
 
 class ProblemFragment : Fragment() {
     private lateinit var binding: FragmentProblemBinding
+    private lateinit var viewModel: HomeViewModel
     private var isPlaying = false
     private var pauseTime = 0L // 멈춤 시간
-    private var type = arguments?.getInt("type")
-    private var category = arguments?.getString("category")
-    private var text_id = arguments?.getInt("text_id")
-    private var quiz_type = arguments?.getString("quiz_type")
-    private var quiz_list = arguments?.getStringArrayList("quiz_list")
-    private var quiz_answer = arguments?.getIntegerArrayList("quiz_answer")
+    private var type = ""
+    private var category = ""
+    private var text_id = 0
     private var text_title = ""
     private var text_contents = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentProblemBinding.inflate(layoutInflater)
         getData()
+
+        // loading
+        val dialog = LoadingDialog(requireContext())
+        dialog.show()
+        dialog.dismiss()
+
         initUI()
         clickListener()
         settingMedia()
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         return binding.root
     }
 
@@ -46,9 +53,14 @@ class ProblemFragment : Fragment() {
 
     private fun getData() {
         // 데이터 읽어오기
-        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("text", Context.MODE_PRIVATE)
-        text_title = sharedPreferences.getString("text_title", text_title)!!
-        text_contents = sharedPreferences.getString("text_contents", text_contents)!!
+        val sharedPreferences1: SharedPreferences = requireContext().getSharedPreferences("text", Context.MODE_PRIVATE)
+        text_title = sharedPreferences1.getString("text_title", text_title)!!
+        text_contents = sharedPreferences1.getString("text_contents", text_contents)!!
+
+        val sharedPreferences2: SharedPreferences = requireContext().getSharedPreferences("type", Context.MODE_PRIVATE)
+        type = sharedPreferences2.getString("type", type)!!
+        category = sharedPreferences2.getString("category", category)!!
+        text_id = sharedPreferences2.getInt("text_id", text_id)
     }
 
     private fun settingMedia() = with(binding) {
@@ -116,6 +128,10 @@ class ProblemFragment : Fragment() {
         problemCheckBtn.setOnClickListener {
             moveFragment(CheckFragment())
             // 채점 API (post)
+            if(type == "PREVTEXT") {
+                // 채점 API
+            } else {
+            }
         }
 
         problemOmr11btn.setOnClickListener { clickButton1(problemOmr11btn) }

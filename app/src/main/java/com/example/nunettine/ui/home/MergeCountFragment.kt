@@ -1,5 +1,6 @@
 package com.example.nunettine.ui.home
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Build
@@ -14,11 +15,9 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.nunettine.R
-import com.example.nunettine.data.remote.dto.study.QuizSolveRes
-import com.example.nunettine.data.remote.service.library_study.QuizService
-import com.example.nunettine.data.remote.view.study.QuizSolveView
 import com.example.nunettine.databinding.FragmentMergeCountBinding
 import com.example.nunettine.ui.main.MainActivity
+import com.example.nunettine.utils.LoadingDialog
 
 class MergeCountFragment: Fragment() {
     private lateinit var binding: FragmentMergeCountBinding
@@ -28,6 +27,7 @@ class MergeCountFragment: Fragment() {
     private var text_id = 0
     private var text_title = ""
     private var quiz_type = ""
+    private var isClicked = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMergeCountBinding.inflate(layoutInflater)
@@ -43,23 +43,49 @@ class MergeCountFragment: Fragment() {
     private fun clickListener() = with(binding) {
         mergeCountBackBtn.setOnClickListener { moveFragment(PreviewContentsFragment()) }
 
-        mergeCountType1Btn.setOnClickListener { quiz_type = clickButton(mergeCountType1Btn) }
-        mergeCountType2Btn.setOnClickListener { quiz_type = clickButton(mergeCountType2Btn) }
-        mergeCountType3Btn.setOnClickListener { quiz_type = clickButton(mergeCountType3Btn) }
-        mergeCountType4Btn.setOnClickListener { quiz_type = clickButton(mergeCountType4Btn) }
-        mergeCountType5Btn.setOnClickListener { quiz_type = clickButton(mergeCountType5Btn) }
+        mergeCountType1Btn.setOnClickListener {
+            viewModel.quizTypeML.value = "content_match"
+            observeQuizType()
+            clickButton(mergeCountType1Btn)
+        }
+        mergeCountType2Btn.setOnClickListener {
+            viewModel.quizTypeML.value = "content_pattern"
+            observeQuizType()
+            clickButton(mergeCountType2Btn)
+        }
+        mergeCountType3Btn.setOnClickListener {
+            viewModel.quizTypeML.value = "content_understanding"
+            observeQuizType()
+            clickButton(mergeCountType3Btn)
+        }
+        mergeCountType4Btn.setOnClickListener {
+            viewModel.quizTypeML.value = "target_comparison"
+            observeQuizType()
+            clickButton(mergeCountType4Btn)
+        }
+        mergeCountType5Btn.setOnClickListener {
+            viewModel.quizTypeML.value = "all_types"
+            observeQuizType()
+            clickButton(mergeCountType5Btn)
+        }
 
         mergeCountBtn.setOnClickListener {
             if(type == "PREVTEXT") {
+                Log.d("api", "${category}, ${text_id}, ${quiz_type}")
                 viewModel.setPrevQuizTypeService(category, text_id, quiz_type)
-                moveFragment(ProblemFragment())
             } else {
 //            setStudyMyDetailService(category, text_id)
             }
         }
     }
 
-    private fun clickButton(clickedButton: Button): String = with(binding) {
+    private fun observeQuizType(){
+        viewModel.quizTypeML.observe(viewLifecycleOwner) { quizType ->
+            quiz_type = quizType
+        }
+    }
+
+    private fun clickButton(clickedButton: Button) = with(binding) {
         val buttons = listOf(
             mergeCountType1Btn,
             mergeCountType2Btn,
@@ -72,10 +98,9 @@ class MergeCountFragment: Fragment() {
             button.isSelected = (button == clickedButton)
         }
         mergeCountBtn.isEnabled = true
-        return clickedButton.text.toString()
     }
 
-    private fun moveFragment(fragment: Fragment) {
+    fun moveFragment(fragment: Fragment) {
         val mainActivity = context as MainActivity
         val mainFrmLayout = mainActivity.findViewById<FrameLayout>(R.id.main_frm) as FrameLayout?
         if (mainFrmLayout != null) {
