@@ -29,11 +29,11 @@ interface StudyRetrofitInterface {
     @GET("/user/study/mytext/{category}/{text_id}")
     fun getMyText(@Path("category") category: String, @Path("text_id") text_id: Int): Call<StudyDetailRes>
 
-    @POST("/user/study/prevtext/{category}/{text_id}/newquiz")
-    fun postPrevTextQuiz(@Path("category") category: String, @Path("text_id") text_id: Int, @Body quiz_type: String): Call<QuizSolveRes>
+    @POST("/user/study/prevtext/{category}/{text_id}/quiz")
+    fun postPrevTextQuiz(@Path("category") category: String, @Path("text_id") text_id: Int, @Body quiz_type: QuizReq): Call<QuizSolveRes>
 
-    @POST("/user/study/mytext/{category}/{text_id}/newquiz")
-    fun postMyTextQuiz(@Path("category") category: String, @Path("text_id") text_id: Int, @Body quiz_type: String): Call<QuizSolveRes>
+    @POST("/user/study/mytext/{category}/{text_id}/quiz")
+    fun postMyTextQuiz(@Path("category") category: String, @Path("text_id") text_id: Int, @Body quiz_type: QuizReq): Call<QuizSolveRes>
 
     @POST("/user/study/prevtext/{category}/{text_id}/newquiz/result")
     fun postPrevTextCheckQuiz(@Path("category") category: String, @Path("text_id") text_id: Int, @Body quizReq: QuizReq): Call<QuizGradeRes>

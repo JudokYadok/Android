@@ -5,19 +5,25 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Window
 import com.example.nunettine.R
 
-class LoadingDialog(context: Context) : Dialog(context){
+class LoadingDialog(context: Context) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_loading)
+    private val dialog = Dialog(context)
 
-        // 취소 불가능
-        setCancelable(false)
+    init {
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_loading)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
 
-        // 배경 투명하게 바꿔줌
-        window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    fun show() {
+        dialog.show()
+    }
 
+    fun dismiss() {
+        dialog.dismiss()
     }
 }

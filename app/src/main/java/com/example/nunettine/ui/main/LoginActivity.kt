@@ -62,7 +62,8 @@ class LoginActivity: AppCompatActivity(), LoginView {
                         saveKakaoData()
                     }
                 }
-                loginService(token.accessToken)
+                //loginService(token.accessToken)
+                goMainActivity()
             }
         }
 

@@ -62,7 +62,7 @@ class QuizService {
         this.studyCategoryView = studyCategoryView
     }
 
-    fun setPrevQuizSolve(category: String, textId: Int, quizType: String) {
+    fun setPrevQuizSolve(category: String, textId: Int, quizType: QuizReq) {
         val quizPrevService = getRetrofit().create(StudyRetrofitInterface::class.java)
         quizPrevService.postPrevTextQuiz(category, textId, quizType).enqueue(object : Callback<QuizSolveRes> {
             override fun onResponse(call: Call<QuizSolveRes>, response: Response<QuizSolveRes>) {
@@ -86,7 +86,7 @@ class QuizService {
         })
     }
 
-    fun setMyQuizSolve(category: String, textId: Int, quizType: String) {
+    fun setMyQuizSolve(category: String, textId: Int, quizType: QuizReq) {
         val quizMyService = getRetrofit().create(StudyRetrofitInterface::class.java)
         quizMyService.postMyTextQuiz(category, textId, quizType).enqueue(object : Callback<QuizSolveRes> {
             override fun onResponse(call: Call<QuizSolveRes>, response: Response<QuizSolveRes>) {

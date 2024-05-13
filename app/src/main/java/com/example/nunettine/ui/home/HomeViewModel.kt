@@ -1,5 +1,6 @@
 package com.example.nunettine.ui.home
 
+import android.content.Context
 import android.util.Log
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import com.example.nunettine.R
 import com.example.nunettine.data.local.QuizReq
 import com.example.nunettine.data.remote.dto.library.QuizList
+import com.example.nunettine.data.remote.dto.study.Question
 import com.example.nunettine.data.remote.dto.study.QuizGradeRes
 import com.example.nunettine.data.remote.dto.study.QuizSolveRes
 import com.example.nunettine.data.remote.dto.study.StudyDetailRes
@@ -18,6 +20,7 @@ import com.example.nunettine.data.remote.view.study.QuizSolveView
 import com.example.nunettine.data.remote.view.study.StudyCategoryView
 import com.example.nunettine.data.remote.view.study.StudyDetailView
 import com.example.nunettine.data.remote.view.study.StudyListView
+import com.example.nunettine.ui.main.MainActivity
 import com.example.nunettine.utils.LoadingDialog
 
 class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetailView,
@@ -36,7 +39,11 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
     val quizTypeML = MutableLiveData<String>()
 
     // quiz
-    val quizListML = MutableLiveData<List<QuizList>>()
+    val quizMakeML = MutableLiveData<String>()
+    val quizListML = MutableLiveData<List<Question>>()
+    val quizUserAnswer1ML = MutableLiveData<Int>()
+    val quizUserAnswer2ML = MutableLiveData<Int>()
+    val quizUserAnswer3ML = MutableLiveData<Int>()
 
     init {
         categoryListML.value = emptyList()
@@ -45,6 +52,7 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         textContentsML.value = String()
         quizTypeML.value = String()
         quizListML.value = emptyList()
+        quizMakeML.value = String()
     }
 
     fun setMyTypeService() {
@@ -83,7 +91,7 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         setStudyDetailService.getPrevText(category, text_id)
     }
 
-    fun setPrevQuizTypeService(category: String, text_id: Int, quiz_type: String) {
+    fun setPrevQuizTypeService(category: String, text_id: Int, quiz_type: QuizReq) {
         val setPrevQuizTypeService = QuizService()
         setPrevQuizTypeService.setQuizSolveView(this@HomeViewModel)
         setPrevQuizTypeService.setPrevQuizSolve(category, text_id, quiz_type)
@@ -124,12 +132,15 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
     }
 
     override fun onGetQuizSolveSuccess(response: QuizSolveRes) {
+        quizListML.postValue(response.questions)
+        quizMakeML.postValue("true")
         val fragment = MergeCountFragment()
         fragment.moveFragment(ProblemFragment())
         Log.d("QUIZ-MAKE-성공", response.toString())
     }
 
     override fun onGetQuizSolveFailure(result_code: Int) {
+        quizMakeML.postValue("false")
         Log.d("QUIZ-MAKE-오류", result_code.toString())
     }
 

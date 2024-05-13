@@ -6,6 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("QuizReq")
 data class QuizReq(
-    val quiz_id: Int,
-    val user_answer: ArrayList<Int>
+    val quiz_type: String
 )

@@ -1,7 +1,6 @@
 package com.example.nunettine.data.remote.service.auth
 
 import android.util.Log
-import com.example.nunettine.data.local.LoginReq
 import com.example.nunettine.data.remote.dto.auth.LoginRes
 import com.example.nunettine.data.remote.retrofit.AuthRetrofitInterface
 import com.example.nunettine.data.remote.view.auth.LoginView
