@@ -21,12 +21,14 @@ class CheckFragment: Fragment() {
         return binding.root
     }
 
-    // 채점 API (get) -> omr setting 필요
     // 지문 요약 API (get)
 
     private fun clickListener() = with(binding) {
         problemFeedbackBtn.setOnClickListener { moveFragment(ProblemFeedbackFragment()) }
-
+        problemSaveBtn.setOnClickListener {
+            // 응시한 문제 저장 api
+            Toast.makeText(context, "문제가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+        }
         problemMemoBtn.setOnClickListener { moveFragment(MemoFragment()) }
     }
 
