@@ -23,12 +23,12 @@ class ProblemFeedbackFragment: Fragment() {
     }
 
     private fun clickListener() = with(binding) {
-        feedbackBackBtn.setOnClickListener { moveFragment(CheckFragment()) }
+        feedbackBackBtn.setOnClickListener {  }
         feedbackWriteYesBtn.setOnClickListener {
             Toast.makeText(context, "피드백이 전달되었습니다.", Toast.LENGTH_SHORT).show()
-            moveFragment(CheckFragment())
+            //moveFragment(CheckFragment())
         }
-        feedbackWriteNoBtn.setOnClickListener { moveFragment(CheckFragment()) }
+        feedbackWriteNoBtn.setOnClickListener { }
     }
 
     private fun moveFragment(fragment: Fragment) {

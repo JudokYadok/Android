@@ -22,9 +22,11 @@ import com.example.nunettine.data.remote.view.study.StudyDetailView
 import com.example.nunettine.data.remote.view.study.StudyListView
 import com.example.nunettine.ui.main.MainActivity
 import com.example.nunettine.utils.LoadingDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetailView,
-    QuizSolveView, QuizGradeView {
+class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetailView, QuizGradeView {
     // type
     val categoryListML = MutableLiveData<List<String>>()
 
@@ -91,11 +93,11 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         setStudyDetailService.getPrevText(category, text_id)
     }
 
-    fun setPrevQuizTypeService(category: String, text_id: Int, quiz_type: QuizReq) {
-        val setPrevQuizTypeService = QuizService()
-        setPrevQuizTypeService.setQuizSolveView(this@HomeViewModel)
-        setPrevQuizTypeService.setPrevQuizSolve(category, text_id, quiz_type)
-    }
+//    fun setPrevQuizTypeService(category: String, text_id: Int, quiz_type: QuizReq) {
+//        val setPrevQuizTypeService = QuizService()
+//        setPrevQuizTypeService.setQuizSolveView(this@HomeViewModel)
+//        setPrevQuizTypeService.setPrevQuizSolve(category, text_id, quiz_type)
+//    }
 
     fun setPrevQuizGradeService(category: String, text_id: Int, quizReq: QuizReq) {
         val setPrevQuizGradeService = QuizService()
@@ -131,18 +133,23 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         Log.d("TEXT-DETAIL-오류", result_code.toString())
     }
 
-    override fun onGetQuizSolveSuccess(response: QuizSolveRes) {
-        quizListML.postValue(response.questions)
-        quizMakeML.postValue("true")
-        val fragment = MergeCountFragment()
-        fragment.moveFragment(ProblemFragment())
-        Log.d("QUIZ-MAKE-성공", response.toString())
-    }
-
-    override fun onGetQuizSolveFailure(result_code: Int) {
-        quizMakeML.postValue("false")
-        Log.d("QUIZ-MAKE-오류", result_code.toString())
-    }
+//    override fun onGetQuizSolveSuccess(response: QuizSolveRes) {
+//        quizMakeML.postValue("true")
+//        quizListML.postValue(response.questions)
+//        GlobalScope.launch(Dispatchers.Main) {
+//            quizListML.value = response.questions
+//
+//            val fragment = MergeCountFragment()
+//            fragment.moveFragment(ProblemFragment(response.questions))
+//            Log.d("QUIZLIST", quizListML.value.toString())
+//        }
+//        Log.d("QUIZ-MAKE-성공", response.toString())
+//    }
+//
+//    override fun onGetQuizSolveFailure(result_code: Int) {
+//        quizMakeML.postValue("true")
+//        Log.d("QUIZ-MAKE-오류", result_code.toString())
+//    }
 
     override fun onGetQuizGradeSuccess(response: QuizGradeRes) {
         TODO("Not yet implemented")

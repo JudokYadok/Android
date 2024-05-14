@@ -19,7 +19,7 @@ import com.example.nunettine.databinding.FragmentProblemBinding
 import com.example.nunettine.ui.main.MainActivity
 import com.example.nunettine.utils.LoadingDialog
 
-class ProblemFragment : Fragment() {
+class ProblemFragment(private val quiz_list: List<Question>) : Fragment() {
     private lateinit var binding: FragmentProblemBinding
     private lateinit var viewModel: HomeViewModel
     private var isPlaying = false
@@ -40,18 +40,8 @@ class ProblemFragment : Fragment() {
         clickListener()
         settingMedia()
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        observeQuizList()
-
-        Log.d("LIVEDATA-ANSWER", quiz_answer_list.toString())
+        initUI(quiz_list)
         return binding.root
-    }
-
-    private fun observeQuizList() {
-        viewModel.quizListML.observe(viewLifecycleOwner, Observer {
-            it?.let { quizList ->
-                initUI(quizList)
-            }
-        })
     }
 
     private fun initUI(quizList: List<Question>) = with(binding) {
@@ -61,25 +51,25 @@ class ProblemFragment : Fragment() {
         problemQuiz33TitleTv.text = quizList[2].question
 
         // 문제 보기 설정 - 1
-        problemQuiz11TextTv.text = quizList[0].answers[0].answer
-        problemQuiz12TextTv.text = quizList[0].answers[1].answer
-        problemQuiz13TextTv.text = quizList[0].answers[2].answer
-        problemQuiz14TextTv.text = quizList[0].answers[3].answer
-        problemQuiz15TextTv.text = quizList[0].answers[4].answer
+        problemQuiz11TextTv.text = "(1) " + quizList[0].answers[0].answer
+        problemQuiz12TextTv.text = "(2) " + quizList[0].answers[1].answer
+        problemQuiz13TextTv.text = "(3) " + quizList[0].answers[2].answer
+        problemQuiz14TextTv.text = "(4) " + quizList[0].answers[3].answer
+        problemQuiz15TextTv.text = "(5) " + quizList[0].answers[4].answer
 
         // 문제 보기 설정 - 2
-        problemQuiz21TextTv.text = quizList[1].answers[0].answer
-        problemQuiz22TextTv.text = quizList[1].answers[1].answer
-        problemQuiz23TextTv.text = quizList[1].answers[2].answer
-        problemQuiz24TextTv.text = quizList[1].answers[3].answer
-        problemQuiz25TextTv.text = quizList[1].answers[4].answer
+        problemQuiz21TextTv.text = "(1) " + quizList[1].answers[0].answer
+        problemQuiz22TextTv.text = "(2) " + quizList[1].answers[1].answer
+        problemQuiz23TextTv.text = "(3) " + quizList[1].answers[2].answer
+        problemQuiz24TextTv.text = "(4) " + quizList[1].answers[3].answer
+        problemQuiz25TextTv.text = "(5) " + quizList[1].answers[4].answer
 
         // 문제 보기 설정 - 3
-        problemQuiz31TextTv.text = quizList[2].answers[0].answer
-        problemQuiz32TextTv.text = quizList[2].answers[1].answer
-        problemQuiz33TextTv.text = quizList[2].answers[2].answer
-        problemQuiz34TextTv.text = quizList[2].answers[3].answer
-        problemQuiz35TextTv.text = quizList[2].answers[4].answer
+        problemQuiz31TextTv.text = "(1) " + quizList[2].answers[0].answer
+        problemQuiz32TextTv.text = "(2) " + quizList[2].answers[1].answer
+        problemQuiz33TextTv.text = "(3) " + quizList[2].answers[2].answer
+        problemQuiz34TextTv.text = "(4) " + quizList[2].answers[3].answer
+        problemQuiz35TextTv.text = "(5) " + quizList[2].answers[4].answer
     }
 
     private fun getData() {
@@ -157,88 +147,87 @@ class ProblemFragment : Fragment() {
         }
 
         problemCheckBtn.setOnClickListener {
-            moveFragment(CheckFragment())
-            // 채점 API (post)
-            if(type == "PREVTEXT") {
-                // 채점 API
-            } else {
-            }
+            val quiz_right_list = listOf(quiz_list[0].answers.indexOfFirst { it.correct }, quiz_list[1].answers.indexOfFirst { it.correct }, quiz_list[2].answers.indexOfFirst { it.correct })
+            moveFragment(CheckFragment(quiz_list, quiz_answer_list, quiz_right_list))
         }
 
+        // 1번 문제
         problemOmr11btn.setOnClickListener {
-            viewModel.quizUserAnswer1ML.value = 1
+            viewModel.quizUserAnswer1ML.value = 0
             observeQuizUserAnswer()
             clickButton1(problemOmr11btn)
         }
         problemOmr12btn.setOnClickListener {
-            viewModel.quizUserAnswer1ML.value = 2
+            viewModel.quizUserAnswer1ML.value = 1
             observeQuizUserAnswer()
             clickButton1(problemOmr12btn)
         }
         problemOmr13btn.setOnClickListener {
-            viewModel.quizUserAnswer1ML.value = 3
+            viewModel.quizUserAnswer1ML.value = 2
             observeQuizUserAnswer()
             clickButton1(problemOmr13btn)
         }
         problemOmr14btn.setOnClickListener {
-            viewModel.quizUserAnswer1ML.value = 4
+            viewModel.quizUserAnswer1ML.value = 3
             observeQuizUserAnswer()
             clickButton1(problemOmr14btn)
         }
         problemOmr15btn.setOnClickListener {
-            viewModel.quizUserAnswer1ML.value = 5
+            viewModel.quizUserAnswer1ML.value = 4
             observeQuizUserAnswer()
             clickButton1(problemOmr15btn)
         }
 
+        // 2번 문제
         problemOmr21btn.setOnClickListener {
-            viewModel.quizUserAnswer2ML.value = 1
+            viewModel.quizUserAnswer2ML.value = 0
             observeQuizUserAnswer()
             clickButton2(problemOmr21btn)
         }
         problemOmr22btn.setOnClickListener {
-            viewModel.quizUserAnswer2ML.value = 2
+            viewModel.quizUserAnswer2ML.value = 1
             observeQuizUserAnswer()
             clickButton2(problemOmr22btn)
         }
         problemOmr23btn.setOnClickListener {
-            viewModel.quizUserAnswer2ML.value = 3
+            viewModel.quizUserAnswer2ML.value = 2
             observeQuizUserAnswer()
             clickButton2(problemOmr23btn)
         }
         problemOmr24btn.setOnClickListener {
-            viewModel.quizUserAnswer2ML.value = 4
+            viewModel.quizUserAnswer2ML.value = 3
             observeQuizUserAnswer()
             clickButton2(problemOmr24btn)
         }
         problemOmr25btn.setOnClickListener {
-            viewModel.quizUserAnswer2ML.value = 5
+            viewModel.quizUserAnswer2ML.value = 4
             observeQuizUserAnswer()
             clickButton2(problemOmr25btn)
         }
 
+        // 3번 문제
         problemOmr31btn.setOnClickListener {
-            viewModel.quizUserAnswer3ML.value = 1
+            viewModel.quizUserAnswer3ML.value = 0
             observeQuizUserAnswer()
             clickButton3(problemOmr31btn)
         }
         problemOmr32btn.setOnClickListener {
-            viewModel.quizUserAnswer3ML.value = 2
+            viewModel.quizUserAnswer3ML.value = 1
             observeQuizUserAnswer()
             clickButton3(problemOmr32btn)
         }
         problemOmr33btn.setOnClickListener {
-            viewModel.quizUserAnswer3ML.value = 3
+            viewModel.quizUserAnswer3ML.value = 2
             observeQuizUserAnswer()
             clickButton3(problemOmr33btn)
         }
         problemOmr34btn.setOnClickListener {
-            viewModel.quizUserAnswer3ML.value = 4
+            viewModel.quizUserAnswer3ML.value = 3
             observeQuizUserAnswer()
             clickButton3(problemOmr34btn)
         }
         problemOmr35btn.setOnClickListener {
-            viewModel.quizUserAnswer3ML.value = 5
+            viewModel.quizUserAnswer3ML.value = 4
             observeQuizUserAnswer()
             clickButton3(problemOmr35btn)
         }
