@@ -7,6 +7,7 @@ import com.example.nunettine.data.remote.dto.BasicRes
 import com.example.nunettine.data.remote.dto.setting.UserRes
 import com.example.nunettine.data.remote.retrofit.SettingRetrofitInterface
 import com.example.nunettine.data.remote.view.setting.FeedbackView
+import com.example.nunettine.data.remote.view.setting.UserDeleteView
 import com.example.nunettine.data.remote.view.setting.UserModifyView
 import com.example.nunettine.data.remote.view.setting.UserView
 import com.example.nunettine.utils.getRetrofit
@@ -17,9 +18,10 @@ import retrofit2.Response
 class UserService {
     private lateinit var userView: UserView
     private lateinit var userModifyView: UserModifyView
+    private lateinit var userDeletView: UserDeleteView
     private lateinit var feedbackView: FeedbackView
 
-    fun setUserView(userview: UserView) {
+    fun setUserView(userView: UserView) {
         this.userView = userView
     }
 
@@ -29,6 +31,10 @@ class UserService {
 
     fun setFeedbackView(feedbackView: FeedbackView) {
         this.feedbackView = feedbackView
+    }
+
+    fun setUserDeleteView(userDeleteView: UserDeleteView) {
+        this.userDeletView = userDeleteView
     }
 
     fun getUser(userId: Int) {
@@ -66,6 +72,30 @@ class UserService {
                     }
                 } else {
                     Log.e("USER-MODIFY-SUCCESS", "Response not successful: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<BasicRes>, t: Throwable) {
+                Log.d("USER-MODIFY-FAILURE", t.toString())
+            }
+        })
+    }
+
+    fun delUser(user_id: Int) {
+        val userDeleteService = getRetrofit().create(SettingRetrofitInterface::class.java)
+        userDeleteService.delMyPage(user_id).enqueue(object : Callback<BasicRes> {
+            override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
+                if (response.isSuccessful) {
+                    val resp: BasicRes? = response.body()
+                    if (resp != null) {
+                        userDeletView.onGetUserDeleteSuccess(resp)
+                    } else {
+                        Log.e("USER-DELETE-FAILURE", "Response body is null")
+                        userDeletView.onGetUserDeleteFailure(response.code())
+                    }
+                } else {
+                    Log.e("USER-DELETE-FAILURE", "Response not successful: ${response.code()}")
+                    userDeletView.onGetUserDeleteFailure(response.code())
                 }
             }
 

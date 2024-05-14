@@ -88,14 +88,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <EditText
-            android:id="@+id/mypage_phone_et"
+        <TextView
+            android:id="@+id/mypage_join_tv"
             android:layout_width="500dp"
             android:layout_height="60dp"
-            android:drawableStart="@drawable/ico_phone"
+            android:drawableStart="@drawable/ico_calendar"
             android:padding="20dp"
             android:drawablePadding="10dp"
-            android:text="010-0000-0000"
+            android:text="2024년 5월 12일"
             android:textColor="@color/black"
             android:textSize="18dp"
             android:gravity="center_vertical"
@@ -106,23 +106,45 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <EditText
-            android:id="@+id/mypage_calendar_et"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mypage_calendar_lo"
             android:layout_width="500dp"
             android:layout_height="60dp"
-            android:drawableStart="@drawable/ico_calendar"
-            android:padding="20dp"
             android:drawablePadding="10dp"
-            android:text="D - 90"
-            android:textColor="@color/black"
-            android:textSize="18dp"
             android:gravity="center_vertical"
             android:fontFamily="@font/nanumsquareneo_bold"
             android:background="@drawable/et_main"
             android:layout_marginVertical="50dp"
-            app:layout_constraintTop_toBottomOf="@id/mypage_phone_et"
+            app:layout_constraintTop_toBottomOf="@id/mypage_join_tv"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/mypage_calendar_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D - "
+                android:paddingVertical="20dp"
+                android:paddingStart="20dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/nanumsquareneo_bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/mypage_calendar_et"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="90"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:fontFamily="@font/nanumsquareneo_bold"
+                app:layout_constraintTop_toTopOf="@id/mypage_calendar_tv"
+                app:layout_constraintBottom_toBottomOf="@id/mypage_calendar_tv"
+                app:layout_constraintStart_toEndOf="@id/mypage_calendar_tv"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatButton

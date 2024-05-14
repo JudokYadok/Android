@@ -18,8 +18,6 @@ import com.example.nunettine.data.remote.dto.library.MemoList
 import com.example.nunettine.data.remote.service.library_study.MemoService
 import com.example.nunettine.data.remote.view.library.MemoDelView
 import com.example.nunettine.databinding.ItemMemoListBinding
-import com.example.nunettine.ui.etc.DeleteDialog
-import com.example.nunettine.ui.etc.DeleteDialogListener
 import com.example.nunettine.ui.main.MainActivity
 import java.text.SimpleDateFormat
 import java.util.Locale

@@ -62,8 +62,8 @@ class LoginActivity: AppCompatActivity(), LoginView {
                         saveKakaoData()
                     }
                 }
-                //loginService(token.accessToken)
-                goMainActivity()
+                loginService(token.accessToken)
+//                goMainActivity()
             }
         }
 
@@ -101,6 +101,7 @@ class LoginActivity: AppCompatActivity(), LoginView {
         editor.putString("profile", profile!!)
         editor.putString("email", email!!)
         editor.putString("accessToken", accessToken!!)
+        editor.putInt("user_id", member_id!!)
         editor.apply()
     }
 
@@ -123,7 +124,8 @@ class LoginActivity: AppCompatActivity(), LoginView {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onGetLoginSuccess(response: LoginRes) {
         Log.d("LOGIN-RESPONSE-성공", response.toString())
-
+        member_id = response.user_id
+        saveKakaoData()
         if(response.createdAt != localTime.toString()) {
             Log.d("LOGIN", "기존 사용자")
         } else {

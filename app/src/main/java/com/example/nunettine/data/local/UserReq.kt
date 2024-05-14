@@ -6,9 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("UserReq")
 data class UserReq(
-    val user_id: Int,
-    val user_name: String,
-    val user_email: String,
-    val user_birth: String,
-    val user_phone: String
+    val name: String,
+    val email: String,
+    val d_day: Int,
+    val user_id: Int
 )

@@ -9,8 +9,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nunettine.R
 import com.example.nunettine.databinding.ItemProblemListBinding
-import com.example.nunettine.ui.etc.DeleteDialog
-import com.example.nunettine.ui.etc.DeleteDialogListener
 import com.example.nunettine.ui.main.MainActivity
 import com.example.nunettine.ui.save.memo.ModifyMemoFragment
 

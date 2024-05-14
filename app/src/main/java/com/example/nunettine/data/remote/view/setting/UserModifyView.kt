@@ -4,5 +4,5 @@ import com.example.nunettine.data.remote.dto.BasicRes
 
 interface UserModifyView {
     fun onGetUserModifySuccess(response: BasicRes)
-    fun onGetUserModifyFailure(result_code: Int, result_req: String)
+    fun onGetUserModifyFailure(result_code: Int)
 }

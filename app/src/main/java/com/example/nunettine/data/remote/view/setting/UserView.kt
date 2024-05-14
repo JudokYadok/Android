@@ -4,5 +4,5 @@ import com.example.nunettine.data.remote.dto.setting.UserRes
 
 interface UserView {
     fun onGetUserSuccess(response: UserRes)
-    fun onGetUserFailure(result_code: Int, result_req: String)
+    fun onGetUserFailure(result_code: Int)
 }
