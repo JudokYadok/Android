@@ -16,7 +16,7 @@ import com.example.nunettine.data.remote.dto.study.Question
 import com.example.nunettine.databinding.FragmentCheckBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class CheckFragment(private val quiz_list: List<Question>, private val quiz_answer_list: List<Int>, private val quiz_right_list: List<Int>): Fragment() {
+class CheckFragment(private val quiz_list: List<Question>, private val quiz_answer_list: List<Int>, private val quiz_right_list: List<Int>, private val quiz_summary: String): Fragment() {
     private lateinit var binding: FragmentCheckBinding
     private var type = ""
     private var category = ""
@@ -67,41 +67,41 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
 
         // 1번 문제 omr 설정
         if(quiz_right_list[0] == 0) {
-            problemOmr11btn.isSelected = true
+            problemOmr11btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else if(quiz_right_list[0] == 1) {
-            problemOmr12btn.isSelected = true
+            problemOmr12btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else if(quiz_right_list[0] == 2) {
-            problemOmr13btn.isSelected = true
+            problemOmr13btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else if(quiz_right_list[0] == 3) {
-            problemOmr14btn.isSelected = true
+            problemOmr14btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else {
-            problemOmr15btn.isSelected = true
+            problemOmr15btn.setBackgroundResource(R.drawable.btn_omr_right)
         }
 
         // 2번 문제 omr 설정
         if(quiz_right_list[1] == 0) {
-            problemOmr21btn.isSelected = true
+            problemOmr21btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else if(quiz_right_list[1] == 1) {
-            problemOmr22btn.isSelected = true
+            problemOmr22btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else if(quiz_right_list[1] == 2) {
-            problemOmr23btn.isSelected = true
+            problemOmr23btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else if(quiz_right_list[1] == 3) {
-            problemOmr24btn.isSelected = true
+            problemOmr24btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else {
-            problemOmr25btn.isSelected = true
+            problemOmr25btn.setBackgroundResource(R.drawable.btn_omr_right)
         }
 
         // 3번 문제 omr 설정
         if(quiz_right_list[2] == 0) {
-            problemOmr31btn.isSelected = true
+            problemOmr31btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else if(quiz_right_list[2] == 1) {
-            problemOmr32btn.isSelected = true
+            problemOmr32btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else if(quiz_right_list[2] == 2) {
-            problemOmr33btn.isSelected = true
+            problemOmr33btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else if(quiz_right_list[2] == 3) {
-            problemOmr34btn.isSelected = true
+            problemOmr34btn.setBackgroundResource(R.drawable.btn_omr_right)
         } else {
-            problemOmr35btn.isSelected = true
+            problemOmr35btn.setBackgroundResource(R.drawable.btn_omr_right)
         }
 
         // 오답 omr 설정
@@ -151,6 +151,7 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
     private fun initUI(quizList: List<Question>) = with(binding) {
         problemTv.text = text_title
         problemContentsTv.text = text_contents
+        problemSummaryTv.text = quiz_summary
         // 문제 설정
         problemQuiz11TitleTv.text = quizList[0].question
         problemQuiz22TitleTv.text = quizList[1].question
@@ -177,8 +178,6 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
         problemQuiz34TextTv.text = "(4) " + quizList[2].answers[3].answer
         problemQuiz35TextTv.text = "(5) " + quizList[2].answers[4].answer
     }
-
-    // 지문 요약 API (get)
 
     private fun clickListener() = with(binding) {
         problemFeedbackBtn.setOnClickListener { moveFragment(ProblemFeedbackFragment()) }

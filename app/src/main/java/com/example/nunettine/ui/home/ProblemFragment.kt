@@ -3,6 +3,7 @@ package com.example.nunettine.ui.home
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,17 +12,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.nunettine.R
 import com.example.nunettine.data.remote.dto.study.Question
+import com.example.nunettine.data.remote.dto.study.QuizGradeRes
+import com.example.nunettine.data.remote.service.library_study.QuizService
+import com.example.nunettine.data.remote.view.study.QuizGradeView
 import com.example.nunettine.databinding.FragmentProblemBinding
 import com.example.nunettine.ui.main.MainActivity
-import com.example.nunettine.utils.LoadingDialog
+import com.example.nunettine.utils.LoadingDialogGrade
 
-class ProblemFragment(private val quiz_list: List<Question>) : Fragment() {
+class ProblemFragment(private val quiz_list: List<Question>) : Fragment(), QuizGradeView {
     private lateinit var binding: FragmentProblemBinding
     private lateinit var viewModel: HomeViewModel
+    private lateinit var loadingDialog: LoadingDialogGrade
+    private var timer: CountDownTimer? = null
     private var isPlaying = false
     private var pauseTime = 0L // 멈춤 시간
     private var type = ""
@@ -29,11 +34,13 @@ class ProblemFragment(private val quiz_list: List<Question>) : Fragment() {
     private var text_id = 0
     private var text_title = ""
     private var text_contents = ""
+    private var quiz_summary = ""
     private var quiz_answer_list = listOf<Int>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentProblemBinding.inflate(layoutInflater)
         getData()
+        loadingDialog = LoadingDialogGrade(requireContext()) // 로딩 다이얼로그 초기화
 
         binding.problemTv.text = text_title
         binding.problemContentsTv.text = text_contents
@@ -147,8 +154,8 @@ class ProblemFragment(private val quiz_list: List<Question>) : Fragment() {
         }
 
         problemCheckBtn.setOnClickListener {
-            val quiz_right_list = listOf(quiz_list[0].answers.indexOfFirst { it.correct }, quiz_list[1].answers.indexOfFirst { it.correct }, quiz_list[2].answers.indexOfFirst { it.correct })
-            moveFragment(CheckFragment(quiz_list, quiz_answer_list, quiz_right_list))
+            setPrevQuizGradeService(category, text_id)
+            loadingDialog.show() // 로딩 다이얼로그 표시
         }
 
         // 1번 문제
@@ -302,5 +309,31 @@ class ProblemFragment(private val quiz_list: List<Question>) : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()
         }
+    }
+
+    private fun setPrevQuizGradeService(category: String, text_id: Int) {
+        val setPrevQuizGradeService = QuizService()
+        setPrevQuizGradeService.setQuizGradeView(this@ProblemFragment)
+        setPrevQuizGradeService.setGradePrevQuiz(category, text_id)
+    }
+
+    override fun onGetQuizGradeSuccess(response: QuizGradeRes) {
+        val quiz_right_list = listOf(quiz_list[0].answers.indexOfFirst { it.correct }, quiz_list[1].answers.indexOfFirst { it.correct }, quiz_list[2].answers.indexOfFirst { it.correct })
+        moveFragment(CheckFragment(quiz_list, quiz_answer_list, quiz_right_list, response.context))
+        timer?.cancel()
+        loadingDialog.dismiss()
+        Log.d("TEXT-SUMMARY-성공", response.toString())
+    }
+
+    override fun onGetQuizGradeFailure(result_code: Int) {
+        timer?.cancel()
+        loadingDialog.dismiss()
+        Log.d("TEXT-SUMMARY-오류", result_code.toString())
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Fragment가 제거될 때 타이머를 취소합니다.
+        timer?.cancel()
     }
 }

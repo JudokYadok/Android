@@ -302,9 +302,9 @@ class QuizService {
         })
     }
 
-    fun setGradePrevQuiz(category: String, textId: Int, quizReq: QuizReq) {
+    fun setGradePrevQuiz(category: String, textId: Int) {
         val quizPrevGradeService = getRetrofit().create(StudyRetrofitInterface::class.java)
-        quizPrevGradeService.postPrevTextCheckQuiz(category, textId, quizReq).enqueue(object : Callback<QuizGradeRes> {
+        quizPrevGradeService.postPrevTextCheckQuiz(category, textId).enqueue(object : Callback<QuizGradeRes> {
             override fun onResponse(call: Call<QuizGradeRes>, response: Response<QuizGradeRes>) {
                 if (response.isSuccessful) {
                     val resp: QuizGradeRes? = response.body()
@@ -326,9 +326,9 @@ class QuizService {
         })
     }
 
-    fun setGradeMyQuiz(category: String, textId: Int, quizReq: QuizReq) {
+    fun setGradeMyQuiz(category: String, textId: Int) {
         val quizPrevGradeService = getRetrofit().create(StudyRetrofitInterface::class.java)
-        quizPrevGradeService.postPrevTextCheckQuiz(category, textId, quizReq).enqueue(object : Callback<QuizGradeRes> {
+        quizPrevGradeService.postPrevTextCheckQuiz(category, textId).enqueue(object : Callback<QuizGradeRes> {
             override fun onResponse(call: Call<QuizGradeRes>, response: Response<QuizGradeRes>) {
                 if (response.isSuccessful) {
                     val resp: QuizGradeRes? = response.body()
