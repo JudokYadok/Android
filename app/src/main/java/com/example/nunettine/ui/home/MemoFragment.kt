@@ -58,7 +58,7 @@ class MemoFragment: Fragment(), MemoNewView {
 
     override fun onGetMemoNewSuccess(response: BasicRes) {
         Toast.makeText(context, "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show()
-        //moveFragment(ProblemFragment())
+        goBackFragment()
         Log.d("NEW-MEMO-성공", response.toString())
     }
 
