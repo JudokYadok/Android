@@ -15,8 +15,8 @@ interface SettingRetrofitInterface {
     @PUT("/user/setting/mypage")
     fun putMyPage(@Body userReq: UserReq): Call<BasicRes2>
 
-    @POST("/user/setting/feedback")
-    fun postFeedback(@Body feedbackReq: FeedbackReq): Call<BasicRes>
+    @POST("/user/setting/feedback/{user_id}")
+    fun postFeedback(@Path("user_id") user_id: Int, @Body feedbackReq: FeedbackReq): Call<BasicRes>
 
     @DELETE("/user/setting/mypage/{user_id}")
     fun delMyPage(@Path("user_id") user_id: Int): Call<BasicRes2>

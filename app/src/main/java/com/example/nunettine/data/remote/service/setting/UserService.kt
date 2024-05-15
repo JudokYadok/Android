@@ -106,9 +106,9 @@ class UserService {
         })
     }
 
-    fun setFeedback(feedbackReq: FeedbackReq) {
+    fun setFeedback(userId: Int, feedbackReq: FeedbackReq) {
         val feedbackService = getRetrofit().create(SettingRetrofitInterface::class.java)
-        feedbackService.postFeedback(feedbackReq).enqueue(object : Callback<BasicRes> {
+        feedbackService.postFeedback(userId, feedbackReq).enqueue(object : Callback<BasicRes> {
             override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
                 if (response.isSuccessful) {
                     val resp: BasicRes? = response.body()

@@ -6,7 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("FeedbackReq")
 data class FeedbackReq(
-    val user_id: Int,
-    val feedback_title: String,
-    val feedback_contents: String
+    val contents: String
 )
