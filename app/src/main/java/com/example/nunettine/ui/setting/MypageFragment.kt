@@ -36,7 +36,7 @@ class MypageFragment: Fragment() {
         viewModel.getUserInfoService(user_id)
         initUI(viewModel.emailML.value!!, viewModel.nameML.value!!, viewModel.joinDateML.value!!)
         observeUserInfo()
-
+        writeDday()
         Log.d("day", "${viewModel.dDayYearML.value}, ${viewModel.dDayMonthML.value}, ${viewModel.dDayDateML.value}")
         val dDay = LocalDate.of(viewModel.dDayYearML.value!!, viewModel.dDayMonthML.value!!, viewModel.dDayDateML.value!!)
         val today = LocalDate.now()
@@ -55,16 +55,21 @@ class MypageFragment: Fragment() {
         }
         mypageDeleteBtn.setOnClickListener { viewModel.deleteUserInfoService(user_id) }
         mypageCalendarLo.setOnClickListener {
-            val ddayDialog = DdayDialog(requireContext(), viewModel.dDayYearML.value!!, viewModel.dDayMonthML.value!!, viewModel.dDayDateML.value!!)
-            ddayDialog.setOnDdaySelectedListener(object : DdayDialog.OnDdaySelectedListener {
-                override fun onDdaySelected(year: Int, month: Int, date: Int) {
-                    viewModel.dDayYearML.value = year
-                    viewModel.dDayMonthML.value = month
-                    viewModel.dDayDateML.value = date
-                }
-            })
-            ddayDialog.show()
+            mypageCalendarAddLo.visibility = View.VISIBLE
+
         }
+    }
+
+    private fun writeDday() = with(binding) {
+        // d-day 날짜 기본 설정
+        mypageCalendarAddYearEt.setText(viewModel.dDayYearML.value!!)
+        mypageCalendarAddMonthEt.setText(viewModel.dDayMonthML.value!!)
+        mypageCalendarAddDateEt.setText(viewModel.dDayDateML.value!!)
+
+        viewModel.dDayYearML.value = mypageCalendarAddYearEt.text.toString().toInt()
+        viewModel.dDayMonthML.value = mypageCalendarAddMonthEt.text.toString().toInt()
+        viewModel.dDayDateML.value = mypageCalendarAddDateEt.text.toString().toInt()
+        observeUserInfo()
     }
 
     fun moveFragment(fragment: Fragment) {
