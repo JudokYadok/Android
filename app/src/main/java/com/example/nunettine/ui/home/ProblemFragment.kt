@@ -319,7 +319,7 @@ class ProblemFragment(private val quiz_list: List<Question>) : Fragment(), QuizG
 
     override fun onGetQuizGradeSuccess(response: QuizGradeRes) {
         val quiz_right_list = listOf(quiz_list[0].answers.indexOfFirst { it.correct }, quiz_list[1].answers.indexOfFirst { it.correct }, quiz_list[2].answers.indexOfFirst { it.correct })
-        moveFragment(CheckFragment(quiz_list, quiz_answer_list, quiz_right_list, response.context))
+        moveFragment(CheckFragment(quiz_list, quiz_answer_list, quiz_right_list, response.content))
         timer?.cancel()
         loadingDialog.dismiss()
         Log.d("TEXT-SUMMARY-성공", response.toString())
