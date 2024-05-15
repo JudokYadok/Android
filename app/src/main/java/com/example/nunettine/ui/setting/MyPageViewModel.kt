@@ -16,17 +16,16 @@ class MyPageViewModel: ViewModel(), UserView, UserModifyView, UserDeleteView {
     val emailML = MutableLiveData<String>()
     val nameML = MutableLiveData<String>()
     val joinDateML = MutableLiveData<String>()
-    val dDayYearML = MutableLiveData<Int>()
-    val dDayMonthML = MutableLiveData<Int>()
-    val dDayDateML = MutableLiveData<Int>()
+    val dDayYearML = MutableLiveData<Int>().apply { value = 2000 }
+    val dDayMonthML = MutableLiveData<Int>().apply { value = 0 }
+    val dDayDateML = MutableLiveData<Int>().apply { value = 0 }
+    val mofifyML = MutableLiveData<Boolean>()
+    val ddayML = MutableLiveData<Int>(0)
 
     init {
         emailML.value = String()
         nameML.value = String()
         joinDateML.value = String()
-        dDayYearML.value = 2024
-        dDayMonthML.value = 11
-        dDayDateML.value = 14
     }
 
     fun getUserInfoService(user_id: Int) {
@@ -51,9 +50,9 @@ class MyPageViewModel: ViewModel(), UserView, UserModifyView, UserDeleteView {
         emailML.postValue(response.email)
         nameML.postValue(response.name)
         joinDateML.postValue(response.createdAt)
-//        dDayYearML.postValue(response.d_day.year)
-//        dDayMonthML.postValue(response.d_day.month)
-//        dDayDateML.postValue(response.d_day.date)
+        dDayYearML.postValue(response.d_day.year)
+        dDayMonthML.postValue(response.d_day.month)
+        dDayDateML.postValue(response.d_day.date)
         Log.d("USER-GET-성공", response.toString())
     }
 
@@ -62,6 +61,7 @@ class MyPageViewModel: ViewModel(), UserView, UserModifyView, UserDeleteView {
     }
 
     override fun onGetUserModifySuccess(response: BasicRes) {
+        mofifyML.postValue(true)
         Log.d("USER-UPDATE-성공", response.toString())
     }
 

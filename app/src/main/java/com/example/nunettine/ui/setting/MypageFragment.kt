@@ -13,10 +13,15 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.nunettine.R
+import com.example.nunettine.data.local.UserDday
 import com.example.nunettine.data.local.UserReq
 import com.example.nunettine.databinding.FragmentSettingMypageBinding
 import com.example.nunettine.ui.etc.DdayDialog
 import com.example.nunettine.ui.main.MainActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -34,41 +39,42 @@ class MypageFragment: Fragment() {
         getData()
         viewModel = ViewModelProvider(this).get(MyPageViewModel::class.java)
         viewModel.getUserInfoService(user_id)
-        initUI(viewModel.emailML.value!!, viewModel.nameML.value!!, viewModel.joinDateML.value!!)
+        initUI(viewModel.emailML.value!!, viewModel.nameML.value!!)
         observeUserInfo()
-        writeDday()
-        Log.d("day", "${viewModel.dDayYearML.value}, ${viewModel.dDayMonthML.value}, ${viewModel.dDayDateML.value}")
-        val dDay = LocalDate.of(viewModel.dDayYearML.value!!, viewModel.dDayMonthML.value!!, viewModel.dDayDateML.value!!)
-        val today = LocalDate.now()
-        daysUntilDDay = ChronoUnit.DAYS.between(today, dDay)
-        Log.d("DAY", "${daysUntilDDay}")
         clickListener()
 
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun clickListener() = with(binding) {
         mypageBackBtn.setOnClickListener { moveFragment(SettingFragment()) }
         mypageModifyBtn.setOnClickListener {
-            val userReq = UserReq(mypageNicknameEt.text.toString(), mypageEmailEt.text.toString(), mypageCalendarEt.text.toString().toInt(), user_id)
+            val dday = UserDday(mypageCalendarAddYearEt.text.toString().toInt(), mypageCalendarAddMonthEt.text.toString().toInt(), mypageCalendarAddDateEt.text.toString().toInt())
+            val userReq = UserReq(mypageNicknameEt.text.toString(), mypageEmailEt.text.toString(), dday, user_id)
             viewModel.putUserInfoService(userReq)
+            if(viewModel.mofifyML.value == true) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.dDayYearML.postValue(mypageCalendarAddYearEt.text.toString().toInt())
+                    viewModel.dDayMonthML.postValue(mypageCalendarAddMonthEt.text.toString().toInt())
+                    viewModel.dDayDateML.postValue(mypageCalendarAddDateEt.text.toString().toInt())
+                }
+            }
         }
         mypageDeleteBtn.setOnClickListener { viewModel.deleteUserInfoService(user_id) }
         mypageCalendarLo.setOnClickListener {
             mypageCalendarAddLo.visibility = View.VISIBLE
-
+            writeDday()
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun writeDday() = with(binding) {
         // d-day 날짜 기본 설정
-        mypageCalendarAddYearEt.setText(viewModel.dDayYearML.value!!)
-        mypageCalendarAddMonthEt.setText(viewModel.dDayMonthML.value!!)
-        mypageCalendarAddDateEt.setText(viewModel.dDayDateML.value!!)
+        mypageCalendarAddYearEt.setText(viewModel.dDayYearML.value.toString())
+        mypageCalendarAddMonthEt.setText(viewModel.dDayMonthML.value.toString())
+        mypageCalendarAddDateEt.setText(viewModel.dDayDateML.value.toString())
 
-        viewModel.dDayYearML.value = mypageCalendarAddYearEt.text.toString().toInt()
-        viewModel.dDayMonthML.value = mypageCalendarAddMonthEt.text.toString().toInt()
-        viewModel.dDayDateML.value = mypageCalendarAddDateEt.text.toString().toInt()
         observeUserInfo()
     }
 
@@ -84,14 +90,26 @@ class MypageFragment: Fragment() {
         }
     }
 
-    private fun initUI(email: String, name: String, join: String) = with(binding) {
+    private fun initUI(email: String, name: String) = with(binding) {
         mypageNicknameEt.setText(name)
         mypageEmailEt.setText(email)
-        mypageJoinTv.text = join
     }
 
-    private fun initDday() = with(binding) {
+    private fun initJoinDateUI(join: String) = with(binding) {
+        mypageJoinTv.text = timeFormat(join)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initDday(year: Int, month: Int, date: Int) = with(binding) {
+        val dDay = LocalDate.of(viewModel.dDayYearML.value!!, viewModel.dDayMonthML.value!!, viewModel.dDayDateML.value!!)
+        val today = LocalDate.now()
+        daysUntilDDay = ChronoUnit.DAYS.between(today, dDay)
+        Log.d("DAY", "${daysUntilDDay}")
+
         mypageCalendarEt.text = daysUntilDDay.toString()
+        mypageCalendarAddYearEt.setText(year.toString())
+        mypageCalendarAddMonthEt.setText(month.toString())
+        mypageCalendarAddDateEt.setText(date.toString())
     }
 
     private fun timeFormat(originalTime: String): String {
@@ -100,7 +118,7 @@ class MypageFragment: Fragment() {
         val originalDate = originalFormat.parse(originalTime)
 
         // 포맷을 변경하고자 하는 형식을 정의합니다.
-        val targetFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val targetFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault())
 
         // 새로운 형식으로 포맷합니다.
         val formattedDate = targetFormat.format(originalDate)
@@ -113,20 +131,26 @@ class MypageFragment: Fragment() {
         user_id = sharedPreferences.getInt("user_id", user_id)!!
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun observeUserInfo() {
         viewModel.emailML.observe(viewLifecycleOwner) { email ->
             viewModel.nameML.observe(viewLifecycleOwner) { name ->
-                viewModel.joinDateML.observe(viewLifecycleOwner) { join ->
-                    // 데이터가 변경되었을 때 UI 업데이트
-                    initUI(email, name, join)
-                }
+                initUI(email, name)
+            }
+        }
+
+        viewModel.joinDateML.observe(viewLifecycleOwner) { join ->
+            if(join.length > 0) {
+                initJoinDateUI(join)
             }
         }
 
         viewModel.dDayYearML.observe(viewLifecycleOwner) { year ->
             viewModel.dDayMonthML.observe(viewLifecycleOwner) { month ->
                 viewModel.dDayDateML.observe(viewLifecycleOwner) { date ->
-                    initDday()
+                    if(year != 2000 && month != 0 && date != 0) {
+                        initDday(year, month, date)
+                    }
                 }
             }
         }
