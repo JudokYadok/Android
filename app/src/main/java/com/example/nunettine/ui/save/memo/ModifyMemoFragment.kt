@@ -16,12 +16,13 @@ class ModifyMemoFragment: Fragment() {
     private lateinit var binding: FragmentModifyMemoBinding
     private lateinit var viewModel: SaveMemoViewModel
     private var memoId = 0
+    private var user_id = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentModifyMemoBinding.inflate(layoutInflater)
         getData()
         viewModel = ViewModelProvider(this).get(SaveMemoViewModel::class.java)
-        viewModel.getMemoService(memoId)
+        viewModel.getMemoService(memoId, user_id)
         observeMemo()
         clickListener()
         return binding.root
@@ -39,7 +40,7 @@ class ModifyMemoFragment: Fragment() {
 
         modifyMemoBtn.setOnClickListener {
             val memoReq = MemoReq(memoId, modifyMemoNameEt.text.toString(), modifyMemoEt.text.toString())
-            viewModel.modifyMemoSerivce(memoId, memoReq)
+            viewModel.modifyMemoSerivce(memoId, memoReq, user_id)
             Toast.makeText(context, "메모가 수정되었습니다.", Toast.LENGTH_SHORT).show()
             goBackFragment()
         }
@@ -49,8 +50,11 @@ class ModifyMemoFragment: Fragment() {
 
     private fun getData() {
         // 데이터 읽어오기
-        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("memo", Context.MODE_PRIVATE)
-        memoId = sharedPreferences.getInt("memo_id", memoId)
+        val sharedPreferences1: SharedPreferences = requireContext().getSharedPreferences("memo", Context.MODE_PRIVATE)
+        memoId = sharedPreferences1.getInt("memo_id", memoId)
+
+        val sharedPreferences2: SharedPreferences = requireContext().getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        user_id = sharedPreferences2.getInt("user_id", user_id)
     }
 
     private fun observeMemo() {

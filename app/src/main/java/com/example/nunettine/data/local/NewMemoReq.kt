@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("NewMemoReq")
 data class NewMemoReq(
-    val memo_title: String,
-    val memo_contents: String
+    val title: String,
+    val contents: String
 )

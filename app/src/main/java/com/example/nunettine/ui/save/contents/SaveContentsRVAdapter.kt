@@ -9,14 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nunettine.R
+import com.example.nunettine.data.remote.dto.library.MemoList
+import com.example.nunettine.data.remote.dto.library.TextList
 import com.example.nunettine.databinding.ItemContentsListBinding
 import com.example.nunettine.ui.main.MainActivity
 import com.example.nunettine.ui.save.memo.ModifyMemoFragment
 
-class SaveContentsRVAdapter(private val context: Context, private var fragmentManager: FragmentManager): RecyclerView.Adapter<SaveContentsRVAdapter.ViewHolder>() {
+class SaveContentsRVAdapter(private val context: Context, private val contentsList: MutableList<TextList>): RecyclerView.Adapter<SaveContentsRVAdapter.ViewHolder>() {
     private lateinit var binding : ItemContentsListBinding
     inner class ViewHolder(val binding: ItemContentsListBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind() = with(binding) {
+
             itemContentsListDelBtn.setOnClickListener {
             }
 

@@ -17,6 +17,7 @@ import com.example.nunettine.CircleTransform
 import com.example.nunettine.R
 import com.example.nunettine.databinding.FragmentHomeBinding
 import com.example.nunettine.ui.main.MainActivity
+import com.example.nunettine.ui.setting.MypageFragment
 import com.squareup.picasso.Picasso
 
 class HomeFragment: Fragment() {
@@ -50,6 +51,8 @@ class HomeFragment: Fragment() {
             saveData("MYTEXT")
             moveFragment(TypeFragment())
         }
+
+        homeProfileIv.setOnClickListener { moveFragment(MypageFragment()) }
     }
     private fun moveFragment(fragment: Fragment) {
         val mainActivity = context as MainActivity

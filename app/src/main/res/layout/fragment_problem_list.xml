@@ -54,9 +54,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/problem_list_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginVertical="21dp"
         tools:listitem="@layout/item_problem_list"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/problem_list_score_tv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

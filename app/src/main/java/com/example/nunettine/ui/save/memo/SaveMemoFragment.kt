@@ -1,5 +1,7 @@
 package com.example.nunettine.ui.save.memo
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +16,13 @@ import com.example.nunettine.databinding.FragmentMemoListBinding
 class SaveMemoFragment: Fragment() {
     private lateinit var binding: FragmentMemoListBinding
     private lateinit var viewModel: SaveMemoViewModel
+    private var user_id: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMemoListBinding.inflate(layoutInflater)
+        getData()
         viewModel = ViewModelProvider(this).get(SaveMemoViewModel::class.java)
-        viewModel.getMemoListService()
+        viewModel.getMemoListService(user_id)
         observeMemoList()
         return binding.root
     }
@@ -35,5 +39,10 @@ class SaveMemoFragment: Fragment() {
                 initRV(memoList)
             }
         })
+    }
+
+    private fun getData() {
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        user_id = sharedPreferences.getInt("user_id", user_id)
     }
 }

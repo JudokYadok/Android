@@ -24,6 +24,7 @@ import java.util.Locale
 
 class SaveMemoRVAdapter(private val context: Context, private val memoList: MutableList<MemoList>): RecyclerView.Adapter<SaveMemoRVAdapter.ViewHolder>(), MemoDelView {
     private lateinit var binding :ItemMemoListBinding
+    private var user_id = 0
     inner class ViewHolder(val binding: ItemMemoListBinding): RecyclerView.ViewHolder(binding.root) {
         @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
         fun bind(memo_list: MemoList) = with(binding) {
@@ -49,6 +50,7 @@ class SaveMemoRVAdapter(private val context: Context, private val memoList: Muta
 
     override fun getItemCount(): Int = memoList.size // 임시 설
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(memoList[position])
 
     private fun moveFragment(fragment: Fragment) {
@@ -75,7 +77,7 @@ class SaveMemoRVAdapter(private val context: Context, private val memoList: Muta
     private fun onDeleteMemoService(memo_id: Int, position: Int) {
         val deleteMemoService = MemoService()
         deleteMemoService.setMemoDelView(this@SaveMemoRVAdapter)
-        deleteMemoService.deleteMemo(memo_id, position)
+        deleteMemoService.deleteMemo(memo_id, position, user_id)
     }
 
     private fun timeFormat(originalTime: String): String {
@@ -100,5 +102,10 @@ class SaveMemoRVAdapter(private val context: Context, private val memoList: Muta
 
     override fun onGetMemoDeleteFailure(result_code: Int) {
         Log.d("MEMO-DELETE-실패", result_code.toString())
+    }
+
+    private fun getData() {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        user_id = sharedPreferences.getInt("user_id", user_id)
     }
 }

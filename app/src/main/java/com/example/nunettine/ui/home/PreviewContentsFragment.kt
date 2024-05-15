@@ -42,7 +42,7 @@ class PreviewContentsFragment: Fragment() {
     }
 
     private fun clickListener() = with(binding) {
-        previewContentsBackBtn.setOnClickListener { moveFragment(MergeCountFragment()) }
+        previewContentsBackBtn.setOnClickListener { moveFragment(ChooseFragment()) }
         previewContentsBtn.setOnClickListener { moveFragment(MergeCountFragment()) }
     }
 

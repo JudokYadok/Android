@@ -21,30 +21,30 @@ interface LibraryRetrofitInterface {
     @GET("/user/library/quiz/{quiz_id}")
     fun getQuiz(@Path("quiz_id") quiz_id: Int): Call<QuizRes>
 
-    @GET("/user/library/memo")
-    fun getMemoList(): Call<List<MemoList>>
+    @GET("/user/library/memo/{user_id}")
+    fun getMemoList(@Path("user_id") user_id: Int): Call<List<MemoList>>
 
-    @GET("/user/library/memo/{memo_id}")
-    fun getMemo(@Path("memo_id") memo_id: Int): Call<MemoRes>
+    @GET("/user/library/memo/{user_id}/{memo_id}")
+    fun getMemo(@Path("memo_id") memo_id: Int, @Path("user_id") user_id: Int): Call<MemoRes>
 
-    @PUT("/user/library/memo/{memo_id}")
-    fun putMemo(@Path("memo_id") memo_id: Int, @Body memoReq: MemoReq): Call<BasicRes>
+    @PUT("/user/library/memo/{user_id}/{memo_id}")
+    fun putMemo(@Path("memo_id") memo_id: Int, @Path("user_id") user_id: Int, @Body memoReq: MemoReq): Call<BasicRes>
 
-    @GET("/user/library/mytext")
-    fun getMyTextList(): Call<TextListRes>
+    @GET("/user/library/mytext/{user_id}")
+    fun getMyTextList(@Path("user_id") user_id: Int): Call<TextListRes>
 
-    @GET("/user/library/mytext/{text_id}")
-    fun getMyText(@Path("text_id") text_id: Int): Call<TextRes>
+    @GET("/user/library/mytext/{user_id}/{text_id}")
+    fun getMyText(@Path("user_id") user_id: Int, @Path("text_id") text_id: Int): Call<TextRes>
 
-    @PUT("/user/library/mytext/{text_id}")
-    fun putMyText(@Path("text_id") text_id: Int, @Body myTextReq: NewTextReq): Call<BasicRes>
+    @PUT("/user/library/mytext/{user_id}/{text_id}")
+    fun putMyText(@Path("user_id") user_id: Int, @Path("text_id") text_id: Int, @Body myTextReq: NewTextReq): Call<BasicRes>
 
-    @POST("/user/library/mytext/new")
-    fun postMyText(@Body newTextReq: NewTextReq): Call<BasicRes>
+    @POST("/user/library/mytext/new/{user_id}")
+    fun postMyText(@Path("user_id") user_id: Int, @Body newTextReq: NewTextReq): Call<BasicRes>
 
-    @POST("/user/library/memo")
-    fun postMemo(@Body newMemoReq: NewMemoReq): Call<BasicRes>
+    @POST("/user/library/memo/{user_id}")
+    fun postMemo(@Body newMemoReq: NewMemoReq, @Path("user_id") user_id: Int): Call<BasicRes>
 
-    @DELETE("/user/library/memo/{memo_id}")
-    fun deleteMemo(@Path("memo_id") memo_id: Int): Call<BasicRes>
+    @DELETE("/user/library/memo/{user_id}/{memo_id}")
+    fun deleteMemo(@Path("memo_id") memo_id: Int, @Path("user_id") user_id: Int): Call<BasicRes>
 }

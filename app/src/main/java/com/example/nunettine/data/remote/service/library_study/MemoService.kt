@@ -47,9 +47,9 @@ class MemoService {
         this.memoDelView = memoDelView
     }
 
-    fun getMemo(memoId: Int) {
+    fun getMemo(memoId: Int, userId: Int) {
         val memoService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        memoService.getMemo(memoId).enqueue(object : Callback<MemoRes> {
+        memoService.getMemo(memoId, userId).enqueue(object : Callback<MemoRes> {
             override fun onResponse(call: Call<MemoRes>, response: Response<MemoRes>) {
                 if (response.isSuccessful) {
                     val resp: MemoRes? = response.body()
@@ -71,9 +71,9 @@ class MemoService {
         })
     }
 
-    fun getMemoList() {
+    fun getMemoList(user_id: Int) {
         val memoListService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        memoListService.getMemoList().enqueue(object : Callback<List<MemoList>> {
+        memoListService.getMemoList(user_id).enqueue(object : Callback<List<MemoList>> {
             override fun onResponse(call: Call<List<MemoList>>, response: Response<List<MemoList>>) {
                 if (response.isSuccessful) {
                     val resp: List<MemoList>? = response.body()
@@ -95,9 +95,9 @@ class MemoService {
         })
     }
 
-    fun putMemo(memoId: Int, memoReq: MemoReq) {
+    fun putMemo(memoId: Int, memoReq: MemoReq, userId: Int) {
         val memoModifyService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        memoModifyService.putMemo(memoId, memoReq).enqueue(object : Callback<BasicRes> {
+        memoModifyService.putMemo(memoId,userId, memoReq).enqueue(object : Callback<BasicRes> {
             override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
                 if (response.isSuccessful) {
                     val resp: BasicRes? = response.body()
@@ -120,9 +120,9 @@ class MemoService {
     }
 
     // 임시 설정
-    fun setMemo(newMemoReq: NewMemoReq) {
+    fun setMemo(newMemoReq: NewMemoReq, userId: Int) {
         val memoNewService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        memoNewService.postMemo(newMemoReq).enqueue(object : Callback<BasicRes> {
+        memoNewService.postMemo(newMemoReq, userId).enqueue(object : Callback<BasicRes> {
             override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
                 if (response.isSuccessful) {
                     val resp: BasicRes? = response.body()
@@ -144,9 +144,9 @@ class MemoService {
         })
     }
 
-    fun deleteMemo(memo_id: Int, position: Int) {
+    fun deleteMemo(memo_id: Int, position: Int, user_id: Int) {
         val memoDelService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        memoDelService.deleteMemo(memo_id).enqueue(object : Callback<BasicRes> {
+        memoDelService.deleteMemo(memo_id, user_id).enqueue(object : Callback<BasicRes> {
             override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
                 if (response.isSuccessful) {
                     val resp: BasicRes? = response.body()

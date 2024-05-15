@@ -37,9 +37,9 @@ class TextService {
         this.textModifyView = textModifyView
     }
 
-    fun getText(textId: Int) {
+    fun getText(userId: Int, textId: Int) {
         val textService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        textService.getMyText(textId).enqueue(object : Callback<TextRes> {
+        textService.getMyText(userId, textId).enqueue(object : Callback<TextRes> {
             override fun onResponse(call: Call<TextRes>, response: Response<TextRes>) {
                 if (response.isSuccessful) {
                     val resp: TextRes? = response.body()
@@ -61,9 +61,9 @@ class TextService {
         })
     }
 
-    fun getTextList() {
+    fun getTextList(userId: Int) {
         val textListService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        textListService.getMyTextList().enqueue(object : Callback<TextListRes> {
+        textListService.getMyTextList(userId).enqueue(object : Callback<TextListRes> {
             override fun onResponse(call: Call<TextListRes>, response: Response<TextListRes>) {
                 if (response.isSuccessful) {
                     val resp: TextListRes? = response.body()
@@ -85,9 +85,9 @@ class TextService {
         })
     }
 
-    fun setText(newTextReq: NewTextReq) {
+    fun setText(userId: Int, newTextReq: NewTextReq) {
         val textNewService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        textNewService.postMyText(newTextReq).enqueue(object : Callback<BasicRes> {
+        textNewService.postMyText(userId, newTextReq).enqueue(object : Callback<BasicRes> {
             override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
                 if (response.isSuccessful) {
                     val resp: BasicRes? = response.body()
@@ -109,9 +109,9 @@ class TextService {
         })
     }
 
-    fun putText(textId: Int, myTextReq: NewTextReq) {
+    fun putText(userId: Int, textId: Int, myTextReq: NewTextReq) {
         val textModifyService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        textModifyService.putMyText(textId, myTextReq).enqueue(object : Callback<BasicRes> {
+        textModifyService.putMyText(userId, textId, myTextReq).enqueue(object : Callback<BasicRes> {
             override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
                 if (response.isSuccessful) {
                     val resp: BasicRes? = response.body()

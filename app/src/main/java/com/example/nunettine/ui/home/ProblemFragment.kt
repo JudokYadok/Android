@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import com.example.nunettine.R
 import com.example.nunettine.data.remote.dto.study.Question
 import com.example.nunettine.data.remote.dto.study.QuizGradeRes
@@ -20,11 +21,13 @@ import com.example.nunettine.data.remote.service.library_study.QuizService
 import com.example.nunettine.data.remote.view.study.QuizGradeView
 import com.example.nunettine.databinding.FragmentProblemBinding
 import com.example.nunettine.ui.main.MainActivity
+import com.example.nunettine.ui.save.memo.SaveMemoViewModel
 import com.example.nunettine.utils.LoadingDialogGrade
 
 class ProblemFragment(private val quiz_list: List<Question>) : Fragment(), QuizGradeView {
     private lateinit var binding: FragmentProblemBinding
     private lateinit var viewModel: HomeViewModel
+    private lateinit var memoViewModel: SaveMemoViewModel
     private lateinit var loadingDialog: LoadingDialogGrade
     private var timer: CountDownTimer? = null
     private var isPlaying = false
@@ -47,6 +50,7 @@ class ProblemFragment(private val quiz_list: List<Question>) : Fragment(), QuizG
         clickListener()
         settingMedia()
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        memoViewModel = ViewModelProvider(this).get(SaveMemoViewModel::class.java)
         initUI(quiz_list)
         return binding.root
     }

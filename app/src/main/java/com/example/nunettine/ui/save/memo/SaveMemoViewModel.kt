@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.nunettine.data.local.MemoReq
+import com.example.nunettine.data.local.NewMemoReq
 import com.example.nunettine.data.remote.dto.BasicRes
 import com.example.nunettine.data.remote.dto.library.MemoList
 import com.example.nunettine.data.remote.dto.library.MemoRes
@@ -11,9 +12,10 @@ import com.example.nunettine.data.remote.service.library_study.MemoService
 import com.example.nunettine.data.remote.view.library.MemoDelView
 import com.example.nunettine.data.remote.view.library.MemoListView
 import com.example.nunettine.data.remote.view.library.MemoModifyView
+import com.example.nunettine.data.remote.view.library.MemoNewView
 import com.example.nunettine.data.remote.view.library.MemoView
 
-class SaveMemoViewModel:  ViewModel(), MemoListView, MemoView, MemoModifyView {
+class SaveMemoViewModel:  ViewModel(), MemoListView, MemoView, MemoModifyView, MemoNewView {
     val memoListML = MutableLiveData<List<MemoList>>()
     val memoTitleML = MutableLiveData<String>()
     val memoContentsML = MutableLiveData<String>()
@@ -24,22 +26,28 @@ class SaveMemoViewModel:  ViewModel(), MemoListView, MemoView, MemoModifyView {
         memoContentsML.value = String()
     }
 
-    fun getMemoListService() {
+    fun setMemoService(user_id: Int, newMemoReq: NewMemoReq) {
+        val setMemoService = MemoService()
+        setMemoService.setMemoNewView(this@SaveMemoViewModel)
+        setMemoService.setMemo(newMemoReq, user_id)
+    }
+
+    fun getMemoListService(user_id: Int) {
         val memoListService = MemoService()
         memoListService.setMemoListView(this@SaveMemoViewModel)
-        memoListService.getMemoList()
+        memoListService.getMemoList(user_id)
     }
 
-    fun getMemoService(memoId: Int) {
+    fun getMemoService(memoId: Int, userId: Int) {
         val memoService = MemoService()
         memoService.setMemoView(this@SaveMemoViewModel)
-        memoService.getMemo(memoId)
+        memoService.getMemo(memoId, userId)
     }
 
-    fun modifyMemoSerivce(memoId: Int, memoReq: MemoReq) {
+    fun modifyMemoSerivce(memoId: Int, memoReq: MemoReq, userId: Int) {
         val modifyMemoSerivce = MemoService()
         modifyMemoSerivce.setMemoModifyView(this@SaveMemoViewModel)
-        modifyMemoSerivce.putMemo(memoId, memoReq)
+        modifyMemoSerivce.putMemo(memoId, memoReq, userId)
     }
 
     override fun onGetMemoListSuccess(response: List<MemoList>) {
@@ -67,5 +75,13 @@ class SaveMemoViewModel:  ViewModel(), MemoListView, MemoView, MemoModifyView {
 
     override fun onGetMemoModifyFailure(result_code: Int) {
         Log.d("MEMO-MODIFY-오류", result_code.toString())
+    }
+
+    override fun onGetMemoNewSuccess(response: BasicRes) {
+        Log.d("MEMO-NEW-성공", response.toString())
+    }
+
+    override fun onGetMemoNewFailure(result_code: Int) {
+        Log.d("MEMO-NEW-오류", result_code.toString())
     }
 }
