@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.nunettine.data.local.UserReq
-import com.example.nunettine.data.remote.dto.BasicRes
+import com.example.nunettine.data.remote.dto.BasicRes2
 import com.example.nunettine.data.remote.dto.setting.UserRes
 import com.example.nunettine.data.remote.service.auth.AuthService
 import com.example.nunettine.data.remote.service.setting.UserService
@@ -70,7 +70,7 @@ class MyPageViewModel: ViewModel(), UserView, UserModifyView, UserDeleteView {
         Log.d("USER-GET-오류", result_code.toString())
     }
 
-    override fun onGetUserModifySuccess(response: BasicRes) {
+    override fun onGetUserModifySuccess(response: BasicRes2) {
         mofifyML.postValue(true)
         Log.d("USER-UPDATE-성공", response.toString())
     }
@@ -79,7 +79,7 @@ class MyPageViewModel: ViewModel(), UserView, UserModifyView, UserDeleteView {
         Log.d("USER-UPDATE-오류", result_code.toString())
     }
 
-    override fun onGetUserDeleteSuccess(response: BasicRes) {
+    override fun onGetUserDeleteSuccess(response: BasicRes2) {
         Log.d("USER-DELETE-성공", response.toString())
     }
 

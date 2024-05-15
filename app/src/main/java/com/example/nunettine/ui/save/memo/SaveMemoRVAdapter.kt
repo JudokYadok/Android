@@ -28,6 +28,7 @@ class SaveMemoRVAdapter(private val context: Context, private val memoList: Muta
     inner class ViewHolder(val binding: ItemMemoListBinding): RecyclerView.ViewHolder(binding.root) {
         @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
         fun bind(memo_list: MemoList) = with(binding) {
+            getData()
             itemMemoListNameTv.text = memo_list.title
 
             itemMemoListDelBtn.setOnClickListener {
@@ -95,8 +96,8 @@ class SaveMemoRVAdapter(private val context: Context, private val memoList: Muta
 
     override fun onGetMemoDeleteSuccess(response: BasicRes, position: Int) {
         Toast.makeText(context, "메모가 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-        memoList.removeAt(position) // 아이템 제거
-        notifyItemRemoved(position) // 변경 사항을 RecyclerView에 알림
+        memoList.removeAt(position)
+        notifyItemRemoved(position)
         Log.d("MEMO-DELETE-성공", response.message)
     }
 

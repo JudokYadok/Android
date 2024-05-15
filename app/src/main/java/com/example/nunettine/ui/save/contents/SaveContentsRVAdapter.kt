@@ -1,10 +1,13 @@
 package com.example.nunettine.ui.save.contents
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,14 +20,20 @@ import com.example.nunettine.ui.save.memo.ModifyMemoFragment
 
 class SaveContentsRVAdapter(private val context: Context, private val contentsList: MutableList<TextList>): RecyclerView.Adapter<SaveContentsRVAdapter.ViewHolder>() {
     private lateinit var binding : ItemContentsListBinding
+    private var user_id = 0
     inner class ViewHolder(val binding: ItemContentsListBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind() = with(binding) {
+        @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+        fun bind(textList: TextList) = with(binding) {
+            getData()
+            itemContentsListTypeTv.text = textList.text_category
+            itemContentsListNameTv.text = textList.text_title
 
             itemContentsListDelBtn.setOnClickListener {
             }
 
             itemContentsListLo.setOnClickListener {
                 moveFragment(ModifyContentsFragment())
+                saveData(textList.text_id)
             }
         }
     }
@@ -34,9 +43,10 @@ class SaveContentsRVAdapter(private val context: Context, private val contentsLi
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = 1 // 임시 설정
+    override fun getItemCount(): Int = contentsList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind()
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(contentsList[position])
 
     private fun moveFragment(fragment: Fragment) {
         val mainActivity = context as MainActivity
@@ -48,5 +58,19 @@ class SaveContentsRVAdapter(private val context: Context, private val contentsLi
             transaction.addToBackStack(null)
             transaction.commit()
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    private fun saveData(textId: Int) {
+        // 데이터 저장
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("contents", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putInt("contents_id", textId)
+        editor.apply()
+    }
+
+    private fun getData() {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        user_id = sharedPreferences.getInt("user_id", user_id)
     }
 }

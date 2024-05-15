@@ -16,6 +16,7 @@ import com.example.nunettine.R
 import com.example.nunettine.data.remote.dto.library.MemoList
 import com.example.nunettine.data.remote.dto.library.TextList
 import com.example.nunettine.databinding.FragmentContentsListBinding
+import com.example.nunettine.ui.main.MainActivity
 import com.example.nunettine.ui.save.memo.SaveMemoRVAdapter
 import com.example.nunettine.ui.save.memo.SaveMemoViewModel
 
@@ -29,6 +30,7 @@ class SaveContentsFragment : Fragment() {
         getData()
         viewModel = ViewModelProvider(this).get(SaveContentsViewModel::class.java)
         viewModel.getTextListService(user_id)
+        observeMemoList()
         clickListener()
         return binding.root
     }
@@ -52,11 +54,15 @@ class SaveContentsFragment : Fragment() {
     }
 
     private fun moveFragment(fragment: Fragment) {
-        val mainFrmLayout = activity?.findViewById<FrameLayout>(R.id.main_frm)
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
-        mainFrmLayout?.id?.let { transaction?.replace(it, fragment) }
-        transaction?.addToBackStack(null)
-        transaction?.commit()
+        val mainActivity = context as MainActivity
+        val mainFrmLayout = mainActivity.findViewById<FrameLayout>(R.id.main_frm) as FrameLayout?
+        if (mainFrmLayout != null) {
+            val transaction = mainActivity.supportFragmentManager.beginTransaction()
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+            transaction.replace(mainFrmLayout.id, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
     private fun getData() {

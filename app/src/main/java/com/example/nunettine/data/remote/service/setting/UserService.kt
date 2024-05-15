@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.nunettine.data.local.FeedbackReq
 import com.example.nunettine.data.local.UserReq
 import com.example.nunettine.data.remote.dto.BasicRes
+import com.example.nunettine.data.remote.dto.BasicRes2
 import com.example.nunettine.data.remote.dto.setting.UserRes
 import com.example.nunettine.data.remote.retrofit.SettingRetrofitInterface
 import com.example.nunettine.data.remote.view.setting.FeedbackView
@@ -61,10 +62,10 @@ class UserService {
 
     fun putUser(userReq: UserReq) {
         val userModifyService = getRetrofit().create(SettingRetrofitInterface::class.java)
-        userModifyService.putMyPage(userReq).enqueue(object : Callback<BasicRes> {
-            override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
+        userModifyService.putMyPage(userReq).enqueue(object : Callback<BasicRes2> {
+            override fun onResponse(call: Call<BasicRes2>, response: Response<BasicRes2>) {
                 if (response.isSuccessful) {
-                    val resp: BasicRes? = response.body()
+                    val resp: BasicRes2? = response.body()
                     if (resp != null) {
                         userModifyView.onGetUserModifySuccess(resp)
                     } else {
@@ -75,7 +76,7 @@ class UserService {
                 }
             }
 
-            override fun onFailure(call: Call<BasicRes>, t: Throwable) {
+            override fun onFailure(call: Call<BasicRes2>, t: Throwable) {
                 Log.d("USER-MODIFY-FAILURE", t.toString())
             }
         })
@@ -83,10 +84,10 @@ class UserService {
 
     fun delUser(user_id: Int) {
         val userDeleteService = getRetrofit().create(SettingRetrofitInterface::class.java)
-        userDeleteService.delMyPage(user_id).enqueue(object : Callback<BasicRes> {
-            override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
+        userDeleteService.delMyPage(user_id).enqueue(object : Callback<BasicRes2> {
+            override fun onResponse(call: Call<BasicRes2>, response: Response<BasicRes2>) {
                 if (response.isSuccessful) {
-                    val resp: BasicRes? = response.body()
+                    val resp: BasicRes2? = response.body()
                     if (resp != null) {
                         userDeletView.onGetUserDeleteSuccess(resp)
                     } else {
@@ -99,7 +100,7 @@ class UserService {
                 }
             }
 
-            override fun onFailure(call: Call<BasicRes>, t: Throwable) {
+            override fun onFailure(call: Call<BasicRes2>, t: Throwable) {
                 Log.d("USER-MODIFY-FAILURE", t.toString())
             }
         })

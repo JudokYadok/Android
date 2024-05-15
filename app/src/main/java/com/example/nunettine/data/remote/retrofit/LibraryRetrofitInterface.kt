@@ -39,7 +39,7 @@ interface LibraryRetrofitInterface {
     @PUT("/user/library/mytext/{user_id}/{text_id}")
     fun putMyText(@Path("user_id") user_id: Int, @Path("text_id") text_id: Int, @Body myTextReq: NewTextReq): Call<BasicRes>
 
-    @POST("/user/library/mytext/new/{user_id}")
+    @POST("/user/library/mytext/{user_id}")
     fun postMyText(@Path("user_id") user_id: Int, @Body newTextReq: NewTextReq): Call<BasicRes>
 
     @POST("/user/library/memo/{user_id}")

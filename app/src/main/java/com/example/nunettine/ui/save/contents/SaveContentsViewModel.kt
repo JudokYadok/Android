@@ -21,11 +21,13 @@ class SaveContentsViewModel: ViewModel(), TextListView, TextView, TextModifyView
     // 단일 조회
     val textTitleML = MutableLiveData<String>()
     val textContentsML = MutableLiveData<String>()
+    val textTypeML = MutableLiveData<String>()
 
     init {
         textListML.value = emptyList()
         textTitleML.value = String()
         textContentsML.value = String()
+        textTypeML.value = String()
     }
 
     fun getTextListService(user_id: Int) {

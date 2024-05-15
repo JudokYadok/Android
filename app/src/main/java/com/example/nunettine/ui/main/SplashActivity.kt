@@ -35,11 +35,6 @@ class SplashActivity: AppCompatActivity(), LoginView {
         binding.splashTv.startAnimation(animation)
         binding.splashIco.startAnimation(animation)
 
-//        Handler().postDelayed({
-//            val intent = Intent(this, LoginActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        }, 2000)
         autoLoginService()
 
         // 로그인 기록이 없을 경우 -> 로그인 화면으로 이동

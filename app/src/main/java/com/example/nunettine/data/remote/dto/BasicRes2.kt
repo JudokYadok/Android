@@ -2,6 +2,6 @@ package com.example.nunettine.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class BasicRes(
-    @SerializedName("message") val message: String
+data class BasicRes2(
+    @SerializedName("result_req") val message: String
 )
