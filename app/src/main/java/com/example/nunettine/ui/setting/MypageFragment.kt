@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -27,11 +28,10 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 
-class MypageFragment: Fragment() {
+class MypageFragment : Fragment() {
     private lateinit var binding: FragmentSettingMypageBinding
     private lateinit var viewModel: MyPageViewModel
     private var user_id: Int = 0
-    var daysUntilDDay = 0L
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -50,21 +50,39 @@ class MypageFragment: Fragment() {
     private fun clickListener() = with(binding) {
         mypageBackBtn.setOnClickListener { moveFragment(SettingFragment()) }
         mypageModifyBtn.setOnClickListener {
-            val dday = UserDday(mypageCalendarAddYearEt.text.toString().toInt(), mypageCalendarAddMonthEt.text.toString().toInt(), mypageCalendarAddDateEt.text.toString().toInt())
-            val userReq = UserReq(mypageNicknameEt.text.toString(), mypageEmailEt.text.toString(), dday, user_id)
+            val dday = UserDday(
+                mypageCalendarAddYearEt.text.toString().toInt(),
+                mypageCalendarAddMonthEt.text.toString().toInt(),
+                mypageCalendarAddDateEt.text.toString().toInt()
+            )
+            val userReq = UserReq(
+                mypageNicknameEt.text.toString(),
+                mypageEmailEt.text.toString(),
+                dday,
+                user_id
+            )
             viewModel.putUserInfoService(userReq)
-            if(viewModel.mofifyML.value == true) {
+            if (viewModel.mofifyML.value == true) {
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.dDayYearML.postValue(mypageCalendarAddYearEt.text.toString().toInt())
                     viewModel.dDayMonthML.postValue(mypageCalendarAddMonthEt.text.toString().toInt())
                     viewModel.dDayDateML.postValue(mypageCalendarAddDateEt.text.toString().toInt())
                 }
+                mypageCalendarAddLo.visibility = View.GONE
+                Toast.makeText(requireContext(), "정보가 수정되었습니다.", Toast.LENGTH_SHORT).show()
             }
         }
         mypageDeleteBtn.setOnClickListener { viewModel.deleteUserInfoService(user_id) }
         mypageCalendarLo.setOnClickListener {
             mypageCalendarAddLo.visibility = View.VISIBLE
             writeDday()
+        }
+
+        mapageRefreshBtn.setOnClickListener {
+            viewModel.getUserInfoService(user_id)
+            initUI(viewModel.emailML.value!!, viewModel.nameML.value!!)
+            observeUserInfo()
+            mypageCalendarAddLo.visibility = View.GONE
         }
     }
 
@@ -100,13 +118,8 @@ class MypageFragment: Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun initDday(year: Int, month: Int, date: Int) = with(binding) {
-        val dDay = LocalDate.of(viewModel.dDayYearML.value!!, viewModel.dDayMonthML.value!!, viewModel.dDayDateML.value!!)
-        val today = LocalDate.now()
-        daysUntilDDay = ChronoUnit.DAYS.between(today, dDay)
-        Log.d("DAY", "${daysUntilDDay}")
-
-        mypageCalendarEt.text = daysUntilDDay.toString()
+    private fun initDday(dday: Int, year: Int, month: Int, date: Int) = with(binding) {
+        mypageCalendarEt.text = dday.toString()
         mypageCalendarAddYearEt.setText(year.toString())
         mypageCalendarAddMonthEt.setText(month.toString())
         mypageCalendarAddDateEt.setText(date.toString())
@@ -127,7 +140,8 @@ class MypageFragment: Fragment() {
 
     private fun getData() {
         // 데이터 읽어오기
-        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            requireContext().getSharedPreferences("kakao", Context.MODE_PRIVATE)
         user_id = sharedPreferences.getInt("user_id", user_id)!!
     }
 
@@ -140,16 +154,17 @@ class MypageFragment: Fragment() {
         }
 
         viewModel.joinDateML.observe(viewLifecycleOwner) { join ->
-            if(join.length > 0) {
+            if (join.length > 0) {
                 initJoinDateUI(join)
             }
         }
-
         viewModel.dDayYearML.observe(viewLifecycleOwner) { year ->
             viewModel.dDayMonthML.observe(viewLifecycleOwner) { month ->
                 viewModel.dDayDateML.observe(viewLifecycleOwner) { date ->
-                    if(year != 2000 && month != 0 && date != 0) {
-                        initDday(year, month, date)
+                    viewModel.ddayML.observe(viewLifecycleOwner) { dday ->
+                        if (dday != 0 && year != 2000 && month != 0 && date != 0) {
+                            initDday(dday, year, month, date)
+                        }
                     }
                 }
             }

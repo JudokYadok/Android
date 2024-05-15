@@ -1,6 +1,8 @@
 package com.example.nunettine.ui.setting
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.nunettine.data.local.UserReq
@@ -11,6 +13,8 @@ import com.example.nunettine.data.remote.service.setting.UserService
 import com.example.nunettine.data.remote.view.setting.UserDeleteView
 import com.example.nunettine.data.remote.view.setting.UserModifyView
 import com.example.nunettine.data.remote.view.setting.UserView
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 class MyPageViewModel: ViewModel(), UserView, UserModifyView, UserDeleteView {
     val emailML = MutableLiveData<String>()
@@ -20,7 +24,7 @@ class MyPageViewModel: ViewModel(), UserView, UserModifyView, UserDeleteView {
     val dDayMonthML = MutableLiveData<Int>().apply { value = 0 }
     val dDayDateML = MutableLiveData<Int>().apply { value = 0 }
     val mofifyML = MutableLiveData<Boolean>()
-    val ddayML = MutableLiveData<Int>(0)
+    val ddayML = MutableLiveData<Int>().apply { value = 0 }
 
     init {
         emailML.value = String()
@@ -46,13 +50,19 @@ class MyPageViewModel: ViewModel(), UserView, UserModifyView, UserDeleteView {
         delUserService.delUser(user_id)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onGetUserSuccess(response: UserRes) {
+        val dDay = LocalDate.of(response.d_day.year, response.d_day.month, response.d_day.date)
+        val today = LocalDate.now()
+        val daysUntilDDay = ChronoUnit.DAYS.between(today, dDay)
+
         emailML.postValue(response.email)
         nameML.postValue(response.name)
         joinDateML.postValue(response.createdAt)
         dDayYearML.postValue(response.d_day.year)
         dDayMonthML.postValue(response.d_day.month)
         dDayDateML.postValue(response.d_day.date)
+        ddayML.postValue(daysUntilDDay.toInt())
         Log.d("USER-GET-성공", response.toString())
     }
 
