@@ -7,22 +7,20 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import com.example.nunettine.R
-import com.example.nunettine.databinding.FragmentSettingInfoBinding
+import com.example.nunettine.databinding.FragmentPersonalInfoBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class InfoFragment: Fragment() {
-    private lateinit var binding: FragmentSettingInfoBinding
+class PersonalInfoFragment: Fragment() {
+    private lateinit var binding: FragmentPersonalInfoBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentSettingInfoBinding.inflate(layoutInflater)
-        clickListener()
-        return binding.root
-    }
+        binding = FragmentPersonalInfoBinding.inflate(layoutInflater)
 
-    private fun clickListener() = with(binding) {
-        infoBackBtn.setOnClickListener { moveFragment(SettingFragment()) }
-        infoItem1Lo.setOnClickListener { moveFragment(PersonalInfoFragment()) }
-        infoItem2Lo.setOnClickListener { moveFragment(DeveloperInfoFragment()) }
+        binding.infoBackBtn.setOnClickListener {
+            moveFragment(InfoFragment())
+        }
+
+        return binding.root
     }
 
     fun moveFragment(fragment: Fragment) {
