@@ -33,6 +33,7 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
         initUI(quiz_list)
         compareAnswer()
         initOMRUI()
+        binding.problemFeedbackBtn.isEnabled = false // 피드백 버튼 비활성화
         Log.d("ANSWER-LIST", "${quiz_answer_list}, ${quiz_right_list}")
         return binding.root
     }
@@ -180,9 +181,10 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
     }
 
     private fun clickListener() = with(binding) {
-        problemFeedbackBtn.setOnClickListener { moveFragment(ProblemFeedbackFragment()) }
+        problemFeedbackBtn.setOnClickListener { moveFragment(ProblemFeedbackFragment(text_title)) }
         problemSaveBtn.setOnClickListener {
             // 응시한 문제 저장 api
+            problemFeedbackBtn.isEnabled = true // feedback 버튼 활성화
             Toast.makeText(context, "문제가 저장되었습니다.", Toast.LENGTH_SHORT).show()
         }
         problemMemoBtn.setOnClickListener { moveFragment(MemoFragment()) }

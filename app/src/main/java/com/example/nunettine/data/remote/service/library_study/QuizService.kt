@@ -2,6 +2,7 @@ package com.example.nunettine.data.remote.service.library_study
 
 import android.util.Log
 import com.example.nunettine.data.local.QuizReq
+import com.example.nunettine.data.remote.dto.BasicRes
 import com.example.nunettine.data.remote.dto.library.QuizListRes
 import com.example.nunettine.data.remote.dto.library.QuizRes
 import com.example.nunettine.data.remote.dto.study.QuizGradeRes
@@ -11,9 +12,11 @@ import com.example.nunettine.data.remote.dto.study.StudyDetailRes
 import com.example.nunettine.data.remote.dto.study.StudyListRes
 import com.example.nunettine.data.remote.dto.study.TextList
 import com.example.nunettine.data.remote.retrofit.LibraryRetrofitInterface
+import com.example.nunettine.data.remote.retrofit.SettingRetrofitInterface
 import com.example.nunettine.data.remote.retrofit.StudyRetrofitInterface
 import com.example.nunettine.data.remote.view.library.QuizListView
 import com.example.nunettine.data.remote.view.library.QuizView
+import com.example.nunettine.data.remote.view.setting.FeedbackView
 import com.example.nunettine.data.remote.view.study.QuizGradeView
 import com.example.nunettine.data.remote.view.study.QuizSolveView
 import com.example.nunettine.data.remote.view.study.StudyCategoryView
@@ -33,6 +36,8 @@ class QuizService {
     private lateinit var studyListView: StudyListView
     private lateinit var studyDetailView: StudyDetailView
     private lateinit var studyCategoryView: StudyCategoryView
+
+    private lateinit var feedbackView: FeedbackView
 
     fun setQuizView(quizView: QuizView) {
         this.quizView = quizView
@@ -60,6 +65,10 @@ class QuizService {
 
     fun getStudyCategoryView(studyCategoryView: StudyCategoryView) {
         this.studyCategoryView = studyCategoryView
+    }
+
+    fun setFeedbackView(feedbackView: FeedbackView) {
+        this.feedbackView = feedbackView
     }
 
     fun setPrevQuizSolve(category: String, textId: Int, quizType: QuizReq) {
@@ -346,6 +355,28 @@ class QuizService {
 
             override fun onFailure(call: Call<QuizGradeRes>, t: Throwable) {
                 Log.d("MY-QUIZ-GRADE-FAILURE", t.toString())
+            }
+        })
+    }
+
+    fun setQuizFeedback(userId: Int, quizId: Int) {
+        val feedbackService = getRetrofit().create(StudyRetrofitInterface::class.java)
+        feedbackService.postQuizFeedback(userId, quizId).enqueue(object : Callback<BasicRes> {
+            override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
+                if (response.isSuccessful) {
+                    val resp: BasicRes? = response.body()
+                    if (resp != null) {
+                        feedbackView.onGetFeedbackSuccess(resp)
+                    } else {
+                        Log.e("QUIZ-FEEDBACK-SUCCESS", "Response body is null")
+                    }
+                } else {
+                    Log.e("QUIZ-FEEDBACK-SUCCESS", "Response not successful: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<BasicRes>, t: Throwable) {
+                Log.d("QUIZ-FEEDBACK-FAILURE", t.toString())
             }
         })
     }

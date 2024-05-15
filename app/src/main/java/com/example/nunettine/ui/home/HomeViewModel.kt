@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.nunettine.R
 import com.example.nunettine.data.local.QuizReq
+import com.example.nunettine.data.remote.dto.BasicRes
 import com.example.nunettine.data.remote.dto.library.QuizList
 import com.example.nunettine.data.remote.dto.study.Question
 import com.example.nunettine.data.remote.dto.study.QuizGradeRes
@@ -15,6 +16,7 @@ import com.example.nunettine.data.remote.dto.study.QuizSolveRes
 import com.example.nunettine.data.remote.dto.study.StudyDetailRes
 import com.example.nunettine.data.remote.dto.study.TextList
 import com.example.nunettine.data.remote.service.library_study.QuizService
+import com.example.nunettine.data.remote.view.setting.FeedbackView
 import com.example.nunettine.data.remote.view.study.QuizGradeView
 import com.example.nunettine.data.remote.view.study.QuizSolveView
 import com.example.nunettine.data.remote.view.study.StudyCategoryView
@@ -26,7 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetailView {
+class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetailView, FeedbackView {
     // type
     val categoryListML = MutableLiveData<List<String>>()
 
@@ -97,6 +99,12 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         setStudyDetailService.getPrevText(category, text_id)
     }
 
+    fun setStudyFeedbackService(user_id: Int, quiz_id: Int) {
+        val setStudyFeedbackService = QuizService()
+        setStudyFeedbackService.setFeedbackView(this@HomeViewModel)
+        setStudyFeedbackService.setQuizFeedback(user_id, quiz_id)
+    }
+
     override fun onGetStudyCategorySuccess(response: List<String>) {
         categoryListML.postValue(response)
         Log.d("TYPE-GET-성공", response.toString())
@@ -123,5 +131,13 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
 
     override fun onGetStudyDetailFailure(result_code: Int) {
         Log.d("TEXT-DETAIL-오류", result_code.toString())
+    }
+
+    override fun onGetFeedbackSuccess(response: BasicRes) {
+        Log.d("QUIZ-FEEDBACK-성공", response.toString())
+    }
+
+    override fun onGetFeedbackFailure(result_code: Int) {
+        Log.d("QUIZ-FEEDBACK-오류", result_code.toString())
     }
 }
