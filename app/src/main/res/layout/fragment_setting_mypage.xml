@@ -32,17 +32,6 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
-        android:id="@+id/mapage_refresh_btn"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@drawable/ico_refresh"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toEndOf="@id/mypage_tv"
-        app:layout_constraintTop_toTopOf="@id/mypage_tv"
-        app:layout_constraintBottom_toBottomOf="@id/mypage_tv"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <ImageView
         android:id="@+id/mypage_profile_iv"
         android:layout_width="150dp"
         android:layout_height="150dp"

@@ -68,22 +68,23 @@ class MypageFragment : Fragment() {
                     viewModel.dDayMonthML.postValue(mypageCalendarAddMonthEt.text.toString().toInt())
                     viewModel.dDayDateML.postValue(mypageCalendarAddDateEt.text.toString().toInt())
                 }
-                mypageCalendarAddLo.visibility = View.GONE
-                Toast.makeText(requireContext(), "정보가 수정되었습니다.", Toast.LENGTH_SHORT).show()
             }
+            Toast.makeText(requireContext(), "정보가 수정되었습니다.", Toast.LENGTH_SHORT).show()
+            refreshUI()
         }
         mypageDeleteBtn.setOnClickListener { viewModel.deleteUserInfoService(user_id) }
         mypageCalendarLo.setOnClickListener {
             mypageCalendarAddLo.visibility = View.VISIBLE
             writeDday()
         }
+    }
 
-        mapageRefreshBtn.setOnClickListener {
-            viewModel.getUserInfoService(user_id)
-            initUI(viewModel.emailML.value!!, viewModel.nameML.value!!)
-            observeUserInfo()
-            mypageCalendarAddLo.visibility = View.GONE
-        }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun refreshUI() = with(binding) {
+        viewModel.getUserInfoService(user_id)
+        initUI(viewModel.emailML.value!!, viewModel.nameML.value!!)
+        observeUserInfo()
+        mypageCalendarAddLo.visibility = View.GONE
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
