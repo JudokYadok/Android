@@ -37,4 +37,26 @@ class AuthService {
             }
         })
     }
+
+    fun setAutoLogin(access: String, refresh: String) {
+        val authService = getRetrofit().create(AuthRetrofitInterface::class.java)
+        authService.getAutoLogin(access, refresh).enqueue(object : Callback<LoginRes> {
+            override fun onResponse(call: Call<LoginRes>, response: Response<LoginRes>) {
+                if (response.isSuccessful) {
+                    val resp: LoginRes? = response.body()
+                    if (resp != null) {
+                        loginView.onGetLoginSuccess(resp)
+                    } else {
+                        Log.e("AUTO-LOGIN-SUCCESS", "Response body is null")
+                    }
+                } else {
+                    Log.e("AUTO-LOGIN-SUCCESS", "Response not successful: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<LoginRes>, t: Throwable) {
+                Log.d("AUTO-LOGIN-FAILURE", t.toString())
+            }
+        })
+    }
 }

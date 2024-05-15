@@ -7,4 +7,7 @@ import retrofit2.http.*
 interface AuthRetrofitInterface {
     @GET("/user/login")
     fun getLogin(@Header("authorization") authorization: String): Call<LoginRes>
+
+    @GET("/user/autologin")
+    fun getAutoLogin(@Header("access") access: String, @Header("refresh") refresh: String): Call<LoginRes>
 }

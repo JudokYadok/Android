@@ -100,7 +100,8 @@ class LoginActivity: AppCompatActivity(), LoginView {
         editor.putString("nickname", nickname!!)
         editor.putString("profile", profile!!)
         editor.putString("email", email!!)
-        editor.putString("accessToken", accessToken!!)
+        editor.putString("getAccessToken", getAccessToken!!)
+        editor.putString("getRefreshToken", getRefreshToken!!)
         editor.putInt("user_id", member_id!!)
         editor.apply()
     }
@@ -125,6 +126,8 @@ class LoginActivity: AppCompatActivity(), LoginView {
     override fun onGetLoginSuccess(response: LoginRes) {
         Log.d("LOGIN-RESPONSE-성공", response.toString())
         member_id = response.user_id
+        getAccessToken = response.access_token
+        getRefreshToken = response.refresh_token
         saveKakaoData()
         if(response.createdAt != localTime.toString()) {
             Log.d("LOGIN", "기존 사용자")
