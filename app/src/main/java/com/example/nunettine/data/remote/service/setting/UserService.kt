@@ -108,21 +108,23 @@ class UserService {
 
     fun setFeedback(userId: Int, feedbackReq: FeedbackReq) {
         val feedbackService = getRetrofit().create(SettingRetrofitInterface::class.java)
-        feedbackService.postFeedback(userId, feedbackReq).enqueue(object : Callback<BasicRes> {
-            override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
+        feedbackService.postFeedback(userId, feedbackReq).enqueue(object : Callback<BasicRes2> {
+            override fun onResponse(call: Call<BasicRes2>, response: Response<BasicRes2>) {
                 if (response.isSuccessful) {
-                    val resp: BasicRes? = response.body()
+                    val resp: BasicRes2? = response.body()
                     if (resp != null) {
                         feedbackView.onGetFeedbackSuccess(resp)
                     } else {
+                        feedbackView.onGetFeedbackFailure(response.code())
                         Log.e("FEEDBACK-SUCCESS", "Response body is null")
                     }
                 } else {
+                    feedbackView.onGetFeedbackFailure(response.code())
                     Log.e("FEEDBACK-SUCCESS", "Response not successful: ${response.code()}")
                 }
             }
 
-            override fun onFailure(call: Call<BasicRes>, t: Throwable) {
+            override fun onFailure(call: Call<BasicRes2>, t: Throwable) {
                 Log.d("FEEDBACK-FAILURE", t.toString())
             }
         })

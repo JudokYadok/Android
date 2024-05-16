@@ -1,32 +1,18 @@
 package com.example.nunettine.ui.home
 
-import android.content.Context
 import android.util.Log
-import android.widget.FrameLayout
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.nunettine.R
-import com.example.nunettine.data.local.QuizReq
-import com.example.nunettine.data.remote.dto.BasicRes
-import com.example.nunettine.data.remote.dto.library.QuizList
+import com.example.nunettine.data.local.FeedbackReq
+import com.example.nunettine.data.remote.dto.BasicRes2
 import com.example.nunettine.data.remote.dto.study.Question
-import com.example.nunettine.data.remote.dto.study.QuizGradeRes
-import com.example.nunettine.data.remote.dto.study.QuizSolveRes
 import com.example.nunettine.data.remote.dto.study.StudyDetailRes
 import com.example.nunettine.data.remote.dto.study.TextList
 import com.example.nunettine.data.remote.service.library_study.QuizService
 import com.example.nunettine.data.remote.view.setting.FeedbackView
-import com.example.nunettine.data.remote.view.study.QuizGradeView
-import com.example.nunettine.data.remote.view.study.QuizSolveView
 import com.example.nunettine.data.remote.view.study.StudyCategoryView
 import com.example.nunettine.data.remote.view.study.StudyDetailView
 import com.example.nunettine.data.remote.view.study.StudyListView
-import com.example.nunettine.ui.main.MainActivity
-import com.example.nunettine.utils.LoadingDialog
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetailView, FeedbackView {
     // type
@@ -63,10 +49,10 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         quizSummaryML.value = String()
     }
 
-    fun setMyTypeService() {
+    fun setMyTypeService(user_id: Int) {
         val setStudyCategoryService = QuizService()
         setStudyCategoryService.getStudyCategoryView(this@HomeViewModel)
-        setStudyCategoryService.getMyTextCategory()
+        setStudyCategoryService.getMyTextCategory(user_id)
     }
 
     fun setPrevTypeService() {
@@ -75,10 +61,10 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         setStudyCategoryService.getPrevTextCategory()
     }
 
-    fun setMyChooseService(category: String) {
+    fun setMyChooseService(user_id: Int, category: String) {
         val setStudyListService = QuizService()
         setStudyListService.getStudyListView(this@HomeViewModel)
-        setStudyListService.getMyTextList(category)
+        setStudyListService.getMyTextList(user_id, category)
     }
 
     fun setPrevChooseService(category: String) {
@@ -87,10 +73,10 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         setStudyListService.getPrevTextList(category)
     }
 
-    fun setStudyMyDetailService(category:String, text_id: Int) {
+    fun setStudyMyDetailService(user_id: Int, category:String, text_id: Int) {
         val setStudyDetailService = QuizService()
         setStudyDetailService.getStudyDetailView(this@HomeViewModel)
-        setStudyDetailService.getMyText(category, text_id)
+        setStudyDetailService.getMyText(user_id, category, text_id)
     }
 
     fun setStudyPrevDetailService(category: String, text_id: Int) {
@@ -99,10 +85,10 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         setStudyDetailService.getPrevText(category, text_id)
     }
 
-    fun setStudyFeedbackService(user_id: Int, quiz_id: Int) {
+    fun setStudyFeedbackService(user_id: Int, quiz_id: Int, contents: FeedbackReq) {
         val setStudyFeedbackService = QuizService()
         setStudyFeedbackService.setFeedbackView(this@HomeViewModel)
-        setStudyFeedbackService.setQuizFeedback(user_id, quiz_id)
+        setStudyFeedbackService.setQuizFeedback(user_id, quiz_id, contents)
     }
 
     override fun onGetStudyCategorySuccess(response: List<String>) {
@@ -133,7 +119,7 @@ class HomeViewModel(): ViewModel(), StudyCategoryView, StudyListView, StudyDetai
         Log.d("TEXT-DETAIL-오류", result_code.toString())
     }
 
-    override fun onGetFeedbackSuccess(response: BasicRes) {
+    override fun onGetFeedbackSuccess(response: BasicRes2) {
         Log.d("QUIZ-FEEDBACK-성공", response.toString())
     }
 

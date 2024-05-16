@@ -3,6 +3,7 @@ package com.example.nunettine.data.remote.service.library_study
 import android.util.Log
 import com.example.nunettine.data.local.NewTextReq
 import com.example.nunettine.data.remote.dto.BasicRes
+import com.example.nunettine.data.remote.dto.library.TextList
 import com.example.nunettine.data.remote.dto.library.TextListRes
 import com.example.nunettine.data.remote.dto.library.TextRes
 import com.example.nunettine.data.remote.retrofit.LibraryRetrofitInterface
@@ -63,10 +64,10 @@ class TextService {
 
     fun getTextList(userId: Int) {
         val textListService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        textListService.getMyTextList(userId).enqueue(object : Callback<TextListRes> {
-            override fun onResponse(call: Call<TextListRes>, response: Response<TextListRes>) {
+        textListService.getMyTextList(userId).enqueue(object : Callback<List<TextList>> {
+            override fun onResponse(call: Call<List<TextList>>, response: Response<List<TextList>>) {
                 if (response.isSuccessful) {
-                    val resp: TextListRes? = response.body()
+                    val resp: List<TextList>? = response.body()
                     if (resp != null) {
                         textListView.onGetTextListSuccess(resp)
                     } else {
@@ -79,7 +80,7 @@ class TextService {
                 }
             }
 
-            override fun onFailure(call: Call<TextListRes>, t: Throwable) {
+            override fun onFailure(call: Call<List<TextList>>, t: Throwable) {
                 Log.d("TEXT-LIST-FAILURE", t.toString())
             }
         })

@@ -9,6 +9,7 @@ import com.example.nunettine.data.remote.dto.library.MemoListRes
 import com.example.nunettine.data.remote.dto.library.MemoRes
 import com.example.nunettine.data.remote.dto.library.QuizListRes
 import com.example.nunettine.data.remote.dto.library.QuizRes
+import com.example.nunettine.data.remote.dto.library.TextList
 import com.example.nunettine.data.remote.dto.library.TextListRes
 import com.example.nunettine.data.remote.dto.library.TextRes
 import retrofit2.Call
@@ -31,7 +32,7 @@ interface LibraryRetrofitInterface {
     fun putMemo(@Path("memo_id") memo_id: Int, @Path("user_id") user_id: Int, @Body memoReq: MemoReq): Call<BasicRes>
 
     @GET("/user/library/mytext/{user_id}")
-    fun getMyTextList(@Path("user_id") user_id: Int): Call<TextListRes>
+    fun getMyTextList(@Path("user_id") user_id: Int): Call<List<TextList>>
 
     @GET("/user/library/mytext/{user_id}/{text_id}")
     fun getMyText(@Path("user_id") user_id: Int, @Path("text_id") text_id: Int): Call<TextRes>

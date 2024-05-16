@@ -22,6 +22,7 @@ class ChooseFragment: Fragment() {
     private lateinit var viewModel: HomeViewModel
     private var type = ""
     private var category = ""
+    private var user_id = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentChooseBinding.inflate(layoutInflater)
@@ -32,7 +33,7 @@ class ChooseFragment: Fragment() {
             viewModel.setPrevChooseService(category)
             observeTextList()
         } else {
-            viewModel.setMyChooseService(category)
+            viewModel.setMyChooseService(user_id, category)
             observeTextList()
         }
 
@@ -69,6 +70,9 @@ class ChooseFragment: Fragment() {
         val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("type", Context.MODE_PRIVATE)
         type = sharedPreferences.getString("type", type)!!
         category = sharedPreferences.getString("category", category)!!
+
+        val sharedPreferences2: SharedPreferences = requireContext().getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        user_id = sharedPreferences2.getInt("user_id", user_id)
     }
 
     private fun observeTextList() {

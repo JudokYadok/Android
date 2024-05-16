@@ -6,12 +6,14 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -40,6 +42,7 @@ class MergeCountFragment: Fragment(), QuizSolveView {
     private var text_id = 0
     private var text_title = ""
     private var quiz_type = ""
+    private var user_id = 0
 
     @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,6 +51,7 @@ class MergeCountFragment: Fragment(), QuizSolveView {
         loadingDialog = LoadingDialog(requireContext()) // 로딩 다이얼로그 초기화
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
+        textScroll(binding.mergeCountTv)
         binding.mergeCountTv.text = text_title
 
         clickListener()
@@ -90,7 +94,8 @@ class MergeCountFragment: Fragment(), QuizSolveView {
                 setPrevQuizTypeService(category, text_id, quizT)
                 loadingDialog.show() // 로딩 다이얼로그 표시
             } else {
-//            setStudyMyDetailService(category, text_id)
+                setMyQuizTypeService(user_id, category, text_id, quizT)
+                loadingDialog.show()
             }
         }
     }
@@ -137,12 +142,21 @@ class MergeCountFragment: Fragment(), QuizSolveView {
         type = sharedPreferences2.getString("type", type)!!
         category = sharedPreferences2.getString("category", category)!!
         text_id = sharedPreferences2.getInt("text_id", text_id)
+
+        val sharedPreferences3: SharedPreferences = requireContext().getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        user_id = sharedPreferences3.getInt("user_id", user_id)
     }
 
     fun setPrevQuizTypeService(category: String, text_id: Int, quiz_type: QuizReq) {
         val setPrevQuizTypeService = QuizService()
         setPrevQuizTypeService.setQuizSolveView(this@MergeCountFragment)
         setPrevQuizTypeService.setPrevQuizSolve(category, text_id, quiz_type)
+    }
+
+    fun setMyQuizTypeService(user_id: Int, category: String, text_id: Int, quiz_type: QuizReq) {
+        val setMyQuizTypeService = QuizService()
+        setMyQuizTypeService.setQuizSolveView(this@MergeCountFragment)
+        setMyQuizTypeService.setMyQuizSolve(user_id, category, text_id, quiz_type)
     }
 
     override fun onGetQuizSolveSuccess(response: QuizSolveRes) {
@@ -162,5 +176,15 @@ class MergeCountFragment: Fragment(), QuizSolveView {
         super.onDestroyView()
         // Fragment가 제거될 때 타이머를 취소합니다.
         timer?.cancel()
+    }
+
+    private fun textScroll(textView: TextView) {
+        // 텍스트가 길때 자동 스크롤
+        textView.apply {
+            setSingleLine()
+            marqueeRepeatLimit = -1
+            ellipsize = TextUtils.TruncateAt.MARQUEE
+            isSelected = true
+        }
     }
 }

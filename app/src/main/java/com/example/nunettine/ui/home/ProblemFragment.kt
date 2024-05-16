@@ -5,12 +5,14 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.SystemClock
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -37,7 +39,7 @@ class ProblemFragment(private val quiz_list: List<Question>) : Fragment(), QuizG
     private var text_id = 0
     private var text_title = ""
     private var text_contents = ""
-    private var quiz_summary = ""
+    private var user_id = 0
     private var quiz_answer_list = listOf<Int>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,6 +47,7 @@ class ProblemFragment(private val quiz_list: List<Question>) : Fragment(), QuizG
         getData()
         loadingDialog = LoadingDialogGrade(requireContext()) // 로딩 다이얼로그 초기화
 
+        textScroll(binding.problemTv)
         binding.problemTv.text = text_title
         binding.problemContentsTv.text = text_contents
         clickListener()
@@ -93,6 +96,9 @@ class ProblemFragment(private val quiz_list: List<Question>) : Fragment(), QuizG
         type = sharedPreferences2.getString("type", type)!!
         category = sharedPreferences2.getString("category", category)!!
         text_id = sharedPreferences2.getInt("text_id", text_id)
+
+        val sharedPreferences3: SharedPreferences = requireContext().getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        user_id = sharedPreferences3.getInt("user_id", user_id)
     }
 
     private fun settingMedia() = with(binding) {
@@ -158,8 +164,13 @@ class ProblemFragment(private val quiz_list: List<Question>) : Fragment(), QuizG
         }
 
         problemCheckBtn.setOnClickListener {
-            setPrevQuizGradeService(category, text_id)
-            loadingDialog.show() // 로딩 다이얼로그 표시
+            if(type =="PREVTEXT") {
+                setPrevQuizGradeService(category, text_id)
+                loadingDialog.show() // 로딩 다이얼로그 표시
+            } else {
+                setMyQuizGradeService(user_id, category, text_id)
+                loadingDialog.show()
+            }
         }
 
         // 1번 문제
@@ -321,6 +332,12 @@ class ProblemFragment(private val quiz_list: List<Question>) : Fragment(), QuizG
         setPrevQuizGradeService.setGradePrevQuiz(category, text_id)
     }
 
+    private fun setMyQuizGradeService(user_id: Int, category: String, text_id: Int) {
+        val setMyQuizGradeService = QuizService()
+        setMyQuizGradeService.setQuizGradeView(this@ProblemFragment)
+        setMyQuizGradeService.setGradeMyQuiz(user_id, category, text_id)
+    }
+
     override fun onGetQuizGradeSuccess(response: QuizGradeRes) {
         val quiz_right_list = listOf(quiz_list[0].answers.indexOfFirst { it.correct }, quiz_list[1].answers.indexOfFirst { it.correct }, quiz_list[2].answers.indexOfFirst { it.correct })
         moveFragment(CheckFragment(quiz_list, quiz_answer_list, quiz_right_list, response.content))
@@ -339,5 +356,15 @@ class ProblemFragment(private val quiz_list: List<Question>) : Fragment(), QuizG
         super.onDestroyView()
         // Fragment가 제거될 때 타이머를 취소합니다.
         timer?.cancel()
+    }
+
+    private fun textScroll(textView: TextView) {
+        // 텍스트가 길때 자동 스크롤
+        textView.apply {
+            setSingleLine()
+            marqueeRepeatLimit = -1
+            ellipsize = TextUtils.TruncateAt.MARQUEE
+            isSelected = true
+        }
     }
 }

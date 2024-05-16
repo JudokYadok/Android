@@ -19,6 +19,7 @@ import com.example.nunettine.ui.main.MainActivity
 class TypeFragment: Fragment() {
     private lateinit var binding: FragmentTypeBinding
     private lateinit var viewModel: HomeViewModel
+    private var user_id = 0
     private var type = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,7 +31,7 @@ class TypeFragment: Fragment() {
             viewModel.setPrevTypeService()
             observeCategoryList()
         } else {
-            viewModel.setMyTypeService()
+            viewModel.setMyTypeService(user_id)
             observeCategoryList()
         }
 
@@ -66,6 +67,9 @@ class TypeFragment: Fragment() {
         // 데이터 읽어오기
         val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("type", Context.MODE_PRIVATE)
         type = sharedPreferences.getString("type", type)!!
+
+        val sharedPreferences2: SharedPreferences = requireContext().getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        user_id = sharedPreferences2.getInt("user_id", user_id)
     }
 
     private fun observeCategoryList() {

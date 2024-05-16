@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.nunettine.R
@@ -25,6 +27,7 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
     private var text_contents = ""
     private var right = 0
     private var wrong = 0
+    private var user_id = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCheckBinding.inflate(layoutInflater)
@@ -150,6 +153,7 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
     }
 
     private fun initUI(quizList: List<Question>) = with(binding) {
+        textScroll(problemTv)
         problemTv.text = text_title
         problemContentsTv.text = text_contents
         problemSummaryTv.text = quiz_summary
@@ -181,9 +185,15 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
     }
 
     private fun clickListener() = with(binding) {
-        problemFeedbackBtn.setOnClickListener { moveFragment(ProblemFeedbackFragment(text_title)) }
+        if(problemFeedbackBtn.isEnabled == false) {
+            problemFeedbackBtn.setOnClickListener {
+                Toast.makeText(context, "저장이 완료되면 피드백 작성이 가능합니다.", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            problemFeedbackBtn.setOnClickListener { moveFragment(ProblemFeedbackFragment(text_title)) }
+        }
         problemSaveBtn.setOnClickListener {
-            // 응시한 문제 저장 api
+            // 응시한 문제 저장 api 호출 필요
             problemFeedbackBtn.isEnabled = true // feedback 버튼 활성화
             Toast.makeText(context, "문제가 저장되었습니다.", Toast.LENGTH_SHORT).show()
         }
@@ -212,5 +222,18 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
         type = sharedPreferences2.getString("type", type)!!
         category = sharedPreferences2.getString("category", category)!!
         text_id = sharedPreferences2.getInt("text_id", text_id)
+
+        val sharedPreferences3: SharedPreferences = requireContext().getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        user_id = sharedPreferences3.getInt("user_id", user_id)
+    }
+
+    private fun textScroll(textView: TextView) {
+        // 텍스트가 길때 자동 스크롤
+        textView.apply {
+            setSingleLine()
+            marqueeRepeatLimit = -1
+            ellipsize = TextUtils.TruncateAt.MARQUEE
+            isSelected = true
+        }
     }
 }

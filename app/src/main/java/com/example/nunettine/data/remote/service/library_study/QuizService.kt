@@ -1,8 +1,10 @@
 package com.example.nunettine.data.remote.service.library_study
 
 import android.util.Log
+import com.example.nunettine.data.local.FeedbackReq
 import com.example.nunettine.data.local.QuizReq
 import com.example.nunettine.data.remote.dto.BasicRes
+import com.example.nunettine.data.remote.dto.BasicRes2
 import com.example.nunettine.data.remote.dto.library.QuizListRes
 import com.example.nunettine.data.remote.dto.library.QuizRes
 import com.example.nunettine.data.remote.dto.study.QuizGradeRes
@@ -67,8 +69,8 @@ class QuizService {
         this.studyCategoryView = studyCategoryView
     }
 
-    fun setFeedbackView(feedbackView: FeedbackView) {
-        this.feedbackView = feedbackView
+    fun setFeedbackView(setFeedbackView: FeedbackView) {
+        this.feedbackView = setFeedbackView
     }
 
     fun setPrevQuizSolve(category: String, textId: Int, quizType: QuizReq) {
@@ -95,9 +97,9 @@ class QuizService {
         })
     }
 
-    fun setMyQuizSolve(category: String, textId: Int, quizType: QuizReq) {
+    fun setMyQuizSolve(user_id: Int, category: String, textId: Int, quizType: QuizReq) {
         val quizMyService = getRetrofit().create(StudyRetrofitInterface::class.java)
-        quizMyService.postMyTextQuiz(category, textId, quizType).enqueue(object : Callback<QuizSolveRes> {
+        quizMyService.postMyTextQuiz(user_id, category, textId, quizType).enqueue(object : Callback<QuizSolveRes> {
             override fun onResponse(call: Call<QuizSolveRes>, response: Response<QuizSolveRes>) {
                 if (response.isSuccessful) {
                     val resp: QuizSolveRes? = response.body()
@@ -143,9 +145,9 @@ class QuizService {
         })
     }
 
-    fun getMyText(category: String, textId: Int) {
+    fun getMyText(user_id: Int, category: String, textId: Int) {
         val quizMyService = getRetrofit().create(StudyRetrofitInterface::class.java)
-        quizMyService.getMyText(category, textId).enqueue(object : Callback<StudyDetailRes> {
+        quizMyService.getMyText(user_id, category, textId).enqueue(object : Callback<StudyDetailRes> {
             override fun onResponse(call: Call<StudyDetailRes>, response: Response<StudyDetailRes>) {
                 if (response.isSuccessful) {
                     val resp: StudyDetailRes? = response.body()
@@ -167,9 +169,9 @@ class QuizService {
         })
     }
 
-    fun getMyTextCategory() {
+    fun getMyTextCategory(user_id: Int) {
         val myTextCategoryService = getRetrofit().create(StudyRetrofitInterface::class.java)
-        myTextCategoryService.getMyTextType().enqueue(object : Callback<List<String>> {
+        myTextCategoryService.getMyTextType(user_id).enqueue(object : Callback<List<String>> {
             override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
                 if (response.isSuccessful) {
                     val resp: List<String>? = response.body()
@@ -215,9 +217,9 @@ class QuizService {
         })
     }
 
-    fun getMyTextList(category: String) {
+    fun getMyTextList(user_id: Int, category: String) {
         val textListService = getRetrofit().create(StudyRetrofitInterface::class.java)
-        textListService.getMyTextList(category).enqueue(object : Callback<List<TextList>> {
+        textListService.getMyTextList(user_id, category).enqueue(object : Callback<List<TextList>> {
             override fun onResponse(call: Call<List<TextList>>, response: Response<List<TextList>>) {
                 if (response.isSuccessful) {
                     val resp: List<TextList>? = response.body()
@@ -335,9 +337,9 @@ class QuizService {
         })
     }
 
-    fun setGradeMyQuiz(category: String, textId: Int) {
+    fun setGradeMyQuiz(user_id: Int, category: String, textId: Int) {
         val quizPrevGradeService = getRetrofit().create(StudyRetrofitInterface::class.java)
-        quizPrevGradeService.postPrevTextCheckQuiz(category, textId).enqueue(object : Callback<QuizGradeRes> {
+        quizPrevGradeService.postMyTextCheckQuiz(user_id, category, textId).enqueue(object : Callback<QuizGradeRes> {
             override fun onResponse(call: Call<QuizGradeRes>, response: Response<QuizGradeRes>) {
                 if (response.isSuccessful) {
                     val resp: QuizGradeRes? = response.body()
@@ -359,12 +361,12 @@ class QuizService {
         })
     }
 
-    fun setQuizFeedback(userId: Int, quizId: Int) {
+    fun setQuizFeedback(userId: Int, quizId: Int, contents: FeedbackReq) {
         val feedbackService = getRetrofit().create(StudyRetrofitInterface::class.java)
-        feedbackService.postQuizFeedback(userId, quizId).enqueue(object : Callback<BasicRes> {
-            override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
+        feedbackService.postQuizFeedback(userId, quizId, contents).enqueue(object : Callback<BasicRes2> {
+            override fun onResponse(call: Call<BasicRes2>, response: Response<BasicRes2>) {
                 if (response.isSuccessful) {
-                    val resp: BasicRes? = response.body()
+                    val resp: BasicRes2? = response.body()
                     if (resp != null) {
                         feedbackView.onGetFeedbackSuccess(resp)
                     } else {
@@ -375,7 +377,7 @@ class QuizService {
                 }
             }
 
-            override fun onFailure(call: Call<BasicRes>, t: Throwable) {
+            override fun onFailure(call: Call<BasicRes2>, t: Throwable) {
                 Log.d("QUIZ-FEEDBACK-FAILURE", t.toString())
             }
         })

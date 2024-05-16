@@ -54,8 +54,8 @@ class SaveContentsViewModel: ViewModel(), TextListView, TextView, TextModifyView
         putTextService.putText(user_id, text_id, textReq)
     }
 
-    override fun onGetTextListSuccess(response: TextListRes) {
-        textListML.postValue(response.text_list)
+    override fun onGetTextListSuccess(response: List<TextList>) {
+        textListML.postValue(response)
         Log.d("GET-TEXT-LIST-성공", response.toString())
     }
 

@@ -78,6 +78,7 @@
             android:layout_marginHorizontal="45dp"
             android:background="@drawable/et_main"
             android:backgroundTint="@color/pink"
+            app:layout_constraintBottom_toTopOf="@id/add_contents_btn"
             app:layout_constraintTop_toBottomOf="@id/add_contents_name_et">
 
             <androidx.constraintlayout.widget.ConstraintLayout

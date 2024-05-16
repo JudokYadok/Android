@@ -21,6 +21,7 @@ import com.example.nunettine.ui.save.memo.ModifyMemoFragment
 class SaveContentsRVAdapter(private val context: Context, private val contentsList: MutableList<TextList>): RecyclerView.Adapter<SaveContentsRVAdapter.ViewHolder>() {
     private lateinit var binding : ItemContentsListBinding
     private var user_id = 0
+
     inner class ViewHolder(val binding: ItemContentsListBinding): RecyclerView.ViewHolder(binding.root) {
         @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
         fun bind(textList: TextList) = with(binding) {
@@ -32,7 +33,7 @@ class SaveContentsRVAdapter(private val context: Context, private val contentsLi
             }
 
             itemContentsListLo.setOnClickListener {
-                moveFragment(ModifyContentsFragment())
+                moveFragment(ModifyContentsFragment(textList.text_category))
                 saveData(textList.text_id)
             }
         }

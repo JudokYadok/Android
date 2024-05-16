@@ -57,6 +57,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/et_main"
             android:backgroundTint="@color/pink"
+            app:layout_constraintBottom_toTopOf="@id/modify_memo_btn"
             app:layout_constraintTop_toBottomOf="@id/modify_memo_name_et">
 
             <androidx.constraintlayout.widget.ConstraintLayout

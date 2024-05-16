@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.nunettine.R
+import com.example.nunettine.data.local.FeedbackReq
 import com.example.nunettine.databinding.FragmentSettingFeedbackBinding
 import com.example.nunettine.ui.main.MainActivity
 
@@ -32,7 +33,8 @@ class ProblemFeedbackFragment(private val text_title: String): Fragment() {
     private fun clickListener() = with(binding) {
         feedbackBackBtn.setOnClickListener { goBackFragment() }
         feedbackWriteYesBtn.setOnClickListener {
-            viewModel.setStudyFeedbackService(user_id, quiz_id)
+            val feedbackContents = FeedbackReq(feedbackWriteEt.text.toString())
+            viewModel.setStudyFeedbackService(user_id, quiz_id, feedbackContents)
             Toast.makeText(context, "피드백이 전달되었습니다.", Toast.LENGTH_SHORT).show()
         }
         feedbackWriteNoBtn.setOnClickListener { goBackFragment() }

@@ -7,7 +7,7 @@ data class TextListRes(
 )
 
 data class TextList(
-    @SerializedName("text_id") val text_id: Int,
-    @SerializedName("text_category") val text_category: String,
-    @SerializedName("text_title") val text_title: String
+    @SerializedName("category") val text_category: String,
+    @SerializedName("title") val text_title: String,
+    @SerializedName("text_id") val text_id: Int
 )

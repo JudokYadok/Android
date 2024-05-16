@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +24,7 @@ class PreviewContentsFragment: Fragment() {
     private var type = ""
     private var category = ""
     private var text_id = 0
+    private var user_id = 0
 
     @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,7 +36,7 @@ class PreviewContentsFragment: Fragment() {
             viewModel.setStudyPrevDetailService(category, text_id)
             observeTextList()
         } else {
-            viewModel.setStudyMyDetailService(category, text_id)
+            viewModel.setStudyMyDetailService(user_id, category, text_id)
             observeTextList()
         }
 
@@ -64,6 +67,9 @@ class PreviewContentsFragment: Fragment() {
         type = sharedPreferences.getString("type", type)!!
         category = sharedPreferences.getString("category", category)!!
         text_id = sharedPreferences.getInt("text_id", text_id)
+
+        val sharedPreferences2: SharedPreferences = requireContext().getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        user_id = sharedPreferences2.getInt("user_id", user_id)
     }
 
     @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
@@ -78,6 +84,7 @@ class PreviewContentsFragment: Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     private fun initUI(text_title: String, text_contents: String) = with(binding) {
+        textScroll(previewContentsTv)
         previewContentsTv.text = text_title
         previewContentsDetailTv.text = text_contents
         saveData(text_title, text_contents)
@@ -90,6 +97,16 @@ class PreviewContentsFragment: Fragment() {
                 // 데이터가 변경되었을 때 UI 업데이트
                 initUI(textTitle, textContents)
             }
+        }
+    }
+
+    private fun textScroll(textView: TextView) {
+        // 텍스트가 길때 자동 스크롤
+        textView.apply {
+            setSingleLine()
+            marqueeRepeatLimit = -1
+            ellipsize = TextUtils.TruncateAt.MARQUEE
+            isSelected = true
         }
     }
 }

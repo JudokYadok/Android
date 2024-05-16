@@ -21,7 +21,6 @@ class InfoFragment: Fragment() {
 
     private fun clickListener() = with(binding) {
         infoBackBtn.setOnClickListener { moveFragment(SettingFragment()) }
-        infoItem1Lo.setOnClickListener { moveFragment(PersonalInfoFragment()) }
         infoItem2Lo.setOnClickListener { moveFragment(DeveloperInfoFragment()) }
     }
 

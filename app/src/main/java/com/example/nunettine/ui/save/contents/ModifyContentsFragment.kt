@@ -16,7 +16,7 @@ import com.example.nunettine.data.local.NewTextReq
 import com.example.nunettine.databinding.FragmentModifyContentsBinding
 import com.example.nunettine.ui.save.memo.SaveMemoViewModel
 
-class ModifyContentsFragment: Fragment() {
+class ModifyContentsFragment(private val text_type: String): Fragment() {
     private lateinit var binding: FragmentModifyContentsBinding
     private lateinit var viewModel: SaveContentsViewModel
     private var textId = 0
@@ -24,7 +24,7 @@ class ModifyContentsFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentModifyContentsBinding.inflate(layoutInflater)
         getData()
-
+        Log.d("TEXTID", textId.toString())
         // Spinner
         val yearSpinner = binding.spinnerType
         val yearAdapter = ArrayAdapter.createFromResource(requireContext(), R.array.type, android.R.layout.simple_spinner_item)
@@ -33,6 +33,7 @@ class ModifyContentsFragment: Fragment() {
 
         viewModel = ViewModelProvider(this).get(SaveContentsViewModel::class.java)
         viewModel.getTextService(user_id, textId)
+
         observeContents()
         clickListener()
         return binding.root
@@ -61,7 +62,7 @@ class ModifyContentsFragment: Fragment() {
         user_id = sharedPreferences2.getInt("user_id", user_id)
     }
 
-    private fun initUI(text_title: String, text_contents: String, text_type: String) = with(binding) {
+    private fun initUI(text_title: String, text_contents: String) = with(binding) {
         addContentsNameEt.setText(text_title)
         addContentsEt.setText(text_contents)
 
@@ -75,10 +76,7 @@ class ModifyContentsFragment: Fragment() {
     private fun observeContents() {
         viewModel.textTitleML.observe(viewLifecycleOwner) { textTitle ->
             viewModel.textContentsML.observe(viewLifecycleOwner) { textContents ->
-                viewModel.textTypeML.observe(viewLifecycleOwner) { textType ->
-                    // 데이터가 변경되었을 때 UI 업데이트
-                    initUI(textTitle, textContents, textType)
-                }
+                initUI(textTitle, textContents)
             }
         }
     }

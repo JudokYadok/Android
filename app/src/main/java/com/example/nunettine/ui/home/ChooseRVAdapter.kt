@@ -3,9 +3,11 @@ package com.example.nunettine.ui.home
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,9 @@ class ChooseRVAdapter(private val textList: List<TextList>, private val context:
     inner class ViewHolder(val binding: ItemChooseBinding): RecyclerView.ViewHolder(binding.root) {
         @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
         fun bind(text_list: TextList) = with(binding) {
+            // 텍스트가 길때 자동 스크롤
+            textScroll(chooseItemTv)
+
             chooseItemTv.text = text_list.title
 
             chooseItemLo.setOnClickListener {
@@ -59,5 +64,15 @@ class ChooseRVAdapter(private val textList: List<TextList>, private val context:
         editor.putString("category", category)
         editor.putInt("text_id", text_id)
         editor.apply()
+    }
+
+    private fun textScroll(textView: TextView) {
+        // 텍스트가 길때 자동 스크롤
+        textView.apply {
+            setSingleLine()
+            marqueeRepeatLimit = -1
+            ellipsize = TextUtils.TruncateAt.MARQUEE
+            isSelected = true
+        }
     }
 }

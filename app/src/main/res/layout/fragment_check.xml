@@ -12,6 +12,7 @@
         android:text="지문 이름"
         android:textColor="@color/black"
         android:textSize="40dp"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
