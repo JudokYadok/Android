@@ -5,16 +5,24 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.nunettine.data.remote.dto.auth.LoginRes
+import com.example.nunettine.data.remote.service.auth.AuthService
+import com.example.nunettine.data.remote.view.auth.LoginView
 import com.example.nunettine.databinding.ActivityLoginBinding
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import java.time.LocalDateTime
 
-class LoginActivity: AppCompatActivity() {
+class LoginActivity: AppCompatActivity(), LoginView {
     private lateinit var binding: ActivityLoginBinding
+    @RequiresApi(Build.VERSION_CODES.O)
+    var localTime: LocalDateTime = LocalDateTime.now()
+
     private var nickname : String? = ""
     private var profile :String? = ""
     private var email: String? = ""
@@ -54,7 +62,8 @@ class LoginActivity: AppCompatActivity() {
                         saveKakaoData()
                     }
                 }
-                goMainActivity()
+                loginService(token.accessToken)
+//                goMainActivity()
             }
         }
 
@@ -76,6 +85,7 @@ class LoginActivity: AppCompatActivity() {
                 // 로그인 성공 부분
                 else if (token != null) {
                     Log.e(TAG, "로그인 성공 ${token.accessToken}")
+                    loginService(token.accessToken)
                 }
             }
         } else {
@@ -90,8 +100,16 @@ class LoginActivity: AppCompatActivity() {
         editor.putString("nickname", nickname!!)
         editor.putString("profile", profile!!)
         editor.putString("email", email!!)
-        editor.putString("accessToken", accessToken!!)
+        editor.putString("getAccessToken", getAccessToken!!)
+        editor.putString("getRefreshToken", getRefreshToken!!)
+        editor.putInt("user_id", member_id!!)
         editor.apply()
+    }
+
+    private fun loginService(authorization: String) {
+        val loginService = AuthService()
+        loginService.setLoginView(this@LoginActivity)
+        loginService.setLogin(authorization)
     }
 
     private fun goMainActivity() {
@@ -104,4 +122,22 @@ class LoginActivity: AppCompatActivity() {
     }
 
     override fun onBackPressed() { }
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onGetLoginSuccess(response: LoginRes) {
+        Log.d("LOGIN-RESPONSE-성공", response.toString())
+        member_id = response.user_id
+        getAccessToken = response.access_token
+        getRefreshToken = response.refresh_token
+        saveKakaoData()
+        if(response.createdAt != localTime.toString()) {
+            Log.d("LOGIN", "기존 사용자")
+        } else {
+            Log.d("SIGNUP", "새로운 사용자")
+        }
+        goMainActivity()
+    }
+
+    override fun onGetLoginFailure(result_req: String) {
+        Log.d("LOGIN-RESPONSE-오류", result_req)
+    }
 }
