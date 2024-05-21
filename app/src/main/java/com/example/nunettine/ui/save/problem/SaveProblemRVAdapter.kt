@@ -4,23 +4,28 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nunettine.R
+import com.example.nunettine.data.remote.dto.BasicRes
 import com.example.nunettine.data.remote.dto.library.QuizSaveList
+import com.example.nunettine.data.remote.service.library_study.QuizService
+import com.example.nunettine.data.remote.view.library.QuizDelView
 import com.example.nunettine.databinding.ItemProblemListBinding
 import com.example.nunettine.ui.main.MainActivity
 import com.example.nunettine.ui.save.memo.ModifyMemoFragment
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class SaveProblemRVAdapter(private val context: Context, private var quiz_list: MutableList<QuizSaveList>): RecyclerView.Adapter<SaveProblemRVAdapter.ViewHolder>() {
+class SaveProblemRVAdapter(private val context: Context, private var quiz_list: MutableList<QuizSaveList>): RecyclerView.Adapter<SaveProblemRVAdapter.ViewHolder>(), QuizDelView {
     private lateinit var binding: ItemProblemListBinding
     private var user_id = 0
 
@@ -32,6 +37,7 @@ class SaveProblemRVAdapter(private val context: Context, private var quiz_list: 
             textScroll(itemProblemListNameTv)
 
             itemProblemListDelBtn.setOnClickListener {
+                delQuizService(quizList.quiz_id, adapterPosition)
             }
 
             itemProblemListLo.setOnClickListener {
@@ -100,5 +106,22 @@ class SaveProblemRVAdapter(private val context: Context, private var quiz_list: 
             ellipsize = TextUtils.TruncateAt.MARQUEE
             isSelected = true
         }
+    }
+
+    private fun delQuizService(quiz_id: Int, position: Int) {
+        val delQuizService = QuizService()
+        delQuizService.setQuizDeleteView(this@SaveProblemRVAdapter)
+        delQuizService.delSaveQuiz(user_id,quiz_id, position)
+    }
+
+    override fun deleteQuizSuccess(response: BasicRes, position: Int) {
+        Toast.makeText(context, "퀴즈가 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+        quiz_list.removeAt(position)
+        notifyItemRemoved(position)
+        Log.d("QUIZ-DELETE-성공", response.toString())
+    }
+
+    override fun deleteQuizFailure(message: String) {
+        Log.d("QUIZ-DELETE-오류", message)
     }
 }

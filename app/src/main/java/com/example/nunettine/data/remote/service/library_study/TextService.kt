@@ -7,6 +7,7 @@ import com.example.nunettine.data.remote.dto.library.TextList
 import com.example.nunettine.data.remote.dto.library.TextListRes
 import com.example.nunettine.data.remote.dto.library.TextRes
 import com.example.nunettine.data.remote.retrofit.LibraryRetrofitInterface
+import com.example.nunettine.data.remote.view.library.TextDelView
 import com.example.nunettine.data.remote.view.library.TextListView
 import com.example.nunettine.data.remote.view.library.TextModifyView
 import com.example.nunettine.data.remote.view.library.TextNewView
@@ -21,6 +22,7 @@ class TextService {
     private lateinit var textListView: TextListView
     private lateinit var textNewView: TextNewView
     private lateinit var textModifyView: TextModifyView
+    private lateinit var textDeleteView: TextDelView
 
     fun setTextView(textView: TextView) {
         this.textView = textView
@@ -36,6 +38,10 @@ class TextService {
 
     fun setTextModifyView(textModifyView: TextModifyView) {
         this.textModifyView = textModifyView
+    }
+
+    fun setTextDeleteView(textDeleteView: TextDelView) {
+        this.textDeleteView = textDeleteView
     }
 
     fun getText(userId: Int, textId: Int) {
@@ -130,6 +136,30 @@ class TextService {
 
             override fun onFailure(call: Call<BasicRes>, t: Throwable) {
                 Log.d("TEXT-MODIFY-FAILURE", t.toString())
+            }
+        })
+    }
+
+    fun deleteText(user_id: Int, text_id: Int, position: Int) {
+        val textDeleteService = getRetrofit().create(LibraryRetrofitInterface::class.java)
+        textDeleteService.delMyText(user_id, text_id).enqueue(object : Callback<BasicRes> {
+            override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
+                if (response.isSuccessful) {
+                    val resp: BasicRes? = response.body()
+                    if (resp != null) {
+                        textDeleteView.deleteTextSuccess(resp, position)
+                    } else {
+                        Log.e("TEXT-DELETE-SUCCESS", "Response body is null")
+                        textDeleteView.deleteTextFailure(response.message())
+                    }
+                } else {
+                    Log.e("TEXT-DELETE-SUCCESS", "Response not successful: ${response.code()}")
+                    textDeleteView.deleteTextFailure(response.message())
+                }
+            }
+
+            override fun onFailure(call: Call<BasicRes>, t: Throwable) {
+                Log.d("TEXT-DELETE-FAILURE", t.toString())
             }
         })
     }

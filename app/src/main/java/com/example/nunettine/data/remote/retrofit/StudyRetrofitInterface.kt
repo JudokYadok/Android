@@ -50,4 +50,8 @@ interface StudyRetrofitInterface {
 
     @POST("/user/study/prevtext/{category}/{text_id}/quiz/save/{user_id}")
     fun postQuizPrevTextSave(@Path("category") category: String, @Path("text_id") text_id: Int, @Path("user_id") user_id: Int, @Body quizSaveReq: QuizSaveReq): Call<QuizSaveRes>
+
+    @POST("/user/study/mytext/{category}/{text_id}/quiz/save/{user_id}")
+    fun postQuizMyTextSave(@Path("category") category: String, @Path("text_id") text_id: Int, @Path("user_id") user_id: Int, @Body quizSaveReq: QuizSaveReq): Call<QuizSaveRes>
+
 }

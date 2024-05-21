@@ -9,18 +9,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nunettine.R
+import com.example.nunettine.data.remote.dto.BasicRes
 import com.example.nunettine.data.remote.dto.library.MemoList
 import com.example.nunettine.data.remote.dto.library.TextList
+import com.example.nunettine.data.remote.service.library_study.TextService
+import com.example.nunettine.data.remote.view.library.TextDelView
 import com.example.nunettine.databinding.ItemContentsListBinding
 import com.example.nunettine.ui.main.MainActivity
 import com.example.nunettine.ui.save.memo.ModifyMemoFragment
 
-class SaveContentsRVAdapter(private val context: Context, private val contentsList: MutableList<TextList>): RecyclerView.Adapter<SaveContentsRVAdapter.ViewHolder>() {
+class SaveContentsRVAdapter(private val context: Context, private val contentsList: MutableList<TextList>): RecyclerView.Adapter<SaveContentsRVAdapter.ViewHolder>(), TextDelView {
     private lateinit var binding : ItemContentsListBinding
     private var user_id = 0
 
@@ -33,6 +37,7 @@ class SaveContentsRVAdapter(private val context: Context, private val contentsLi
             textScroll(itemContentsListNameTv)
 
             itemContentsListDelBtn.setOnClickListener {
+                delTextService(textList.text_id, adapterPosition)
             }
 
             itemContentsListLo.setOnClickListener {
@@ -86,5 +91,22 @@ class SaveContentsRVAdapter(private val context: Context, private val contentsLi
             ellipsize = TextUtils.TruncateAt.MARQUEE
             isSelected = true
         }
+    }
+
+    private fun delTextService(text_id: Int, position: Int) {
+        val delTextService = TextService()
+        delTextService.setTextDeleteView(this@SaveContentsRVAdapter)
+        delTextService.deleteText(user_id, text_id, position)
+    }
+
+    override fun deleteTextSuccess(response: BasicRes, position: Int) {
+        Toast.makeText(context, "지문이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+        contentsList.removeAt(position)
+        notifyItemRemoved(position)
+        Log.d("TEXT-DELETE-성공", response.toString())
+    }
+
+    override fun deleteTextFailure(message: String) {
+        Log.d("TEXT-DELETE-오류", message)
     }
 }

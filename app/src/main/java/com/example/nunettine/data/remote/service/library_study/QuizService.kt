@@ -19,6 +19,7 @@ import com.example.nunettine.data.remote.dto.study.TextList
 import com.example.nunettine.data.remote.retrofit.LibraryRetrofitInterface
 import com.example.nunettine.data.remote.retrofit.SettingRetrofitInterface
 import com.example.nunettine.data.remote.retrofit.StudyRetrofitInterface
+import com.example.nunettine.data.remote.view.library.QuizDelView
 import com.example.nunettine.data.remote.view.library.QuizListView
 import com.example.nunettine.data.remote.view.library.QuizView
 import com.example.nunettine.data.remote.view.setting.FeedbackView
@@ -40,6 +41,7 @@ class QuizService {
     private lateinit var quizListView: QuizListView
     private lateinit var quizGradeView: QuizGradeView
     private lateinit var quizSaveView: QuizSaveView
+    private lateinit var quizDeleteView: QuizDelView
 
     private lateinit var studyListView: StudyListView
     private lateinit var studyDetailView: StudyDetailView
@@ -65,6 +67,10 @@ class QuizService {
 
     fun setQuizSaveView(quiz_saveView: QuizSaveView) {
         this.quizSaveView = quiz_saveView
+    }
+
+    fun setQuizDeleteView(quiz_deleteView: QuizDelView) {
+        this.quizDeleteView = quiz_deleteView
     }
 
     fun getStudyDetailView(studyDetailView: StudyDetailView) {
@@ -417,7 +423,7 @@ class QuizService {
 
     fun setQuizSaveMy(category: String, text_id: Int, user_id: Int, quizSaveReq: QuizSaveReq) {
         val myQuizSaveService = getRetrofit().create(StudyRetrofitInterface::class.java)
-        myQuizSaveService.postQuizPrevTextSave(category, text_id, user_id, quizSaveReq).enqueue(object : Callback<QuizSaveRes> {
+        myQuizSaveService.postQuizMyTextSave(category, text_id, user_id, quizSaveReq).enqueue(object : Callback<QuizSaveRes> {
             override fun onResponse(call: Call<QuizSaveRes>, response: Response<QuizSaveRes>) {
                 if (response.isSuccessful) {
                     val resp: QuizSaveRes? = response.body()
@@ -433,6 +439,28 @@ class QuizService {
 
             override fun onFailure(call: Call<QuizSaveRes>, t: Throwable) {
                 Log.d("MY-QUIZ-SAVE-FAILURE", t.toString())
+            }
+        })
+    }
+
+    fun delSaveQuiz(user_id: Int, quiz_id: Int, position: Int) {
+        val delQuizSaveService = getRetrofit().create(LibraryRetrofitInterface::class.java)
+        delQuizSaveService.delQuiz(user_id, quiz_id).enqueue(object : Callback<BasicRes> {
+            override fun onResponse(call: Call<BasicRes>, response: Response<BasicRes>) {
+                if (response.isSuccessful) {
+                    val resp: BasicRes? = response.body()
+                    if (resp != null) {
+                        quizDeleteView.deleteQuizSuccess(resp, position)
+                    } else {
+                        Log.e("QUIZ-DELETE-SUCCESS", "Response body is null")
+                    }
+                } else {
+                    Log.e("QUIZ-DELETE-SUCCESS", "Response not successful: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<BasicRes>, t: Throwable) {
+                Log.d("QUIZ-DELETE-FAILURE", t.toString())
             }
         })
     }

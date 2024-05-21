@@ -23,6 +23,9 @@ interface LibraryRetrofitInterface {
     @GET("/user/library/quiz/{user_id}/{quiz_id}")
     fun getQuiz(@Path("user_id") user_id: Int, @Path("quiz_id") quiz_id: Int): Call<QuizSaveDetailRes>
 
+    @DELETE("/user/library/quiz/{user_id}/{quiz_id}")
+    fun delQuiz(@Path("user_id") user_id: Int, @Path("quiz_id") quiz_id: Int): Call<BasicRes>
+
 
     @GET("/user/library/memo/{user_id}")
     fun getMemoList(@Path("user_id") user_id: Int): Call<List<MemoList>>
@@ -51,4 +54,7 @@ interface LibraryRetrofitInterface {
 
     @POST("/user/library/mytext/{user_id}")
     fun postMyText(@Path("user_id") user_id: Int, @Body newTextReq: NewTextReq): Call<BasicRes>
+
+    @DELETE("/user/library/mytext/{user_id}/{text_id}")
+    fun delMyText(@Path("user_id") user_id: Int, @Path("text_id") text_id: Int): Call<BasicRes>
 }
