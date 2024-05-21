@@ -5,10 +5,11 @@ import com.example.nunettine.data.local.NewMemoReq
 import com.example.nunettine.data.local.NewTextReq
 import com.example.nunettine.data.remote.dto.BasicRes
 import com.example.nunettine.data.remote.dto.library.MemoList
-import com.example.nunettine.data.remote.dto.library.MemoListRes
 import com.example.nunettine.data.remote.dto.library.MemoRes
-import com.example.nunettine.data.remote.dto.library.QuizListRes
 import com.example.nunettine.data.remote.dto.library.QuizRes
+import com.example.nunettine.data.remote.dto.library.QuizSaveDetailRes
+import com.example.nunettine.data.remote.dto.library.QuizSaveList
+import com.example.nunettine.data.remote.dto.library.QuizSaveListRes
 import com.example.nunettine.data.remote.dto.library.TextList
 import com.example.nunettine.data.remote.dto.library.TextListRes
 import com.example.nunettine.data.remote.dto.library.TextRes
@@ -16,11 +17,12 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface LibraryRetrofitInterface {
-    @GET("/user/library/quiz")
-    fun getQuizList(): Call<QuizListRes>
+    @GET("/user/library/quiz/{user_id}")
+    fun getQuizList(@Path("user_id") user_id: Int): Call<List<QuizSaveList>>
 
-    @GET("/user/library/quiz/{quiz_id}")
-    fun getQuiz(@Path("quiz_id") quiz_id: Int): Call<QuizRes>
+    @GET("/user/library/quiz/{user_id}/{quiz_id}")
+    fun getQuiz(@Path("user_id") user_id: Int, @Path("quiz_id") quiz_id: Int): Call<QuizSaveDetailRes>
+
 
     @GET("/user/library/memo/{user_id}")
     fun getMemoList(@Path("user_id") user_id: Int): Call<List<MemoList>>
@@ -30,6 +32,13 @@ interface LibraryRetrofitInterface {
 
     @PUT("/user/library/memo/{user_id}/{memo_id}")
     fun putMemo(@Path("memo_id") memo_id: Int, @Path("user_id") user_id: Int, @Body memoReq: MemoReq): Call<BasicRes>
+
+    @POST("/user/library/memo/{user_id}")
+    fun postMemo(@Body newMemoReq: NewMemoReq, @Path("user_id") user_id: Int): Call<BasicRes>
+
+    @DELETE("/user/library/memo/{user_id}/{memo_id}")
+    fun deleteMemo(@Path("memo_id") memo_id: Int, @Path("user_id") user_id: Int): Call<BasicRes>
+
 
     @GET("/user/library/mytext/{user_id}")
     fun getMyTextList(@Path("user_id") user_id: Int): Call<List<TextList>>
@@ -42,10 +51,4 @@ interface LibraryRetrofitInterface {
 
     @POST("/user/library/mytext/{user_id}")
     fun postMyText(@Path("user_id") user_id: Int, @Body newTextReq: NewTextReq): Call<BasicRes>
-
-    @POST("/user/library/memo/{user_id}")
-    fun postMemo(@Body newMemoReq: NewMemoReq, @Path("user_id") user_id: Int): Call<BasicRes>
-
-    @DELETE("/user/library/memo/{user_id}/{memo_id}")
-    fun deleteMemo(@Path("memo_id") memo_id: Int, @Path("user_id") user_id: Int): Call<BasicRes>
 }

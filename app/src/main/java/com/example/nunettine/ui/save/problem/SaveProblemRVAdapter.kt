@@ -1,27 +1,45 @@
 package com.example.nunettine.ui.save.problem
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.os.Build
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nunettine.R
+import com.example.nunettine.data.remote.dto.library.QuizSaveList
 import com.example.nunettine.databinding.ItemProblemListBinding
 import com.example.nunettine.ui.main.MainActivity
 import com.example.nunettine.ui.save.memo.ModifyMemoFragment
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-class SaveProblemRVAdapter(private val context: Context, private var fragmentManager: FragmentManager): RecyclerView.Adapter<SaveProblemRVAdapter.ViewHolder>() {
+class SaveProblemRVAdapter(private val context: Context, private var quiz_list: MutableList<QuizSaveList>): RecyclerView.Adapter<SaveProblemRVAdapter.ViewHolder>() {
     private lateinit var binding: ItemProblemListBinding
+    private var user_id = 0
+
     inner class ViewHolder(val binding: ItemProblemListBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind() = with(binding) {
+        @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+        fun bind(quizList: QuizSaveList) = with(binding) {
+            getData()
+            itemProblemListNameTv.text = quizList.title
+            textScroll(itemProblemListNameTv)
+
             itemProblemListDelBtn.setOnClickListener {
             }
 
             itemProblemListLo.setOnClickListener {
-                moveFragment(ModifyMemoFragment())
+                saveData(quizList.quiz_id)
+                moveFragment(SaveProblemReadFragment(quizList.title))
             }
+
+            itemProblemListDateTv.text = timeFormat(quizList.updatedAt)
         }
     }
 
@@ -30,9 +48,23 @@ class SaveProblemRVAdapter(private val context: Context, private var fragmentMan
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = 1 // 임시 설정
+    override fun getItemCount(): Int = quiz_list.size
 
-    override fun onBindViewHolder(holder: SaveProblemRVAdapter.ViewHolder, position: Int) = holder.bind()
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    override fun onBindViewHolder(holder: SaveProblemRVAdapter.ViewHolder, position: Int) = holder.bind(quiz_list[position])
+
+    private fun timeFormat(originalTime: String): String {
+        // 원본 문자열을 날짜로 파싱합니다.
+        val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val originalDate = originalFormat.parse(originalTime)
+
+        // 포맷을 변경하고자 하는 형식을 정의합니다.
+        val targetFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+
+        // 새로운 형식으로 포맷합니다.
+        val formattedDate = targetFormat.format(originalDate)
+        return formattedDate
+    }
 
     private fun moveFragment(fragment: Fragment) {
         val mainActivity = context as MainActivity
@@ -43,6 +75,30 @@ class SaveProblemRVAdapter(private val context: Context, private var fragmentMan
             transaction.replace(mainFrmLayout.id, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    private fun saveData(quizId: Int) {
+        // 데이터 저장
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("quiz_save", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putInt("quiz_id", quizId)
+        editor.apply()
+    }
+
+    private fun getData() {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("kakao", Context.MODE_PRIVATE)
+        user_id = sharedPreferences.getInt("user_id", user_id)
+    }
+
+    private fun textScroll(textView: TextView) {
+        // 텍스트가 길때 자동 스크롤
+        textView.apply {
+            setSingleLine()
+            marqueeRepeatLimit = -1
+            ellipsize = TextUtils.TruncateAt.MARQUEE
+            isSelected = true
         }
     }
 }

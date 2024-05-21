@@ -3,10 +3,12 @@ package com.example.nunettine.ui.save.memo
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -30,6 +32,7 @@ class SaveMemoRVAdapter(private val context: Context, private val memoList: Muta
         fun bind(memo_list: MemoList) = with(binding) {
             getData()
             itemMemoListNameTv.text = memo_list.title
+            textScroll(itemMemoListNameTv)
 
             itemMemoListDelBtn.setOnClickListener {
                 onDeleteMemoService(memo_list.memo_id, adapterPosition)
@@ -49,7 +52,7 @@ class SaveMemoRVAdapter(private val context: Context, private val memoList: Muta
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = memoList.size // 임시 설
+    override fun getItemCount(): Int = memoList.size
 
     @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(memoList[position])
@@ -108,5 +111,15 @@ class SaveMemoRVAdapter(private val context: Context, private val memoList: Muta
     private fun getData() {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("kakao", Context.MODE_PRIVATE)
         user_id = sharedPreferences.getInt("user_id", user_id)
+    }
+
+    private fun textScroll(textView: TextView) {
+        // 텍스트가 길때 자동 스크롤
+        textView.apply {
+            setSingleLine()
+            marqueeRepeatLimit = -1
+            ellipsize = TextUtils.TruncateAt.MARQUEE
+            isSelected = true
+        }
     }
 }

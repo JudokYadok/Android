@@ -20,18 +20,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.nunettine.R
 import com.example.nunettine.data.local.QuizReq
-import com.example.nunettine.data.remote.dto.library.QuizList
-import com.example.nunettine.data.remote.dto.study.Question
 import com.example.nunettine.data.remote.dto.study.QuizSolveRes
 import com.example.nunettine.data.remote.service.library_study.QuizService
 import com.example.nunettine.data.remote.view.study.QuizSolveView
 import com.example.nunettine.databinding.FragmentMergeCountBinding
 import com.example.nunettine.ui.main.MainActivity
 import com.example.nunettine.utils.LoadingDialog
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-
 class MergeCountFragment: Fragment(), QuizSolveView {
     private lateinit var binding: FragmentMergeCountBinding
     private lateinit var loadingDialog: LoadingDialog

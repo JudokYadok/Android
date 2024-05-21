@@ -39,63 +39,25 @@
             android:textSize="24dp"
             android:textColor="@color/black"
             android:fontFamily="@font/nanumsquareneo_regular"
-            android:layout_marginStart="100dp"
+            android:layout_marginStart="80dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:id="@+id/item_problem_list_name_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="500dp"
             android:layout_height="wrap_content"
             android:text="22년 6월 지문1"
             android:textColor="@color/blue"
             android:textSize="24dp"
+            android:gravity="center"
             android:fontFamily="@font/nanumsquareneo_regular"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="90dp"
-            app:layout_constraintEnd_toStartOf="@id/item_problem_list_score1_tv"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/item_problem_list_date_tv"/>
-
-        <TextView
-            android:id="@+id/item_problem_list_score1_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3"
-            android:textColor="@color/black"
-            android:textSize="24dp"
-            android:fontFamily="@font/nanumsquareneo_regular"
-            android:paddingStart="20dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/item_problem_list_score_tv"/>
-
-        <TextView
-            android:id="@+id/item_problem_list_score_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="/"
-            android:textColor="@color/black"
-            android:textSize="24dp"
-            android:fontFamily="@font/nanumsquareneo_regular"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/item_problem_list_score2_tv"/>
-
-        <TextView
-            android:id="@+id/item_problem_list_score2_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4"
-            android:textColor="@color/black"
-            android:textSize="24dp"
-            android:fontFamily="@font/nanumsquareneo_regular"
-            android:paddingEnd="20dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

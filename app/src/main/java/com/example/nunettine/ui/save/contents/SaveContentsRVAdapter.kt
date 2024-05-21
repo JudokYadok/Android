@@ -3,10 +3,12 @@ package com.example.nunettine.ui.save.contents
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -28,6 +30,7 @@ class SaveContentsRVAdapter(private val context: Context, private val contentsLi
             getData()
             itemContentsListTypeTv.text = textList.text_category
             itemContentsListNameTv.text = textList.text_title
+            textScroll(itemContentsListNameTv)
 
             itemContentsListDelBtn.setOnClickListener {
             }
@@ -73,5 +76,15 @@ class SaveContentsRVAdapter(private val context: Context, private val contentsLi
     private fun getData() {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("kakao", Context.MODE_PRIVATE)
         user_id = sharedPreferences.getInt("user_id", user_id)
+    }
+
+    private fun textScroll(textView: TextView) {
+        // 텍스트가 길때 자동 스크롤
+        textView.apply {
+            setSingleLine()
+            marqueeRepeatLimit = -1
+            ellipsize = TextUtils.TruncateAt.MARQUEE
+            isSelected = true
+        }
     }
 }

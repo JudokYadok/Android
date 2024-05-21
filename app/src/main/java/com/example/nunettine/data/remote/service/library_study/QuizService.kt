@@ -6,8 +6,9 @@ import com.example.nunettine.data.local.QuizReq
 import com.example.nunettine.data.local.QuizSaveReq
 import com.example.nunettine.data.remote.dto.BasicRes
 import com.example.nunettine.data.remote.dto.BasicRes2
-import com.example.nunettine.data.remote.dto.library.QuizListRes
-import com.example.nunettine.data.remote.dto.library.QuizRes
+import com.example.nunettine.data.remote.dto.library.QuizSaveDetailRes
+import com.example.nunettine.data.remote.dto.library.QuizSaveList
+import com.example.nunettine.data.remote.dto.library.QuizSaveListRes
 import com.example.nunettine.data.remote.dto.study.QuizGradeRes
 import com.example.nunettine.data.remote.dto.study.QuizSaveRes
 import com.example.nunettine.data.remote.dto.study.QuizSolveRes
@@ -274,12 +275,12 @@ class QuizService {
         })
     }
 
-    fun getQuizList() {
+    fun getQuizList(user_id: Int) {
         val quizListService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        quizListService.getQuizList().enqueue(object : Callback<QuizListRes> {
-            override fun onResponse(call: Call<QuizListRes>, response: Response<QuizListRes>) {
+        quizListService.getQuizList(user_id).enqueue(object : Callback<List<QuizSaveList>> {
+            override fun onResponse(call: Call<List<QuizSaveList>>, response: Response<List<QuizSaveList>>) {
                 if (response.isSuccessful) {
-                    val resp: QuizListRes? = response.body()
+                    val resp: List<QuizSaveList>? = response.body()
                     if (resp != null) {
                         quizListView.onGetQuizListSuccess(resp)
                     } else {
@@ -292,18 +293,18 @@ class QuizService {
                 }
             }
 
-            override fun onFailure(call: Call<QuizListRes>, t: Throwable) {
+            override fun onFailure(call: Call<List<QuizSaveList>>, t: Throwable) {
                 Log.d("QUIZ-LIST-GET-FAILURE", t.toString())
             }
         })
     }
 
-    fun getQuiz(quizId: Int) {
+    fun getQuiz(user_id: Int, quiz_id: Int) {
         val quizService = getRetrofit().create(LibraryRetrofitInterface::class.java)
-        quizService.getQuiz(quizId).enqueue(object : Callback<QuizRes> {
-            override fun onResponse(call: Call<QuizRes>, response: Response<QuizRes>) {
+        quizService.getQuiz(user_id, quiz_id).enqueue(object : Callback<QuizSaveDetailRes> {
+            override fun onResponse(call: Call<QuizSaveDetailRes>, response: Response<QuizSaveDetailRes>) {
                 if (response.isSuccessful) {
-                    val resp: QuizRes? = response.body()
+                    val resp: QuizSaveDetailRes? = response.body()
                     if (resp != null) {
                         quizView.onGetQuizSuccess(resp)
                     } else {
@@ -316,7 +317,7 @@ class QuizService {
                 }
             }
 
-            override fun onFailure(call: Call<QuizRes>, t: Throwable) {
+            override fun onFailure(call: Call<QuizSaveDetailRes>, t: Throwable) {
                 Log.d("QUIZ-GET-FAILURE", t.toString())
             }
         })
