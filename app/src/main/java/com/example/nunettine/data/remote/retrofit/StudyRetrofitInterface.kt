@@ -2,8 +2,10 @@ package com.example.nunettine.data.remote.retrofit
 
 import com.example.nunettine.data.local.FeedbackReq
 import com.example.nunettine.data.local.QuizReq
+import com.example.nunettine.data.local.QuizSaveReq
 import com.example.nunettine.data.remote.dto.BasicRes2
 import com.example.nunettine.data.remote.dto.study.QuizGradeRes
+import com.example.nunettine.data.remote.dto.study.QuizSaveRes
 import com.example.nunettine.data.remote.dto.study.QuizSolveRes
 import com.example.nunettine.data.remote.dto.study.StudyCategoryRes
 import com.example.nunettine.data.remote.dto.study.StudyDetailRes
@@ -45,4 +47,7 @@ interface StudyRetrofitInterface {
 
     @POST("user/study/quizfeedback/{user_id}/{quiz_id}")
     fun postQuizFeedback(@Path("user_id") user_id: Int, @Path("quiz_id") quiz_id: Int, @Body feedbackReq: FeedbackReq): Call<BasicRes2>
+
+    @POST("/user/study/prevtext/{category}/{text_id}/quiz/save/{user_id}")
+    fun postQuizPrevTextSave(@Path("category") category: String, @Path("text_id") text_id: Int, @Path("user_id") user_id: Int, @Body quizSaveReq: QuizSaveReq): Call<QuizSaveRes>
 }

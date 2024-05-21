@@ -14,11 +14,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.nunettine.R
+import com.example.nunettine.data.local.Answer_List
+import com.example.nunettine.data.local.QuizSaveReq
+import com.example.nunettine.data.local.Quiz_List
 import com.example.nunettine.data.remote.dto.study.Question
+import com.example.nunettine.data.remote.dto.study.QuizSaveRes
+import com.example.nunettine.data.remote.service.library_study.QuizService
+import com.example.nunettine.data.remote.view.study.QuizSaveView
 import com.example.nunettine.databinding.FragmentCheckBinding
 import com.example.nunettine.ui.main.MainActivity
 
-class CheckFragment(private val quiz_list: List<Question>, private val quiz_answer_list: List<Int>, private val quiz_right_list: List<Int>, private val quiz_summary: String): Fragment() {
+class CheckFragment(private val quiz_list: List<Question>, private val quiz_answer_list: List<Int>, private val quiz_right_list: List<Int>, private val quiz_summary: String): Fragment(), QuizSaveView {
     private lateinit var binding: FragmentCheckBinding
     private var type = ""
     private var category = ""
@@ -184,6 +190,42 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
         problemQuiz35TextTv.text = "(5) " + quizList[2].answers[4].answer
     }
 
+    private fun setPrevQuizSaveService(quizList: List<Question>) {
+        val answer_list = Answer_List(listOf(quizList[0].answers[0].answer,
+            quizList[0].answers[1].answer, quizList[0].answers[2].answer,
+            quizList[0].answers[3].answer, quizList[0].answers[4].answer),
+            listOf(quizList[1].answers[0].answer, quizList[1].answers[1].answer,
+                quizList[1].answers[2].answer, quizList[1].answers[3].answer,
+                quizList[1].answers[4].answer),
+            listOf(quizList[2].answers[0].answer, quizList[2].answers[1].answer,
+                quizList[2].answers[2].answer, quizList[2].answers[3].answer,
+                quizList[2].answers[4].answer)
+        )
+        val quiz_list = Quiz_List(listOf(quizList[0].question, quizList[1].question, quizList[2].question), answer_list)
+        val quizSaveReq = QuizSaveReq(text_id, quiz_list, quiz_answer_list, quiz_right_list)
+        val quizSaveService = QuizService()
+        quizSaveService.setQuizSaveView(this@CheckFragment)
+        quizSaveService.setQuizSavePrev(category, text_id, user_id, quizSaveReq)
+    }
+
+    private fun setMyQuizSaveService(quizList: List<Question>) {
+        val answer_list = Answer_List(listOf(quizList[0].answers[0].answer,
+            quizList[0].answers[1].answer, quizList[0].answers[2].answer,
+            quizList[0].answers[3].answer, quizList[0].answers[4].answer),
+            listOf(quizList[1].answers[0].answer, quizList[1].answers[1].answer,
+                quizList[1].answers[2].answer, quizList[1].answers[3].answer,
+                quizList[1].answers[4].answer),
+            listOf(quizList[2].answers[0].answer, quizList[2].answers[1].answer,
+                quizList[2].answers[2].answer, quizList[2].answers[3].answer,
+                quizList[2].answers[4].answer)
+        )
+        val quiz_list = Quiz_List(listOf(quizList[0].question, quizList[1].question, quizList[2].question), answer_list)
+        val quizSaveReq = QuizSaveReq(text_id, quiz_list, quiz_answer_list, quiz_right_list)
+        val quizSaveService = QuizService()
+        quizSaveService.setQuizSaveView(this@CheckFragment)
+        quizSaveService.setQuizSaveMy(category, text_id, user_id, quizSaveReq)
+    }
+
     private fun clickListener() = with(binding) {
         if(problemFeedbackBtn.isEnabled == false) {
             problemFeedbackBtn.setOnClickListener {
@@ -195,7 +237,12 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
         problemSaveBtn.setOnClickListener {
             // 응시한 문제 저장 api 호출 필요
             problemFeedbackBtn.isEnabled = true // feedback 버튼 활성화
-            Toast.makeText(context, "문제가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+            if(type == "PREVTEXT") {
+                setPrevQuizSaveService(quiz_list)
+            } else {
+                setMyQuizSaveService(quiz_list)
+            }
+
         }
         problemMemoBtn.setOnClickListener { moveFragment(MemoFragment()) }
     }
@@ -235,5 +282,14 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
             ellipsize = TextUtils.TruncateAt.MARQUEE
             isSelected = true
         }
+    }
+
+    override fun setQuizSaveSuccess(response: QuizSaveRes) {
+        Toast.makeText(context, "문제가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+        Log.d("문제 저장 성공", response.message)
+    }
+
+    override fun setQuizSaveFailure(message: String) {
+        Log.d("문제 저장 오류", message)
     }
 }

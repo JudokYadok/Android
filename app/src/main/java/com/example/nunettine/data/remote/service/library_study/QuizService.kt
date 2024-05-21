@@ -3,11 +3,13 @@ package com.example.nunettine.data.remote.service.library_study
 import android.util.Log
 import com.example.nunettine.data.local.FeedbackReq
 import com.example.nunettine.data.local.QuizReq
+import com.example.nunettine.data.local.QuizSaveReq
 import com.example.nunettine.data.remote.dto.BasicRes
 import com.example.nunettine.data.remote.dto.BasicRes2
 import com.example.nunettine.data.remote.dto.library.QuizListRes
 import com.example.nunettine.data.remote.dto.library.QuizRes
 import com.example.nunettine.data.remote.dto.study.QuizGradeRes
+import com.example.nunettine.data.remote.dto.study.QuizSaveRes
 import com.example.nunettine.data.remote.dto.study.QuizSolveRes
 import com.example.nunettine.data.remote.dto.study.StudyCategoryRes
 import com.example.nunettine.data.remote.dto.study.StudyDetailRes
@@ -20,6 +22,7 @@ import com.example.nunettine.data.remote.view.library.QuizListView
 import com.example.nunettine.data.remote.view.library.QuizView
 import com.example.nunettine.data.remote.view.setting.FeedbackView
 import com.example.nunettine.data.remote.view.study.QuizGradeView
+import com.example.nunettine.data.remote.view.study.QuizSaveView
 import com.example.nunettine.data.remote.view.study.QuizSolveView
 import com.example.nunettine.data.remote.view.study.StudyCategoryView
 import com.example.nunettine.data.remote.view.study.StudyDetailView
@@ -28,12 +31,14 @@ import com.example.nunettine.utils.getRetrofit
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.create
 
 class QuizService {
     private lateinit var quizView: QuizView
     private lateinit var quizSolveView:QuizSolveView
     private lateinit var quizListView: QuizListView
     private lateinit var quizGradeView: QuizGradeView
+    private lateinit var quizSaveView: QuizSaveView
 
     private lateinit var studyListView: StudyListView
     private lateinit var studyDetailView: StudyDetailView
@@ -55,6 +60,10 @@ class QuizService {
 
     fun setQuizGradeView(quizGradeView: QuizGradeView) {
         this.quizGradeView = quizGradeView
+    }
+
+    fun setQuizSaveView(quiz_saveView: QuizSaveView) {
+        this.quizSaveView = quiz_saveView
     }
 
     fun getStudyDetailView(studyDetailView: StudyDetailView) {
@@ -379,6 +388,50 @@ class QuizService {
 
             override fun onFailure(call: Call<BasicRes2>, t: Throwable) {
                 Log.d("QUIZ-FEEDBACK-FAILURE", t.toString())
+            }
+        })
+    }
+
+    fun setQuizSavePrev(category: String, text_id: Int, user_id: Int, quizSaveReq: QuizSaveReq) {
+        val prevQuizSaveService = getRetrofit().create(StudyRetrofitInterface::class.java)
+        prevQuizSaveService.postQuizPrevTextSave(category, text_id, user_id, quizSaveReq).enqueue(object : Callback<QuizSaveRes> {
+            override fun onResponse(call: Call<QuizSaveRes>, response: Response<QuizSaveRes>) {
+                if (response.isSuccessful) {
+                    val resp: QuizSaveRes? = response.body()
+                    if (resp != null) {
+                        quizSaveView.setQuizSaveSuccess(resp)
+                    } else {
+                        Log.e("PREV-QUIZ-SAVE-SUCCESS", "Response body is null")
+                    }
+                } else {
+                    Log.e("PREV-QUIZ-SAVE-SUCCESS", "Response not successful: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<QuizSaveRes>, t: Throwable) {
+                Log.d("PREV-QUIZ-SAVE-FAILURE", t.toString())
+            }
+        })
+    }
+
+    fun setQuizSaveMy(category: String, text_id: Int, user_id: Int, quizSaveReq: QuizSaveReq) {
+        val myQuizSaveService = getRetrofit().create(StudyRetrofitInterface::class.java)
+        myQuizSaveService.postQuizPrevTextSave(category, text_id, user_id, quizSaveReq).enqueue(object : Callback<QuizSaveRes> {
+            override fun onResponse(call: Call<QuizSaveRes>, response: Response<QuizSaveRes>) {
+                if (response.isSuccessful) {
+                    val resp: QuizSaveRes? = response.body()
+                    if (resp != null) {
+                        quizSaveView.setQuizSaveSuccess(resp)
+                    } else {
+                        Log.e("MY-QUIZ-SAVE-SUCCESS", "Response body is null")
+                    }
+                } else {
+                    Log.e("MY-QUIZ-SAVE-SUCCESS", "Response not successful: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<QuizSaveRes>, t: Throwable) {
+                Log.d("MY-QUIZ-SAVE-FAILURE", t.toString())
             }
         })
     }
