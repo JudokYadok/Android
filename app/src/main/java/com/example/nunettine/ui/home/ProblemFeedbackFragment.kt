@@ -50,5 +50,8 @@ class ProblemFeedbackFragment(private val text_title: String): Fragment() {
     private fun getData() {
         val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("kakao", Context.MODE_PRIVATE)
         user_id = sharedPreferences.getInt("user_id", user_id)
+
+        val sharedPreferences2: SharedPreferences = requireContext().getSharedPreferences("quiz_id", Context.MODE_PRIVATE)
+        quiz_id = sharedPreferences2.getInt("quiz_id", quiz_id)
     }
 }

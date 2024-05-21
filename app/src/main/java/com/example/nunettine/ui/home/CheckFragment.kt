@@ -3,6 +3,7 @@ package com.example.nunettine.ui.home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -12,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.nunettine.R
 import com.example.nunettine.data.local.Answer_List
@@ -34,6 +37,7 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
     private var right = 0
     private var wrong = 0
     private var user_id = 0
+    private var quiz_id = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCheckBinding.inflate(layoutInflater)
@@ -274,6 +278,14 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
         user_id = sharedPreferences3.getInt("user_id", user_id)
     }
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    private fun saveData() {
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences("quiz_id", AppCompatActivity.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putInt("quiz_id", quiz_id)
+        editor.apply()
+    }
+
     private fun textScroll(textView: TextView) {
         // 텍스트가 길때 자동 스크롤
         textView.apply {
@@ -284,8 +296,11 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
     override fun setQuizSaveSuccess(response: QuizSaveRes) {
         Toast.makeText(context, "문제가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+        quiz_id = response.quiz_id
+        saveData()
         Log.d("문제 저장 성공", response.message)
     }
 
