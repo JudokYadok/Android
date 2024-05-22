@@ -28,8 +28,6 @@ class SaveProblemReadFragment(private val title: String): Fragment() {
     private var right = 0
     private var wrong = 0
 
-    private var text_contents = ""
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSaveProblemBinding.inflate(layoutInflater)
         getData()
@@ -164,7 +162,7 @@ class SaveProblemReadFragment(private val title: String): Fragment() {
     private fun initUI(quiz: QuizSaveDetailRes) = with(binding) {
         textScroll(problemTv)
         problemTv.text = title
-        problemContentsTv.text = text_contents
+        problemContentsTv.text = quiz.text_contents
         // 문제 설정
         problemQuiz11TitleTv.text = quiz.questions[0]
         problemQuiz22TitleTv.text = quiz.questions[1]
@@ -217,9 +215,6 @@ class SaveProblemReadFragment(private val title: String): Fragment() {
             }
         }
 
-        viewModel.contentsML.observe(viewLifecycleOwner) { contents ->
-            text_contents = contents
-        }
         viewModel.responseML.observe(viewLifecycleOwner) { response ->
             if(response != null) {
                 initUI(response)

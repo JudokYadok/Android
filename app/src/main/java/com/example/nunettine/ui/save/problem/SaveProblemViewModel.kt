@@ -17,7 +17,6 @@ class SaveProblemViewModel: ViewModel(), QuizListView, QuizView {
     val userAnswersML = MutableLiveData<List<Int>>()
     val correctAnswersML = MutableLiveData<List<Int>>()
     val createdAtML = MutableLiveData<String>()
-    val contentsML = MutableLiveData<String>()
     val responseML = MutableLiveData<QuizSaveDetailRes>()
 
     init {

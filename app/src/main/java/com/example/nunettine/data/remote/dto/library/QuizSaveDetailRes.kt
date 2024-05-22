@@ -11,7 +11,9 @@ data class QuizSaveDetailRes(
     @SerializedName("answers") val answers: AnswerList,
     @SerializedName("user_answers") val user_answers: List<Int>,
     @SerializedName("correct_answers") val correct_answers: List<Int>,
-    @SerializedName("createdAt") val createdAt: String
+    @SerializedName("createdAt") val createdAt: String,
+    @SerializedName("text_title") val text_title: String,
+    @SerializedName("text_contents") val text_contents: String
 )
 
 data class AnswerList(
