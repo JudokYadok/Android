@@ -248,6 +248,7 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
             }
 
         }
+        problemHomeBtn.setOnClickListener { moveFragment(HomeFragment()) }
         problemMemoBtn.setOnClickListener { moveFragment(MemoFragment()) }
     }
 

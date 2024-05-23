@@ -420,6 +420,21 @@
                 app:layout_constraintStart_toStartOf="@id/problem_omr_lo"
                 app:layout_constraintTop_toBottomOf="@id/problem_save_btn" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/problem_home_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/btn_main_white"
+                android:fontFamily="@font/nanumsquareneo_bold"
+                android:gravity="center"
+                android:text="홈으로 돌아가기"
+                android:textColor="@color/black"
+                android:textSize="24dp"
+                app:layout_constraintEnd_toEndOf="@id/problem_omr_lo"
+                app:layout_constraintStart_toStartOf="@id/problem_omr_lo"
+                app:layout_constraintTop_toBottomOf="@id/problem_feedback_btn" />
+
             <TextView
                 android:id="@+id/problem_summary_title_tv"
                 android:layout_width="wrap_content"
@@ -429,7 +444,7 @@
                 android:layout_marginTop="25dp"
                 android:textSize="24dp"
                 android:fontFamily="@font/dongle"
-                app:layout_constraintTop_toBottomOf="@id/problem_feedback_btn"
+                app:layout_constraintTop_toBottomOf="@id/problem_home_btn"
                 app:layout_constraintStart_toStartOf="@id/problem_feedback_btn"
                 app:layout_constraintEnd_toEndOf="@id/problem_feedback_btn"/>
 
