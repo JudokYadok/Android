@@ -3,6 +3,7 @@ package com.example.nunettine.ui.save.problem
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ class SaveProblemFragment: Fragment() {
         binding = FragmentProblemListBinding.inflate(layoutInflater)
         getData()
         viewModel = ViewModelProvider(this).get(SaveProblemViewModel::class.java)
+        Log.d("IDDIDI", "${user_id}")
         viewModel.getQuizList(user_id)
         observeMemoList()
         return binding.root

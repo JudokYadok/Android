@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val BASE_URL = "http://ceprj.gachon.ac.kr:60023" // 임시 설정
+const val BASE_URL = "http://ceprj.gachon.ac.kr:60023"
 
 fun getRetrofit(): Retrofit {
     val client = OkHttpClient.Builder()

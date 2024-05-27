@@ -45,7 +45,7 @@ interface StudyRetrofitInterface {
     @POST("/user/study/mytext/{user_id}/{category}/{text_id}/quiz/mark")
     fun postMyTextCheckQuiz(@Path("user_id") user_id: Int, @Path("category") category: String, @Path("text_id") text_id: Int): Call<QuizGradeRes>
 
-    @POST("user/study/quizfeedback/{user_id}/{quiz_id}")
+    @POST("user/study/feedback/{user_id}/{quiz_id}")
     fun postQuizFeedback(@Path("user_id") user_id: Int, @Path("quiz_id") quiz_id: Int, @Body feedbackReq: FeedbackReq): Call<BasicRes2>
 
     @POST("/user/study/prevtext/{category}/{text_id}/quiz/save/{user_id}")

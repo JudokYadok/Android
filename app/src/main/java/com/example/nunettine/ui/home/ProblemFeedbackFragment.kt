@@ -3,6 +3,7 @@ package com.example.nunettine.ui.home
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +20,7 @@ class ProblemFeedbackFragment(private val text_title: String): Fragment() {
     private lateinit var binding: FragmentSettingFeedbackBinding
     private lateinit var viewModel: HomeViewModel
     private var user_id = 0
-    private var quiz_id = 0 // spf 저장 필요
+    private var quiz_id = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSettingFeedbackBinding.inflate(layoutInflater)
@@ -53,5 +54,6 @@ class ProblemFeedbackFragment(private val text_title: String): Fragment() {
 
         val sharedPreferences2: SharedPreferences = requireContext().getSharedPreferences("quiz_id", Context.MODE_PRIVATE)
         quiz_id = sharedPreferences2.getInt("quiz_id", quiz_id)
+        Log.d("fdghjkljhgfdxfchvbjnk", "${user_id}, ${quiz_id}")
     }
 }
