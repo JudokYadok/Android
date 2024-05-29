@@ -236,7 +236,11 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
                 Toast.makeText(context, "저장이 완료되면 피드백 작성이 가능합니다.", Toast.LENGTH_SHORT).show()
             }
         } else {
-            problemFeedbackBtn.setOnClickListener { moveFragment(ProblemFeedbackFragment(text_title)) }
+            problemFeedbackBtn.setOnClickListener {
+                moveFragment(ProblemFeedbackFragment(text_title))
+                right = 0
+                wrong = 0
+            }
         }
         problemSaveBtn.setOnClickListener {
             // 응시한 문제 저장 api 호출 필요
@@ -249,7 +253,11 @@ class CheckFragment(private val quiz_list: List<Question>, private val quiz_answ
 
         }
         problemHomeBtn.setOnClickListener { moveFragment(HomeFragment()) }
-        problemMemoBtn.setOnClickListener { moveFragment(MemoFragment()) }
+        problemMemoBtn.setOnClickListener {
+            moveFragment(MemoFragment())
+            right = 0
+            wrong = 0
+        }
     }
 
     private fun moveFragment(fragment: Fragment) {
